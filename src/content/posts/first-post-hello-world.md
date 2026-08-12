@@ -1,6 +1,6 @@
 ---
 author: freshjinyong
-pubDatetime: 2026-08-12T22:45:00Z
+pubDatetime: 2026-08-12T13:45:00Z
 title: 하이 룽이 난 이제 웹사이트 구현은 끝났어. 이제 글만 써넣으면 돼
 featured: true
 draft: false
