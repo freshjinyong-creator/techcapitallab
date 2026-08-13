@@ -1,0 +1,56 @@
+---
+import { getCollection } from "astro:content";
+import Layout from "@/layouts/Layout.astro";
+import Header from "@/components/Header.astro";
+import Breadcrumb from "@/components/Breadcrumb.astro";
+import Main from "@/components/Main.astro";
+import Footer from "@/components/Footer.astro";
+import { CATEGORIES } from "@/content.config";
+import { CATEGORY_MAP } from "@/utils/getCategorySlug";
+import config from "@/config";
+
+const posts = await getCollection("posts", ({ data }) => !data.draft);
+
+const categoriesWithCount = CATEGORIES.map(categoryKey => {
+  const count = posts.filter(
+    post => (post.data.category || "1. 경제 기초 지식") === categoryKey
+  ).length;
+  const info = CATEGORY_MAP[categoryKey] || {
+    name: categoryKey,
+    slug: categoryKey,
+    desc: "",
+  };
+  return { key: categoryKey, count, ...info };
+});
+---
+
+<Layout title={`카테고리 | ${config.site.title}`}>
+  <Header />
+
+  <Breadcrumb />
+
+  <Main pageTitle="카테고리" pageDesc="TechCapitalLab 주제별 카테고리">
+    <div class="grid grid-cols-1 gap-6 sm:grid-cols-3">
+      {
+        categoriesWithCount.map(({ name, slug, desc, count }) => (
+          <a
+            href={`/category/${slug}/`}
+            class="group border-border hover:border-accent bg-card focus-outline block rounded-lg border p-6 transition-colors"
+          >
+            <h2 class="group-hover:text-accent text-xl font-bold transition-colors">
+              {name}
+            </h2>
+            <p class="text-muted-foreground mt-2 text-sm leading-relaxed">
+              {desc}
+            </p>
+            <div class="text-accent mt-4 text-xs font-semibold">
+              포스트 {count}개 →
+            </div>
+          </a>
+        ))
+      }
+    </div>
+  </Main>
+
+  <Footer />
+</Layout>

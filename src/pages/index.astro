@@ -35,12 +35,12 @@ const homePath = getRelativeLocaleUrl(locale, "");
   >
     <section id="hero" class="border-border border-b pt-8 pb-6">
       <h1 class="my-4 inline-block text-4xl font-bold sm:my-8 sm:text-5xl">
-        Mingalaba
+        TechCapitalLab
       </h1>
       <a
         target="_blank"
         href={`${import.meta.env.BASE_URL.replace(/\/?$/, "/")}rss.xml`}
-        class="inline-block"
+        class="inline-block ms-2"
         aria-label="RSS Feed"
         title="RSS Feed"
       >
@@ -52,21 +52,11 @@ const homePath = getRelativeLocaleUrl(locale, "");
         <span class="sr-only">RSS Feed</span>
       </a>
 
-      <p>
-        AstroPaper is a minimal, responsive, accessible and SEO-friendly Astro
-        blog theme. This theme follows best practices and provides accessibility
-        out of the box. Light and dark mode are supported by default. Moreover,
-        additional color schemes can also be configured.
+      <p class="text-base leading-relaxed sm:text-lg font-medium">
+        데이터와 리포트를 바탕으로 금융 및 투자 가치를 재해석하는 전문 블로그입니다.
       </p>
-      <p class="mt-2">
-        Read the blog posts or check{" "}
-        <LinkButton
-          class="hover:text-accent underline decoration-dashed underline-offset-4"
-          href="https://github.com/satnaing/astro-paper#readme"
-        >
-          README
-        </LinkButton>{" "}
-        for more info.
+      <p class="mt-2 text-muted-foreground leading-relaxed">
+        기초 경제 지식부터 매일의 주요 경제 뉴스, 증권사 산업 리포트 분석까지—단기적인 소음에 흔들리지 않는 깊이 있는 투자 인사이트를 제공합니다.
       </p>
       {
         socials.length > 0 && (

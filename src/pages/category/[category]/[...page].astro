@@ -1,0 +1,68 @@
+---
+import { getCollection } from "astro:content";
+import type { GetStaticPathsOptions } from "astro";
+import Layout from "@/layouts/Layout.astro";
+import Header from "@/components/Header.astro";
+import Main from "@/components/Main.astro";
+import Breadcrumb from "@/components/Breadcrumb.astro";
+import Card from "@/components/Card.astro";
+import Footer from "@/components/Footer.astro";
+import Pagination from "@/components/Pagination.astro";
+import { getSortedPosts } from "@/utils/getSortedPosts";
+import { CATEGORIES } from "@/content.config";
+import { CATEGORY_MAP, getCategorySlug } from "@/utils/getCategorySlug";
+import config from "@/config";
+
+export async function getStaticPaths({ paginate }: GetStaticPathsOptions) {
+  const posts = await getCollection("posts", ({ data }) => !data.draft);
+
+  return CATEGORIES.flatMap(categoryKey => {
+    const slug = getCategorySlug(categoryKey);
+    const info = CATEGORY_MAP[categoryKey] || {
+      name: categoryKey,
+      slug,
+      desc: "",
+    };
+
+    const categoryPosts = getSortedPosts(
+      posts.filter(
+        post => (post.data.category || "1. 경제 기초 지식") === categoryKey
+      )
+    );
+
+    return paginate(categoryPosts, {
+      params: { category: slug },
+      props: { categoryName: info.name, categoryDesc: info.desc },
+      pageSize: config.posts.perPage,
+    });
+  });
+}
+
+const { page, categoryName, categoryDesc } = Astro.props;
+---
+
+<Layout title={`카테고리: ${categoryName} | ${config.site.title}`}>
+  <Header />
+
+  <Breadcrumb />
+
+  <Main pageTitle={`카테고리: ${categoryName}`} pageDesc={categoryDesc}>
+    {
+      page.data.length > 0 ? (
+        <ul>
+          {page.data.map(data => (
+            <Card {...data} />
+          ))}
+        </ul>
+      ) : (
+        <p class="text-muted-foreground my-8">
+          아직 작성된 포스트가 없습니다. 첫 아티클이 곧 발행될 예정입니다!
+        </p>
+      )
+    }
+  </Main>
+
+  <Pagination {page} />
+
+  <Footer noMarginTop={page.lastPage > 1} />
+</Layout>
