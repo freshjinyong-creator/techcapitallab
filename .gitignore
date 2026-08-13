@@ -29,5 +29,9 @@ public/pagefind
 # pnpm
 .pnpm-store
 
+# python
+__pycache__/
+*.pyc
+
 # docker compose
 compose.override.yaml
