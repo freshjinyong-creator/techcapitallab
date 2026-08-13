@@ -1,37 +1,17 @@
 ---
-title: "About"
-description: "A bit about me and this blog."
+title: "소개"
+description: "TechCapitalLab 블로그 소개"
 ---
 
-AstroPaper is a minimal, accessible and SEO-friendly blog theme built with [Astro](https://astro.build/) and [Tailwind CSS](https://tailwindcss.com/).
+TechCapitalLab은 단기적인 시장 소음과 감정에 흔들리지 않고, 데이터, 팩트, 그리고 전문 리포트를 바탕으로 금융과 투자 가치를 냉철하게 재해석하기 위해 만들어진 공간입니다.
 
-![Astro Paper](@/assets/images/astropaper-og.jpg)
+### 📌 주요 카테고리 안내
 
-AstroPaper provides a solid foundation for blogs, or even portfolios\_ with full markdown support, built-in dark mode, and a clean layout that works out-of-the-box.
+본 블로그는 다음과 같은 3가지 핵심 축으로 운영됩니다:
 
-The blog posts in this theme also serve as guides, docs or example articles\_ making AstroPaper a flexible starting point for your next content-driven site.
-
-## Features
-
-AstroPaper comes with a set of useful features that make content publishing easy and effective:
-
-- SEO-friendly
-- Fast performance
-- Light & dark mode
-- Highly customizable
-- Organizable blog posts
-- Responsive & accessible
-- Static search with [PageFind](https://pagefind.app/)
-- Automatic social image generation
-
-and so much more.
-
-## Show your support
-
-If you like [AstroPaper](https://github.com/satnaing/astro-paper), consider giving it a star ⭐️.
-
-Found a bug 🐛 or have an improvement ✨ in mind? Feel free to open an [issue](https://github.com/satnaing/astro-paper/issues), submit a [pull request](https://github.com/satnaing/astro-paper/pulls) or start a [discussion](https://github.com/satnaing/astro-paper/discussions).
-
-If you find this theme helpful, you can also [sponsor me on GitHub](https://github.com/sponsors/satnaing) or [buy me a coffee](https://buymeacoffee.com/satnaing) to show your support — every penny counts.
-
-Kyay zuu! 🙏🏼
+1. **1. 경제 기초 지식 (Economy Basics)**
+   자본주의와 거시경제의 뼈대가 되는 기초 원리, 투자의 기본 개념을 장기적인 관점에서 탄탄하게 다지는 Evergreen 지식 창고입니다.
+2. **2. 뉴스 속 경제 (News & Macro)**
+   매일 쏟아지는 글로벌 경제 뉴스 속에서 진짜 신호(Signal)와 가짜 소음(Noise)을 구분하고, 거시 경제의 흐름을 짚어봅니다.
+3. **3. 증권사 리포트 읽기 (Report Lab)**
+   증권사 산업 및 기업 리포트를 수치와 팩트 중심으로 깊이 있게 파고들어, 실전 투자에 도움이 되는 인사이트를 추출합니다.
