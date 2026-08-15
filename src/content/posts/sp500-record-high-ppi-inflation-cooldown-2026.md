@@ -1,7 +1,7 @@
 ---
 title: "S&P 500 역대 최고치 경신: 물가 지표 두 번의 안도가 만든 증시 대반전"
-pubDatetime: 2026-08-14T03:00:00Z
-modDatetime: 2026-08-14T03:00:00Z
+pubDatetime: 2026-08-15T01:05:00Z
+modDatetime: 2026-08-15T01:05:00Z
 featured: false
 draft: false
 tags:

@@ -1,7 +1,7 @@
 ---
 title: "투자와 도박의 차이, 기대값으로 가르는 한 줄의 경계"
-pubDatetime: 2026-08-14T04:00:00Z
-modDatetime: 2026-08-14T04:00:00Z
+pubDatetime: 2026-08-15T01:00:00Z
+modDatetime: 2026-08-15T01:00:00Z
 featured: false
 draft: false
 tags:
