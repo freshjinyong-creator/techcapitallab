@@ -51,9 +51,7 @@
     "prettier-plugin-tailwindcss": "^0.8.0",
     "typescript": "^6.0.3"
   },
-  "pnpm": {
-    "overrides": {
-      "cookie": "0.6.0"
-    }
+  "overrides": {
+    "cookie": "0.6.0"
   }
 }
