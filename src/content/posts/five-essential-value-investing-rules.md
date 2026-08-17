@@ -1,7 +1,7 @@
 ---
 title: "5강. 워렌 버핏부터 이세옥까지, 성공 투자를 완성하는 가치투자 5계명"
-pubDatetime: 2026-08-17T02:00:00Z
-modDatetime: 2026-08-17T02:00:00Z
+pubDatetime: 2026-08-17T01:00:00Z
+modDatetime: 2026-08-17T01:00:00Z
 featured: false
 draft: false
 tags: [가치투자, 투자원칙, 워렌버핏, 찰리멍거, 피터린치, 삼성전자]
