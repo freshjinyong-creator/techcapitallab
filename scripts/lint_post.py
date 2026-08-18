@@ -30,6 +30,13 @@ def lint_and_fix(file_path):
         content = bold_quote_pattern.sub(r"**\2**", content)
         fixed = True
 
+    # 1-2. Check & Auto-fix: **Korean(English)**조사 -> **Korean**(English)조사
+    bold_paren_pattern = re.compile(r"\*\*([^\*\(\)\n\r]+)\(([^\*\(\)\n\r]+)\)\*\*([가-힣])")
+    if bold_paren_pattern.search(content):
+        print("  [FIX] Found bold-parenthesis particle conflict pattern (**Text(En)**Particle). Auto-fixing...")
+        content = bold_paren_pattern.sub(r"**\1**(\2)\3", content)
+        fixed = True
+
     # 2. Check for banned internal terms
     for term in INTERNAL_BANNED_WORDS:
         if term in content:
