@@ -11,7 +11,7 @@ TechCapitalLab 블로그에 방문해 주셔서 감사합니다.
 
 ### ✉️ 공식 이메일 문의처
 
-- **이메일 주소:** `contact@techcapitallab.com`
+- **이메일 주소:** `techcapitallab@gmail.com`
 - **응답 가능 시간:** 월~금 (주말 및 공휴일 문의 시 익영업일 답변)
 
 ---
