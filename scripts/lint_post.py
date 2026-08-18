@@ -54,7 +54,11 @@ def lint_and_fix(file_path):
         except Exception as e:
             pass
 
-    # 5. Measure character count
+    # 5. Check for raw LaTeX syntax ($$ or \frac) which fails to render in AstroPaper
+    if "$$" in content or r"\frac" in content:
+        errors.append("Contains raw LaTeX math syntax ($$ or \\frac). AstroPaper does not render LaTeX by default. Use code block or plain text box instead!")
+
+    # 6. Measure character count
     char_count = len(content)
     print(f"  [INFO] Verified char count: {char_count} chars (including whitespace)")
 
