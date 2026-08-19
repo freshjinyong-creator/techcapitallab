@@ -5,7 +5,7 @@ modDatetime: 2026-08-19T01:00:00Z
 featured: false
 draft: false
 tags: [코스피, 미국국채금리, AI반도체, 증권사리포트, 시황분석]
-category: "2. 뉴스 속 경제"
+category: "3. 증권사 리포트 읽기"
 description: "2026년 8월 19일 미국 장기금리 폭등과 중동 불안으로 코스피 사이드카가 발동된 가운데, 증권사 최신 리포트와 AI GPU 렌탈 시장 데이터를 바탕으로 시장의 실체와 수혜 종목을 분석합니다."
 ---
 
@@ -100,7 +100,7 @@ SK증권 박제민 연구원의 분석 리포트(*네오클라우드 실적: 더
 
 투자자는 단기 차트의 파동에 휩쓸리기보다, 자기가 보유한 종목이 금리 상승기에도 가격 결정력(Pricing Power)을 유지할 수 있는 실적주인지 냉정히 검증해야 할 시점입니다.
 
-- **연관 읽을거리:** [TechCapitalLab 뉴스 속 경제 카테고리 전체 보기](https://techcapitallab.com/category/news-macro/)
+- **연관 읽을거리:** [TechCapitalLab 증권사 리포트 읽기 카테고리 전체 보기](https://techcapitallab.com/category/report-lab/)
 
 ---
 
