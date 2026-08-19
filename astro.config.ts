@@ -68,6 +68,15 @@ export default defineConfig({
       styles: ["normal", "italic"],
       formats: ["woff", "ttf"],
     },
+    {
+      name: "Noto Sans KR",
+      cssVariable: "--font-noto-sans-kr",
+      provider: fontProviders.google(),
+      fallbacks: ["sans-serif"],
+      weights: [400, 700],
+      styles: ["normal"],
+      formats: ["woff", "ttf"],
+    },
   ],
   env: {
     schema: {

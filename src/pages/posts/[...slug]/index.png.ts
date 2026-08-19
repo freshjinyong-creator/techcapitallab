@@ -31,17 +31,19 @@ export const GET: APIRoute = async ({ props, url }) => {
   const regularFontPath = getFontPathByWeight(fonts, 400);
   const boldFontPath = getFontPathByWeight(fonts, 700);
 
+  const krFonts = fontData["--font-noto-sans-kr"];
+  const krRegularFontPath = getFontPathByWeight(krFonts, 400);
+  const krBoldFontPath = getFontPathByWeight(krFonts, 700);
+
   if (regularFontPath === undefined || boldFontPath === undefined) {
-    throw new Error("Cannot find the font path.");
+    throw new Error("Cannot find the base font path.");
   }
 
-  const [regularData, boldData] = await Promise.all([
-    fetch(experimental_getFontFileURL(regularFontPath, url)).then(res =>
-      res.arrayBuffer()
-    ),
-    fetch(experimental_getFontFileURL(boldFontPath, url)).then(res =>
-      res.arrayBuffer()
-    ),
+  const [regularData, boldData, krRegularData, krBoldData] = await Promise.all([
+    fetch(experimental_getFontFileURL(regularFontPath, url)).then(res => res.arrayBuffer()),
+    fetch(experimental_getFontFileURL(boldFontPath, url)).then(res => res.arrayBuffer()),
+    krRegularFontPath ? fetch(experimental_getFontFileURL(krRegularFontPath, url)).then(res => res.arrayBuffer()) : null,
+    krBoldFontPath ? fetch(experimental_getFontFileURL(krBoldFontPath, url)).then(res => res.arrayBuffer()) : null,
   ]);
 
   const svg = await satori(
@@ -55,6 +57,7 @@ export const GET: APIRoute = async ({ props, url }) => {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
+          fontFamily: '"Google Sans Code", "Noto Sans KR"',
         },
         children: [
           {
@@ -105,7 +108,7 @@ export const GET: APIRoute = async ({ props, url }) => {
                       type: "p",
                       props: {
                         style: {
-                          fontSize: 72,
+                          fontSize: 60,
                           fontWeight: "bold",
                           maxHeight: "84%",
                           overflow: "hidden",
@@ -129,23 +132,7 @@ export const GET: APIRoute = async ({ props, url }) => {
                             props: {
                               children: [
                                 "by ",
-                                {
-                                  type: "span",
-                                  props: {
-                                    style: { color: "transparent" },
-                                    children: '"',
-                                  },
-                                },
-                                {
-                                  type: "span",
-                                  props: {
-                                    style: {
-                                      overflow: "hidden",
-                                      fontWeight: "bold",
-                                    },
-                                    children: props.data.author,
-                                  },
-                                },
+                                props.data.author,
                               ],
                             },
                           },
@@ -184,6 +171,18 @@ export const GET: APIRoute = async ({ props, url }) => {
           weight: 700,
           style: "normal",
         },
+        ...(krRegularData ? [{
+          name: "Noto Sans KR",
+          data: krRegularData,
+          weight: 400 as const,
+          style: "normal" as const,
+        }] : []),
+        ...(krBoldData ? [{
+          name: "Noto Sans KR",
+          data: krBoldData,
+          weight: 700 as const,
+          style: "normal" as const,
+        }] : []),
       ],
     }
   );
