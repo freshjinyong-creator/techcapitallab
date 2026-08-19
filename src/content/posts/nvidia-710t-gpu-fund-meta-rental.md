@@ -11,6 +11,7 @@ tags:
   - 반도체
   - AI투자
 category: 2. 뉴스 속 경제
+ogImage: "../../assets/images/nvidia-gpu-fund.svg"
 description: 엔비디아가 월가와 710조원 AI 인프라 펀드를 조성하고 메타는 앤트로픽에 GPU를 임대합니다. 이 두 움직임이 삼성전자·SK하이닉스 등 반도체 투자에 주는 의미를 분석합니다.
 ---
 

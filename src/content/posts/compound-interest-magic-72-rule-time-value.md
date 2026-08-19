@@ -11,7 +11,8 @@ tags:
   - 배당재투자
   - 수량복리
   - 가치투자
-category: 1. 경제 기초 지식
+category: "1. 경제 기초 지식"
+ogImage: "../../assets/images/compound-interest.svg"
 description: 복리와 단리의 기하학적 차이, 72의 법칙 암산법, 배당 재투자로 만드는 수량 복리의 원리. 시간이 지날수록 가속도가 붙는 복리 효과를 쉽게 설명한다.
 ---
 

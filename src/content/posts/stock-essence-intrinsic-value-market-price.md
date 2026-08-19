@@ -12,6 +12,7 @@ tags:
   - 워런버핏
   - 코리아디스카운트
 category: 1. 경제 기초 지식
+ogImage: "../../assets/images/stock-essence-value-price.svg"
 description: 주식이란 무엇인가? 1602년 동인도회사에서 시작된 주식의 본질과 내재가치·시장가격의 차이, 버핏의 Mr. Market 비유로 배우는 가치투자 입문.
 ---
 

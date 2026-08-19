@@ -10,7 +10,8 @@ tags:
   - 동전주
   - 시가총액미달
   - 주식투자전략
-category: 2. 뉴스 속 경제
+category: "1. 경제 기초 지식"
+ogImage: "../../assets/images/delisting-risk.svg"
 description: 거래소가 동전주와 시총 미달 기업 36곳을 첫 관리종목으로 지정했다. 90일간의 개선 기간과 상장폐지 리스크, 개인투자자 대응 전략을 분석한다.
 ---
 

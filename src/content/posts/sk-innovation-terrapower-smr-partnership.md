@@ -12,6 +12,7 @@ tags:
   - AI전력시장
   - 원자력
 category: 2. 뉴스 속 경제
+ogImage: "../../assets/images/sk-terrapower-smr.svg"
 description: SK이노베이션이 빌 게이츠의 테라파워와 차세대 나트륨 기반 SMR 사업 합의서를 체결했다. AI 데이터센터 전력난을 해결할 차세대 원전 기술의 핵심을 분석한다.
 ---
 

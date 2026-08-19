@@ -6,6 +6,7 @@ featured: false
 draft: false
 tags: [한국은행, 기준금리, 금통위, 경제성장률, 반도체호황, 금리인상]
 category: "2. 뉴스 속 경제"
+ogImage: "../../assets/images/korea-rate-hike-paradox.svg"
 description: "한국 경제가 2분기 GDP 3.7% 성장으로 3%대 성장을 눈앞에 두면서 한국은행의 기준금리 연속 인상론이 부상하고 있습니다. 반도체 호황이 통화 긴축의 명분이 되는 역설의 실체와 8월 금통위 전망, 투자자 대응 전략을 분석합니다."
 ---
 

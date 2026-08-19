@@ -6,6 +6,7 @@ featured: false
 draft: false
 tags: [가치투자, 투자원칙, 워렌버핏, 찰리멍거, 피터린치, 삼성전자]
 category: "1. 경제 기초 지식"
+ogImage: "../../assets/images/value-investing-rules.svg"
 description: "워렌 버핏, 찰리 멍거, 피터 린치, 박영옥, 이세옥 등 5대 거장의 투자 철학을 융합한 가치투자 5계명을 소개하고, 한국 증시와 삼성전자 분석에 적용하는 정량 평정표를 제공합니다."
 ---
 

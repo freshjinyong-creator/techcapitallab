@@ -11,7 +11,8 @@ tags:
   - 인공지능
   - 피지컬AI
   - 테크투자
-category: 2. 뉴스 속 경제
+category: "1. 경제 기초 지식"
+ogImage: "../../assets/images/ai-monetization.svg"
 description: 앤트로픽의 연환산 매출 92조원 돌파와 LG-엔비디아의 피지컬 AI 로봇 동맹을 통해 AI 산업의 실질적 수익화와 현실 적용 확장 국면을 심층 분석합니다.
 ---
 

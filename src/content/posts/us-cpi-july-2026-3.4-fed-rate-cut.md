@@ -11,6 +11,7 @@ tags:
   - 인플레이션
   - 반도체주
 category: 2. 뉴스 속 경제
+ogImage: "../../assets/images/us-cpi-july-2026.svg"
 description: 미국 7월 CPI가 전월비 +0.1%, 연율 3.4%로 둔화됐다. 연준 9월 금리 인하 가능성과 금·모기지·반도체주에 미치는 영향을 분석한다.
 ---
 

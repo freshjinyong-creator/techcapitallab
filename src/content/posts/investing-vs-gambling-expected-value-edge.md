@@ -11,6 +11,7 @@ tags:
   - 코리아디스카운트
   - 주식투자전략
 category: 1. 경제 기초 지식
+ogImage: "../../assets/images/investing-vs-gambling.svg"
 description: 주식이 투자가 아닌 도박처럼 느껴지는 이유와 투자·도박을 가르는 절대 기준. 카지노 주인의 사고로 기대값(E)을 계산하는 가치투자 입문 가이드.
 ---
 

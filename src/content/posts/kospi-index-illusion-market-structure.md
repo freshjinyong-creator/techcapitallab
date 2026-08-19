@@ -6,6 +6,7 @@ featured: false
 draft: false
 tags: [코스피, 시장구조, 시가총액가중방식, 등락비율, 삼성전자, 가치투자]
 category: "1. 경제 기초 지식"
+ogImage: "../../assets/images/kospi-index-illusion.svg"
 description: "코스피 지수가 7,100선을 돌파해도 내 종목이 오르지 않는 시가총액 가중방식의 왜곡 구조를 밝히고, 시장의 진짜 건전도를 측정하는 3대 지표와 가치투자 대응 전략을 제시합니다."
 ---
 

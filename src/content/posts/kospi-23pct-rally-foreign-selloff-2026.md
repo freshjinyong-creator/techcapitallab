@@ -11,6 +11,7 @@ tags:
   - SK하이닉스
   - 금리인하
 category: 2. 뉴스 속 경제
+ogImage: "../../assets/images/kospi-rally-foreign-selloff.svg"
 description: 외국인이 185조 원어치를 팔았는데 코스피는 열흘 새 23% 올랐다. 개인·기관 순매수와 반도체 랠리, 미국 금리 인하 기대로 읽는 2026년 8월 코스피 급등의 진짜 원인을 분석한다.
 ---
 

@@ -11,6 +11,7 @@ tags:
   - 금리인하
   - 뉴욕증시
 category: 2. 뉴스 속 경제
+ogImage: "../../assets/images/sp500-record-high-ppi.svg"
 description: 7월 CPI에 이어 PPI까지 안정세를 보이며 S&P 500이 역대 최고치로 마감했다. 인플레이션 공포 소멸과 연준 금리 인하 전망을 분석한다.
 ---
 

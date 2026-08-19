@@ -13,6 +13,7 @@ tags:
   - FOMO
   - 가치투자
 category: 1. 경제 기초 지식
+ogImage: "../../assets/images/market-psychology.svg"
 description: 주가가 오를 때 사고 내릴 때 파는 이유는 행동경제학으로 설명된다. 손실회피·확증편향·군중심리 3대 함정과 심리 제어 도구(VKOSPI, 신용융자 잔고)를 통해 시장의 공포와 탐욕을 극복하는 법을 정리한다.
 ---
 

@@ -6,6 +6,7 @@ featured: false
 draft: false
 tags: [코스피, 미국국채금리, AI반도체, 증권사리포트, 시황분석]
 category: "3. 증권사 리포트 읽기"
+ogImage: "../../assets/images/kospi-sidecar-ai-crash.svg"
 description: "2026년 8월 19일 미국 장기금리 폭등과 중동 불안으로 코스피 사이드카가 발동된 가운데, 증권사 최신 리포트와 AI GPU 렌탈 시장 데이터를 바탕으로 시장의 실체와 수혜 종목을 분석합니다."
 ---
 
