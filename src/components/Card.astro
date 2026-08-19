@@ -1,6 +1,6 @@
 ---
 import type { CollectionEntry } from "astro:content";
-import { getPostUrl, getPostSlug } from "@/utils/getPostPaths";
+import { getPostUrl } from "@/utils/getPostPaths";
 import { toTransitionName } from "@/utils/toTransitionName";
 import Datetime from "./Datetime.astro";
 import { getAssetPath } from "@/utils/withBase";
@@ -16,17 +16,17 @@ const { title, description, category, tags, ogImage, ...props } = data;
 
 const postUrl = getPostUrl(id, filePath, Astro.currentLocale);
 
-// Custom image check (if user supplied an explicit custom photo/chart)
+// Custom image check (if user supplied an explicit custom photo/chart in frontmatter `ogImage`)
 const hasCustomImage = Boolean(ogImage);
 let customImageUrl = "";
 if (ogImage) {
   customImageUrl = typeof ogImage === "string" ? getAssetPath(ogImage) : ogImage.src;
 }
 
-// Category styling and metadata for sleek card covers
+// Category styling and metadata for sleek dark cover cards
 let categoryTheme = {
   name: "금융 분석",
-  badgeBg: "bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 border-emerald-500/30",
+  badgeBg: "bg-emerald-500/20 text-emerald-300 border-emerald-500/40",
   headerGradient: "from-slate-900 via-teal-950 to-emerald-950",
   svgType: "chart",
   watermark: "ECONOMY BASICS",
@@ -35,7 +35,7 @@ let categoryTheme = {
 if (category?.includes("1")) {
   categoryTheme = {
     name: "경제 기초",
-    badgeBg: "bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 border-emerald-500/30",
+    badgeBg: "bg-emerald-500/20 text-emerald-300 border-emerald-500/40",
     headerGradient: "from-slate-900 via-teal-950 to-emerald-950",
     svgType: "chart",
     watermark: "ECONOMY BASICS",
@@ -43,7 +43,7 @@ if (category?.includes("1")) {
 } else if (category?.includes("2")) {
   categoryTheme = {
     name: "뉴스 속 경제",
-    badgeBg: "bg-blue-500/15 text-blue-700 dark:text-blue-300 border-blue-500/30",
+    badgeBg: "bg-blue-500/20 text-blue-300 border-blue-500/40",
     headerGradient: "from-slate-900 via-slate-950 to-blue-950",
     svgType: "globe",
     watermark: "MARKET & NEWS",
@@ -51,7 +51,7 @@ if (category?.includes("1")) {
 } else if (category?.includes("3")) {
   categoryTheme = {
     name: "증권사 리포트",
-    badgeBg: "bg-purple-500/15 text-purple-700 dark:text-purple-300 border-purple-500/30",
+    badgeBg: "bg-purple-500/20 text-purple-300 border-purple-500/40",
     headerGradient: "from-slate-900 via-purple-950 to-indigo-950",
     svgType: "report",
     watermark: "EQUITY RESEARCH",
@@ -61,186 +61,176 @@ if (category?.includes("1")) {
 
 {
   isHero ? (
-    <article class="group relative overflow-hidden rounded-2xl border border-border/80 bg-card/60 p-4 sm:p-6 transition-all duration-300 hover:border-accent/60 hover:shadow-xl dark:bg-card/40">
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
-        <!-- Hero Header Cover -->
-        <a href={postUrl} class="lg:col-span-6 overflow-hidden rounded-xl border border-border/50 block relative aspect-[16/10] group-hover:shadow-md transition-shadow">
-          {hasCustomImage ? (
-            <img
-              src={customImageUrl}
-              alt={title}
-              loading="eager"
-              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-            />
-          ) : (
-            <div class={`w-full h-full bg-gradient-to-br ${categoryTheme.headerGradient} p-6 flex flex-col justify-between relative overflow-hidden select-none`}>
-              <div class="absolute inset-0 opacity-15 pointer-events-none bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:16px_16px]"></div>
+    <article class="group relative overflow-hidden rounded-2xl border border-border/80 min-h-[360px] sm:min-h-[420px] flex flex-col justify-between p-6 sm:p-8 shadow-xl transition-all duration-300 hover:border-accent/60 hover:shadow-2xl">
+      <!-- Background Image or Gradient -->
+      {hasCustomImage ? (
+        <img
+          src={customImageUrl}
+          alt={title}
+          loading="eager"
+          class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+        />
+      ) : (
+        <div class={`absolute inset-0 bg-gradient-to-br ${categoryTheme.headerGradient}`}>
+          <div class="absolute inset-0 opacity-20 bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:20px_20px]"></div>
+          <!-- Background SVG Icon -->
+          <div class="absolute right-6 top-1/2 -translate-y-1/2 opacity-15 group-hover:opacity-30 group-hover:scale-110 transition-all duration-500 pointer-events-none">
+            {categoryTheme.svgType === 'chart' && (
+              <svg class="size-64 text-emerald-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+                <path d="M3 3v18h18" stroke-linecap="round"/>
+                <path d="m19 9-5 5-4-4-3 3" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            )}
+            {categoryTheme.svgType === 'globe' && (
+              <svg class="size-64 text-blue-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+                <circle cx="12" cy="12" r="10"/>
+                <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20M2 12h20"/>
+              </svg>
+            )}
+            {categoryTheme.svgType === 'report' && (
+              <svg class="size-64 text-purple-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+                <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/>
+                <polyline points="14 2 14 8 20 8"/>
+                <line x1="16" y1="13" x2="8" y2="13"/>
+                <line x1="16" y1="17" x2="8" y2="17"/>
+              </svg>
+            )}
+          </div>
+        </div>
+      )}
 
-              <div class="relative z-10 flex items-center justify-between">
-                <span class={`px-3 py-1 text-xs font-semibold rounded-md border backdrop-blur-md shadow-sm ${categoryTheme.badgeBg}`}>
-                  {categoryTheme.name}
-                </span>
-                <span class="text-xs font-mono tracking-widest text-white/50 uppercase">
-                  FEATURED REPORT
-                </span>
-              </div>
+      <!-- Overlay Dark Vignette Gradient -->
+      <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/75 to-slate-950/40"></div>
 
-              <div class="relative z-10 my-auto flex items-center justify-center opacity-40 group-hover:opacity-80 group-hover:scale-110 transition-all duration-300">
-                {categoryTheme.svgType === 'chart' && (
-                  <svg class="size-16 text-emerald-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                    <path d="M3 3v18h18" stroke-linecap="round"/>
-                    <path d="m19 9-5 5-4-4-3 3" stroke-linecap="round" stroke-linejoin="round"/>
-                  </svg>
-                )}
-                {categoryTheme.svgType === 'globe' && (
-                  <svg class="size-16 text-blue-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                    <circle cx="12" cy="12" r="10"/>
-                    <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20M2 12h20"/>
-                  </svg>
-                )}
-                {categoryTheme.svgType === 'report' && (
-                  <svg class="size-16 text-purple-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                    <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/>
-                    <polyline points="14 2 14 8 20 8"/>
-                    <line x1="16" y1="13" x2="8" y2="13"/>
-                    <line x1="16" y1="17" x2="8" y2="17"/>
-                  </svg>
-                )}
-              </div>
+      <!-- Top Row -->
+      <div class="relative z-10 flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <span class="px-2.5 py-1 text-xs font-bold uppercase tracking-wider text-accent bg-accent/20 border border-accent/40 rounded-md backdrop-blur-md">
+            FEATURED REPORT
+          </span>
+          <span class={`px-2.5 py-1 text-xs font-semibold rounded-md border backdrop-blur-md ${categoryTheme.badgeBg}`}>
+            {categoryTheme.name}
+          </span>
+        </div>
+        <span class="text-xs font-mono tracking-widest text-white/50 uppercase hidden sm:inline-block">
+          TechCapitalLab Insights
+        </span>
+      </div>
 
-              <div class="relative z-10 flex items-center justify-between text-xs font-mono tracking-wider text-white/40">
-                <span>TECHCAPITALLAB</span>
-                <span>{categoryTheme.watermark}</span>
-              </div>
-            </div>
-          )}
+      <!-- Bottom Content -->
+      <div class="relative z-10 mt-auto pt-12">
+        <div class="mb-3">
+          <Datetime {...props} class="text-xs text-slate-300" />
+        </div>
+
+        <a href={postUrl} class="group/title block">
+          <Heading
+            transition:name={toTransitionName(id)}
+            class="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-white group-hover/title:text-accent transition-colors leading-tight tracking-tight mb-3 drop-shadow-md max-w-4xl"
+          >
+            {title}
+          </Heading>
         </a>
 
-        <!-- Content Area -->
-        <div class="lg:col-span-6 flex flex-col justify-between h-full py-1">
-          <div>
-            <div class="flex items-center gap-2 mb-3">
-              <span class="px-2.5 py-0.5 text-[11px] font-bold uppercase tracking-wider text-accent bg-accent/10 border border-accent/20 rounded-md">
-                주요 인사이트
-              </span>
-              <Datetime {...props} class="text-xs" />
+        <p class="text-slate-300 text-sm sm:text-base leading-relaxed line-clamp-2 sm:line-clamp-3 mb-5 max-w-3xl">
+          {description}
+        </p>
+
+        <div class="flex flex-wrap items-center justify-between gap-4 pt-2 border-t border-white/10">
+          {tags && tags.length > 0 ? (
+            <div class="flex flex-wrap gap-1.5">
+              {tags.slice(0, 4).map(tag => (
+                <span class="text-xs text-slate-300 bg-white/10 backdrop-blur-md px-2.5 py-0.5 rounded border border-white/10">
+                  #{tag}
+                </span>
+              ))}
             </div>
+          ) : <div></div>}
 
-            <a href={postUrl} class="group/title block">
-              <Heading
-                transition:name={toTransitionName(id)}
-                class="text-xl sm:text-2xl font-extrabold text-foreground group-hover/title:text-accent transition-colors leading-snug tracking-tight mb-3"
-              >
-                {title}
-              </Heading>
-            </a>
-
-            <p class="text-muted-foreground text-sm leading-relaxed line-clamp-3 mb-4">
-              {description}
-            </p>
-          </div>
-
-          <div>
-            {tags && tags.length > 0 && (
-              <div class="flex flex-wrap gap-1.5 mb-4">
-                {tags.slice(0, 3).map(tag => (
-                  <span class="text-xs text-muted-foreground bg-muted/60 px-2 py-0.5 rounded border border-border/40">
-                    #{tag}
-                  </span>
-                ))}
-              </div>
-            )}
-
-            <a
-              href={postUrl}
-              class="inline-flex items-center gap-1.5 text-sm font-semibold text-accent hover:gap-2.5 transition-all"
-            >
-              리포트 읽기
-              <svg xmlns="http://www.w3.org/2000/svg" class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M5 12h14"></path>
-                <path d="m12 5 7 7-7 7"></path>
-              </svg>
-            </a>
-          </div>
+          <a
+            href={postUrl}
+            class="inline-flex items-center gap-1.5 text-sm font-semibold text-accent hover:gap-2.5 transition-all ms-auto"
+          >
+            리포트 읽기
+            <svg xmlns="http://www.w3.org/2000/svg" class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M5 12h14"></path>
+              <path d="m12 5 7 7-7 7"></path>
+            </svg>
+          </a>
         </div>
       </div>
     </article>
   ) : (
-    <li class="group flex flex-col h-full overflow-hidden rounded-2xl border border-border/70 bg-card/40 transition-all duration-300 hover:border-accent/50 hover:bg-card hover:-translate-y-1 hover:shadow-lg dark:bg-card/20">
-      <!-- Thumbnail Header -->
-      <a href={postUrl} class="relative block aspect-[16/9] w-full overflow-hidden border-b border-border/40 bg-muted">
-        {hasCustomImage ? (
-          <img
-            src={customImageUrl}
-            alt={title}
-            loading="lazy"
-            class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-          />
-        ) : (
-          <div class={`w-full h-full bg-gradient-to-br ${categoryTheme.headerGradient} p-4 flex flex-col justify-between relative overflow-hidden select-none`}>
-            <div class="absolute inset-0 opacity-15 pointer-events-none bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:16px_16px]"></div>
-
-            <div class="relative z-10 flex items-center justify-between">
-              <span class={`inline-block px-2.5 py-0.5 text-[11px] font-semibold rounded-md border backdrop-blur-md shadow-sm ${categoryTheme.badgeBg}`}>
-                {categoryTheme.name}
-              </span>
-              <span class="text-[10px] font-mono tracking-widest text-white/40 uppercase">
-                TechCapitalLab
-              </span>
-            </div>
-
-            <div class="relative z-10 my-auto flex items-center justify-center opacity-30 group-hover:opacity-75 group-hover:scale-110 transition-all duration-300">
-              {categoryTheme.svgType === 'chart' && (
-                <svg class="size-12 text-emerald-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                  <path d="M3 3v18h18" stroke-linecap="round"/>
-                  <path d="m19 9-5 5-4-4-3 3" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              )}
-              {categoryTheme.svgType === 'globe' && (
-                <svg class="size-12 text-blue-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                  <circle cx="12" cy="12" r="10"/>
-                  <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20M2 12h20"/>
-                </svg>
-              )}
-              {categoryTheme.svgType === 'report' && (
-                <svg class="size-12 text-purple-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                  <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/>
-                  <polyline points="14 2 14 8 20 8"/>
-                  <line x1="16" y1="13" x2="8" y2="13"/>
-                  <line x1="16" y1="17" x2="8" y2="17"/>
-                </svg>
-              )}
-            </div>
-
-            <div class="relative z-10 flex items-center justify-between text-[10px] font-mono tracking-wider text-white/30">
-              <span>FINANCIAL INSIGHT</span>
-              <span>{categoryTheme.watermark}</span>
-            </div>
+    <li class="group relative overflow-hidden rounded-2xl border border-border/80 min-h-[300px] sm:min-h-[320px] flex flex-col justify-between p-5 transition-all duration-300 hover:border-accent/60 hover:-translate-y-1 hover:shadow-2xl select-none">
+      <!-- Background Image or Category Gradient -->
+      {hasCustomImage ? (
+        <img
+          src={customImageUrl}
+          alt={title}
+          loading="lazy"
+          class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+        />
+      ) : (
+        <div class={`absolute inset-0 bg-gradient-to-br ${categoryTheme.headerGradient}`}>
+          <div class="absolute inset-0 opacity-15 bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:16px_16px]"></div>
+          <!-- Background SVG Icon -->
+          <div class="absolute -right-2 -bottom-2 opacity-15 group-hover:opacity-35 group-hover:scale-110 transition-all duration-500 pointer-events-none">
+            {categoryTheme.svgType === 'chart' && (
+              <svg class="size-44 text-emerald-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
+                <path d="M3 3v18h18" stroke-linecap="round"/>
+                <path d="m19 9-5 5-4-4-3 3" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            )}
+            {categoryTheme.svgType === 'globe' && (
+              <svg class="size-44 text-blue-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
+                <circle cx="12" cy="12" r="10"/>
+                <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20M2 12h20"/>
+              </svg>
+            )}
+            {categoryTheme.svgType === 'report' && (
+              <svg class="size-44 text-purple-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2">
+                <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/>
+                <polyline points="14 2 14 8 20 8"/>
+                <line x1="16" y1="13" x2="8" y2="13"/>
+                <line x1="16" y1="17" x2="8" y2="17"/>
+              </svg>
+            )}
           </div>
-        )}
-      </a>
-
-      <!-- Card Body -->
-      <div class="flex flex-1 flex-col justify-between p-4 sm:p-5">
-        <div>
-          <a href={postUrl} class="group/title block">
-            <Heading
-              transition:name={toTransitionName(id)}
-              class="text-base sm:text-lg font-bold text-foreground transition-colors group-hover/title:text-accent line-clamp-2 leading-snug tracking-tight"
-            >
-              {title}
-            </Heading>
-          </a>
-          <p class="mt-2 text-xs sm:text-sm leading-relaxed text-muted-foreground line-clamp-2">
-            {description}
-          </p>
         </div>
+      )}
 
-        <!-- Card Footer -->
-        <div class="mt-4 pt-3 border-t border-border/40 flex items-center justify-between text-xs text-muted-foreground">
-          <Datetime {...props} class="text-xs" />
+      <!-- Overlay Dark Vignette Gradient -->
+      <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/80 to-slate-950/30"></div>
+
+      <!-- Top Row -->
+      <div class="relative z-10 flex items-center justify-between">
+        <span class={`inline-block px-2.5 py-0.5 text-[11px] font-semibold rounded-md border backdrop-blur-md shadow-sm ${categoryTheme.badgeBg}`}>
+          {categoryTheme.name}
+        </span>
+        <span class="text-[10px] font-mono tracking-widest text-white/40 uppercase">
+          TechCapitalLab
+        </span>
+      </div>
+
+      <!-- Bottom Content -->
+      <div class="relative z-10 mt-auto pt-8">
+        <a href={postUrl} class="group/title block">
+          <Heading
+            transition:name={toTransitionName(id)}
+            class="text-base sm:text-lg font-bold text-white transition-colors group-hover/title:text-accent line-clamp-2 leading-snug tracking-tight mb-2 drop-shadow-sm"
+          >
+            {title}
+          </Heading>
+        </a>
+
+        <p class="text-xs sm:text-sm leading-relaxed text-slate-300/90 line-clamp-2 mb-4">
+          {description}
+        </p>
+
+        <div class="pt-2.5 border-t border-white/10 flex items-center justify-between text-xs text-slate-400">
+          <Datetime {...props} class="text-xs text-slate-300" />
           {tags && tags[0] && (
-            <span class="text-[11px] text-muted-foreground/80 font-medium truncate max-w-[120px]">
+            <span class="text-[11px] text-slate-300/80 font-medium truncate max-w-[110px]">
               #{tags[0]}
             </span>
           )}
