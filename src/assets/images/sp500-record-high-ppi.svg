@@ -1,18 +1,18 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" width="1200" height="675">
   <defs>
     <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#0b0f19" />
-      <stop offset="50%" stop-color="#111827" />
-      <stop offset="100%" stop-color="#070a12" />
+      <stop offset="0%" stop-color="#070a13" />
+      <stop offset="50%" stop-color="#0f172a" />
+      <stop offset="100%" stop-color="#070a13" />
     </linearGradient>
 
     <linearGradient id="cardGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#1e293b" stop-opacity="0.95" />
-      <stop offset="100%" stop-color="#0f172a" stop-opacity="0.95" />
+      <stop offset="0%" stop-color="#1e293b" stop-opacity="0.98" />
+      <stop offset="100%" stop-color="#0f172a" stop-opacity="0.98" />
     </linearGradient>
 
-    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
-      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(255, 255, 255, 0.05)" stroke-width="1" />
+    <pattern id="grid" width="50" height="50" patternUnits="userSpaceOnUse">
+      <path d="M 50 0 L 0 0 0 50" fill="none" stroke="rgba(255, 255, 255, 0.06)" stroke-width="1.5" />
     </pattern>
   </defs>
 
@@ -20,66 +20,65 @@
   <rect width="1200" height="675" fill="url(#bgGrad)" />
   <rect width="1200" height="675" fill="url(#grid)" />
 
-  <circle cx="200" cy="150" r="180" fill="#38bdf8" opacity="0.1" filter="blur(60px)" />
-  <circle cx="1000" cy="480" r="220" fill="#38bdf8" opacity="0.08" filter="blur(70px)" />
+  <circle cx="200" cy="150" r="200" fill="#38bdf8" opacity="0.15" filter="blur(70px)" />
+  <circle cx="1000" cy="480" r="240" fill="#38bdf8" opacity="0.12" filter="blur(80px)" />
 
   <!-- Header Section -->
-  <g transform="translate(50, 40)">
-    <rect x="0" y="0" width="220" height="38" rx="8" fill="#38bdf825" stroke="#38bdf8" stroke-width="1.5" />
-    <text x="110" y="25" font-family="'Pretendard', sans-serif" font-size="16" font-weight="800" fill="#38bdf8" text-anchor="middle">GLOBAL MACRO</text>
+  <g transform="translate(40, 35)">
+    <rect x="0" y="0" width="240" height="42" rx="10" fill="#38bdf833" stroke="#38bdf8" stroke-width="2" />
+    <text x="120" y="28" font-family="'Pretendard', sans-serif" font-size="18" font-weight="900" fill="#38bdf8" text-anchor="middle">GLOBAL MACRO</text>
     
-    <text x="0" y="85" font-family="'Pretendard', sans-serif" font-size="34" font-weight="900" fill="#ffffff" letter-spacing="-0.5">S&amp;P 500 역대 최고치 경신: PPI 물가 둔화가 만든 증시 대반전</text>
+    <text x="0" y="90" font-family="'Pretendard', sans-serif" font-size="40" font-weight="900" fill="#ffffff" letter-spacing="-1">S&amp;P 500 역대 최고치 경신: PPI 물가 안정이 만든 대반전</text>
   </g>
 
-  <!-- 3 Main Big Cards Grid -->
-  <g transform="translate(50, 160)">
+  <!-- 3 Big Cards Grid -->
+  <g transform="translate(40, 150)">
     <!-- Box 1 -->
     <g transform="translate(0, 0)">
-      <rect width="346" height="340" rx="20" fill="url(#cardGrad)" stroke="#475569" stroke-width="2" />
-      <rect width="346" height="340" rx="20" fill="none" stroke="#38bdf8" stroke-width="2" opacity="0.5" />
+      <rect width="354" height="345" rx="24" fill="url(#cardGrad)" stroke="#475569" stroke-width="2.5" />
+      <rect width="354" height="345" rx="24" fill="none" stroke="#38bdf8" stroke-width="2.5" opacity="0.7" />
       
-      <text x="25" y="65" font-family="'Pretendard', sans-serif" font-size="36" font-weight="900" fill="#38bdf8">역대 최고치</text>
-      <text x="25" y="115" font-family="'Pretendard', sans-serif" font-size="24" font-weight="800" fill="#ffffff">S&amp;P 500 신기록</text>
-      <line x1="25" y1="140" x2="320" y2="140" stroke="#475569" stroke-width="1.5" />
+      <text x="25" y="70" font-family="'Pretendard', sans-serif" font-size="46" font-weight="900" fill="#38bdf8">사상 최고</text>
+      <text x="25" y="125" font-family="'Pretendard', sans-serif" font-size="28" font-weight="900" fill="#ffffff">S&amp;P 500 신기록</text>
+      <line x1="25" y1="150" x2="330" y2="150" stroke="#475569" stroke-width="2" />
       
-      <!-- Big Subtext -->
-      <text x="25" y="195" font-family="'Pretendard', sans-serif" font-size="20" font-weight="700" fill="#e2e8f0">• 빅테크 및 인프라주 일제히 반등</text>
-      <text x="25" y="240" font-family="'Pretendard', sans-serif" font-size="18" font-weight="600" fill="#94a3b8">• 핵심 지표 정밀 점검</text>
+      <text x="25" y="210" font-family="'Pretendard', sans-serif" font-size="26" font-weight="800" fill="#f1f5f9">• 빅테크·인프라주 반등</text>
+      <text x="25" y="260" font-family="'Pretendard', sans-serif" font-size="22" font-weight="700" fill="#94a3b8">• 핵심 지표 정밀 분석</text>
     </g>
 
     <!-- Box 2 -->
-    <g transform="translate(376, 0)">
-      <rect width="346" height="340" rx="20" fill="url(#cardGrad)" stroke="#475569" stroke-width="2" />
-      <rect width="346" height="340" rx="20" fill="none" stroke="#fbbf24" stroke-width="2" opacity="0.5" />
+    <g transform="translate(384, 0)">
+      <rect width="354" height="345" rx="24" fill="url(#cardGrad)" stroke="#475569" stroke-width="2.5" />
+      <rect width="354" height="345" rx="24" fill="none" stroke="#fbbf24" stroke-width="2.5" opacity="0.7" />
       
-      <text x="25" y="65" font-family="'Pretendard', sans-serif" font-size="36" font-weight="900" fill="#fbbf24">PPI 둔화</text>
-      <text x="25" y="115" font-family="'Pretendard', sans-serif" font-size="24" font-weight="800" fill="#ffffff">생산자물가 안정</text>
-      <line x1="25" y1="140" x2="320" y2="140" stroke="#475569" stroke-width="1.5" />
+      <text x="25" y="70" font-family="'Pretendard', sans-serif" font-size="46" font-weight="900" fill="#fbbf24">PPI 둔화</text>
+      <text x="25" y="125" font-family="'Pretendard', sans-serif" font-size="28" font-weight="900" fill="#ffffff">생산자물가 안정세</text>
+      <line x1="25" y1="150" x2="330" y2="150" stroke="#475569" stroke-width="2" />
       
-      <text x="25" y="195" font-family="'Pretendard', sans-serif" font-size="20" font-weight="700" fill="#e2e8f0">• 인플레이션 압력 완화 확인</text>
-      <text x="25" y="240" font-family="'Pretendard', sans-serif" font-size="18" font-weight="600" fill="#94a3b8">• 산업 생태계 영향 분석</text>
+      <text x="25" y="210" font-family="'Pretendard', sans-serif" font-size="26" font-weight="800" fill="#f1f5f9">• 인플레 공포 완화</text>
+      <text x="25" y="260" font-family="'Pretendard', sans-serif" font-size="22" font-weight="700" fill="#94a3b8">• 산업 생태계 영향 점검</text>
     </g>
 
     <!-- Box 3 -->
-    <g transform="translate(752, 0)">
-      <rect width="346" height="340" rx="20" fill="url(#cardGrad)" stroke="#475569" stroke-width="2" />
-      <rect width="346" height="340" rx="20" fill="none" stroke="#34d399" stroke-width="2" opacity="0.5" />
+    <g transform="translate(768, 0)">
+      <rect width="354" height="345" rx="24" fill="url(#cardGrad)" stroke="#475569" stroke-width="2.5" />
+      <rect width="354" height="345" rx="24" fill="none" stroke="#34d399" stroke-width="2.5" opacity="0.7" />
       
-      <text x="25" y="65" font-family="'Pretendard', sans-serif" font-size="36" font-weight="900" fill="#34d399">금리 인하</text>
-      <text x="25" y="115" font-family="'Pretendard', sans-serif" font-size="24" font-weight="800" fill="#ffffff">연준 통화정책 안도</text>
-      <line x1="25" y1="140" x2="320" y2="140" stroke="#475569" stroke-width="1.5" />
+      <text x="25" y="70" font-family="'Pretendard', sans-serif" font-size="46" font-weight="900" fill="#34d399">금리 인하</text>
+      <text x="25" y="125" font-family="'Pretendard', sans-serif" font-size="28" font-weight="900" fill="#ffffff">연준 피벗 가시화</text>
+      <line x1="25" y1="150" x2="330" y2="150" stroke="#475569" stroke-width="2" />
       
-      <text x="25" y="195" font-family="'Pretendard', sans-serif" font-size="20" font-weight="700" fill="#e2e8f0">• 피벗 기대감 재점화</text>
-      <text x="25" y="240" font-family="'Pretendard', sans-serif" font-size="18" font-weight="600" fill="#94a3b8">• 가치투자 실전 포인트</text>
+      <text x="25" y="210" font-family="'Pretendard', sans-serif" font-size="26" font-weight="800" fill="#f1f5f9">• 유동성 공급 기대감</text>
+      <text x="25" y="260" font-family="'Pretendard', sans-serif" font-size="22" font-weight="700" fill="#94a3b8">• 가치투자 실전 전략</text>
     </g>
   </g>
 
   <!-- Bottom Summary Banner -->
-  <g transform="translate(50, 530)">
-    <rect width="1100" height="95" rx="16" fill="rgba(15, 23, 42, 0.95)" stroke="rgba(255, 255, 255, 0.18)" stroke-width="1.5" />
-    <text x="30" y="55" font-family="'Pretendard', sans-serif" font-size="22" font-weight="800" fill="#38bdf8">💡 핵심 요약:</text>
-    <text x="170" y="55" font-family="'Pretendard', sans-serif" font-size="20" font-weight="600" fill="#f1f5f9">생산자물가 안정은 연준의 통화정책 부담을 덜어주며 뉴욕 증시의 랠리를 견인했습니다.</text>
+  <g transform="translate(40, 520)">
+    <rect width="1120" height="110" rx="20" fill="rgba(15, 23, 42, 0.98)" stroke="rgba(255, 255, 255, 0.25)" stroke-width="2" />
+    <text x="35" y="65" font-family="'Pretendard', sans-serif" font-size="26" font-weight="900" fill="#38bdf8">💡 핵심 요약:</text>
+    <text x="185" y="65" font-family="'Pretendard', sans-serif" font-size="24" font-weight="800" fill="#ffffff">생산자물가 안정은 연준의 금리 부담을 덜어주며 뉴욕 증시의 랠리를 견인했습니다.</text>
   </g>
 
-  <text x="1150" y="655" font-family="'Pretendard', sans-serif" font-size="14" font-weight="700" fill="#64748b" text-anchor="end">TechCapitalLab Financial Research</text>
+  <text x="1160" y="658" font-family="'Pretendard', sans-serif" font-size="14" font-weight="800" fill="#64748b" text-anchor="end">TechCapitalLab Financial Research</text>
 </svg>
