@@ -15,49 +15,113 @@ const { variant: Heading = "h2", isHero = false, id, data, filePath } = Astro.pr
 const { title, description, category, tags, ogImage, ...props } = data;
 
 const postUrl = getPostUrl(id, filePath, Astro.currentLocale);
-const slug = getPostSlug(id, filePath);
 
-let imageUrl = "";
+// Custom image check (if user supplied an explicit custom photo/chart)
+const hasCustomImage = Boolean(ogImage);
+let customImageUrl = "";
 if (ogImage) {
-  imageUrl = typeof ogImage === "string" ? getAssetPath(ogImage) : ogImage.src;
-} else {
-  imageUrl = getAssetPath(`posts${slug}/index.png`);
+  customImageUrl = typeof ogImage === "string" ? getAssetPath(ogImage) : ogImage.src;
 }
 
-const categoryColor = category?.includes("1")
-  ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/30"
-  : category?.includes("2")
-  ? "bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/30"
-  : "bg-purple-500/10 text-purple-600 dark:text-purple-400 border-purple-500/30";
+// Category styling and metadata for sleek card covers
+let categoryTheme = {
+  name: "금융 분석",
+  badgeBg: "bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 border-emerald-500/30",
+  headerGradient: "from-slate-900 via-teal-950 to-emerald-950",
+  svgType: "chart",
+  watermark: "ECONOMY BASICS",
+};
 
-const categoryCleanName = category ? category.replace(/^[0-9]+\.\s*/, "") : "금융 분석";
+if (category?.includes("1")) {
+  categoryTheme = {
+    name: "경제 기초",
+    badgeBg: "bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 border-emerald-500/30",
+    headerGradient: "from-slate-900 via-teal-950 to-emerald-950",
+    svgType: "chart",
+    watermark: "ECONOMY BASICS",
+  };
+} else if (category?.includes("2")) {
+  categoryTheme = {
+    name: "뉴스 속 경제",
+    badgeBg: "bg-blue-500/15 text-blue-700 dark:text-blue-300 border-blue-500/30",
+    headerGradient: "from-slate-900 via-slate-950 to-blue-950",
+    svgType: "globe",
+    watermark: "MARKET & NEWS",
+  };
+} else if (category?.includes("3")) {
+  categoryTheme = {
+    name: "증권사 리포트",
+    badgeBg: "bg-purple-500/15 text-purple-700 dark:text-purple-300 border-purple-500/30",
+    headerGradient: "from-slate-900 via-purple-950 to-indigo-950",
+    svgType: "report",
+    watermark: "EQUITY RESEARCH",
+  };
+}
 ---
 
 {
   isHero ? (
-    <article class="group relative overflow-hidden rounded-2xl border border-border/80 bg-card/60 p-5 sm:p-6 transition-all duration-300 hover:border-accent/60 hover:shadow-xl dark:bg-card/40">
+    <article class="group relative overflow-hidden rounded-2xl border border-border/80 bg-card/60 p-4 sm:p-6 transition-all duration-300 hover:border-accent/60 hover:shadow-xl dark:bg-card/40">
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
-        <!-- Image Area -->
-        <a href={postUrl} class="lg:col-span-7 overflow-hidden rounded-xl border border-border/50 block relative aspect-[16/9] group-hover:shadow-md transition-shadow">
-          <img
-            src={imageUrl}
-            alt={title}
-            loading="eager"
-            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-          />
-          <div class="absolute top-3 left-3">
-            <span class={`inline-block px-3 py-1 text-xs font-semibold rounded-full border backdrop-blur-md bg-background/80 shadow-sm ${categoryColor}`}>
-              {categoryCleanName}
-            </span>
-          </div>
+        <!-- Hero Header Cover -->
+        <a href={postUrl} class="lg:col-span-6 overflow-hidden rounded-xl border border-border/50 block relative aspect-[16/10] group-hover:shadow-md transition-shadow">
+          {hasCustomImage ? (
+            <img
+              src={customImageUrl}
+              alt={title}
+              loading="eager"
+              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+            />
+          ) : (
+            <div class={`w-full h-full bg-gradient-to-br ${categoryTheme.headerGradient} p-6 flex flex-col justify-between relative overflow-hidden select-none`}>
+              <div class="absolute inset-0 opacity-15 pointer-events-none bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:16px_16px]"></div>
+
+              <div class="relative z-10 flex items-center justify-between">
+                <span class={`px-3 py-1 text-xs font-semibold rounded-md border backdrop-blur-md shadow-sm ${categoryTheme.badgeBg}`}>
+                  {categoryTheme.name}
+                </span>
+                <span class="text-xs font-mono tracking-widest text-white/50 uppercase">
+                  FEATURED REPORT
+                </span>
+              </div>
+
+              <div class="relative z-10 my-auto flex items-center justify-center opacity-40 group-hover:opacity-80 group-hover:scale-110 transition-all duration-300">
+                {categoryTheme.svgType === 'chart' && (
+                  <svg class="size-16 text-emerald-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path d="M3 3v18h18" stroke-linecap="round"/>
+                    <path d="m19 9-5 5-4-4-3 3" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                )}
+                {categoryTheme.svgType === 'globe' && (
+                  <svg class="size-16 text-blue-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <circle cx="12" cy="12" r="10"/>
+                    <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20M2 12h20"/>
+                  </svg>
+                )}
+                {categoryTheme.svgType === 'report' && (
+                  <svg class="size-16 text-purple-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/>
+                    <polyline points="14 2 14 8 20 8"/>
+                    <line x1="16" y1="13" x2="8" y2="13"/>
+                    <line x1="16" y1="17" x2="8" y2="17"/>
+                  </svg>
+                )}
+              </div>
+
+              <div class="relative z-10 flex items-center justify-between text-xs font-mono tracking-wider text-white/40">
+                <span>TECHCAPITALLAB</span>
+                <span>{categoryTheme.watermark}</span>
+              </div>
+            </div>
+          )}
         </a>
 
         <!-- Content Area -->
-        <div class="lg:col-span-5 flex flex-col justify-between h-full">
+        <div class="lg:col-span-6 flex flex-col justify-between h-full py-1">
           <div>
             <div class="flex items-center gap-2 mb-3">
               <span class="px-2.5 py-0.5 text-[11px] font-bold uppercase tracking-wider text-accent bg-accent/10 border border-accent/20 rounded-md">
-                Featured Report
+                주요 인사이트
               </span>
               <Datetime {...props} class="text-xs" />
             </div>
@@ -65,13 +129,13 @@ const categoryCleanName = category ? category.replace(/^[0-9]+\.\s*/, "") : "금
             <a href={postUrl} class="group/title block">
               <Heading
                 transition:name={toTransitionName(id)}
-                class="text-2xl sm:text-3xl font-extrabold text-foreground group-hover/title:text-accent transition-colors leading-tight tracking-tight mb-3"
+                class="text-xl sm:text-2xl font-extrabold text-foreground group-hover/title:text-accent transition-colors leading-snug tracking-tight mb-3"
               >
                 {title}
               </Heading>
             </a>
 
-            <p class="text-muted-foreground text-sm leading-relaxed line-clamp-3 sm:line-clamp-4 mb-4">
+            <p class="text-muted-foreground text-sm leading-relaxed line-clamp-3 mb-4">
               {description}
             </p>
           </div>
@@ -104,41 +168,79 @@ const categoryCleanName = category ? category.replace(/^[0-9]+\.\s*/, "") : "금
   ) : (
     <li class="group flex flex-col h-full overflow-hidden rounded-2xl border border-border/70 bg-card/40 transition-all duration-300 hover:border-accent/50 hover:bg-card hover:-translate-y-1 hover:shadow-lg dark:bg-card/20">
       <!-- Thumbnail Header -->
-      <a href={postUrl} class="relative block aspect-[16/9] w-full overflow-hidden border-b border-border/50 bg-muted">
-        <img
-          src={imageUrl}
-          alt={title}
-          loading="lazy"
-          class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-        />
-        <div class="absolute top-3 left-3">
-          <span class={`inline-block px-2.5 py-0.5 text-xs font-semibold rounded-full border backdrop-blur-md bg-background/80 shadow-sm ${categoryColor}`}>
-            {categoryCleanName}
-          </span>
-        </div>
+      <a href={postUrl} class="relative block aspect-[16/9] w-full overflow-hidden border-b border-border/40 bg-muted">
+        {hasCustomImage ? (
+          <img
+            src={customImageUrl}
+            alt={title}
+            loading="lazy"
+            class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+          />
+        ) : (
+          <div class={`w-full h-full bg-gradient-to-br ${categoryTheme.headerGradient} p-4 flex flex-col justify-between relative overflow-hidden select-none`}>
+            <div class="absolute inset-0 opacity-15 pointer-events-none bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:16px_16px]"></div>
+
+            <div class="relative z-10 flex items-center justify-between">
+              <span class={`inline-block px-2.5 py-0.5 text-[11px] font-semibold rounded-md border backdrop-blur-md shadow-sm ${categoryTheme.badgeBg}`}>
+                {categoryTheme.name}
+              </span>
+              <span class="text-[10px] font-mono tracking-widest text-white/40 uppercase">
+                TechCapitalLab
+              </span>
+            </div>
+
+            <div class="relative z-10 my-auto flex items-center justify-center opacity-30 group-hover:opacity-75 group-hover:scale-110 transition-all duration-300">
+              {categoryTheme.svgType === 'chart' && (
+                <svg class="size-12 text-emerald-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <path d="M3 3v18h18" stroke-linecap="round"/>
+                  <path d="m19 9-5 5-4-4-3 3" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              )}
+              {categoryTheme.svgType === 'globe' && (
+                <svg class="size-12 text-blue-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <circle cx="12" cy="12" r="10"/>
+                  <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20M2 12h20"/>
+                </svg>
+              )}
+              {categoryTheme.svgType === 'report' && (
+                <svg class="size-12 text-purple-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/>
+                  <polyline points="14 2 14 8 20 8"/>
+                  <line x1="16" y1="13" x2="8" y2="13"/>
+                  <line x1="16" y1="17" x2="8" y2="17"/>
+                </svg>
+              )}
+            </div>
+
+            <div class="relative z-10 flex items-center justify-between text-[10px] font-mono tracking-wider text-white/30">
+              <span>FINANCIAL INSIGHT</span>
+              <span>{categoryTheme.watermark}</span>
+            </div>
+          </div>
+        )}
       </a>
 
       <!-- Card Body -->
-      <div class="flex flex-1 flex-col justify-between p-5">
+      <div class="flex flex-1 flex-col justify-between p-4 sm:p-5">
         <div>
           <a href={postUrl} class="group/title block">
             <Heading
               transition:name={toTransitionName(id)}
-              class="text-lg font-bold text-foreground transition-colors group-hover/title:text-accent line-clamp-2 leading-snug"
+              class="text-base sm:text-lg font-bold text-foreground transition-colors group-hover/title:text-accent line-clamp-2 leading-snug tracking-tight"
             >
               {title}
             </Heading>
           </a>
-          <p class="mt-2.5 text-sm leading-relaxed text-muted-foreground line-clamp-3">
+          <p class="mt-2 text-xs sm:text-sm leading-relaxed text-muted-foreground line-clamp-2">
             {description}
           </p>
         </div>
 
         <!-- Card Footer -->
-        <div class="mt-5 pt-3 border-t border-border/40 flex items-center justify-between text-xs text-muted-foreground">
+        <div class="mt-4 pt-3 border-t border-border/40 flex items-center justify-between text-xs text-muted-foreground">
           <Datetime {...props} class="text-xs" />
           {tags && tags[0] && (
-            <span class="text-xs text-muted-foreground/80 font-medium truncate max-w-[100px]">
+            <span class="text-[11px] text-muted-foreground/80 font-medium truncate max-w-[120px]">
               #{tags[0]}
             </span>
           )}

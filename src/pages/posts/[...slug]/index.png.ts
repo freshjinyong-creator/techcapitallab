@@ -51,104 +51,117 @@ export const GET: APIRoute = async ({ props, url }) => {
       type: "div",
       props: {
         style: {
-          background: "#fefbfb",
+          background: "#0f172a",
           width: "100%",
           height: "100%",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          fontFamily: '"Google Sans Code", "Noto Sans KR"',
+          fontFamily: '"Noto Sans KR", "Google Sans Code", sans-serif',
         },
         children: [
           {
             type: "div",
             props: {
               style: {
-                position: "absolute",
-                top: "-1px",
-                right: "-1px",
-                border: "4px solid #000",
-                background: "#ecebeb",
-                opacity: "0.9",
-                borderRadius: "4px",
+                border: "2px solid #334155",
+                background: "#1e293b",
+                borderRadius: "16px",
                 display: "flex",
-                justifyContent: "center",
-                margin: "2.5rem",
-                width: "88%",
-                height: "80%",
+                flexDirection: "column",
+                justifyContent: "space-between",
+                padding: "3rem",
+                width: "90%",
+                height: "82%",
+                boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.5)",
               },
-            },
-          },
-          {
-            type: "div",
-            props: {
-              style: {
-                border: "4px solid #000",
-                background: "#fefbfb",
-                borderRadius: "4px",
-                display: "flex",
-                justifyContent: "center",
-                margin: "2rem",
-                width: "88%",
-                height: "80%",
-              },
-              children: {
-                type: "div",
-                props: {
-                  style: {
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "space-between",
-                    margin: "20px",
-                    width: "90%",
-                    height: "90%",
+              children: [
+                {
+                  type: "div",
+                  props: {
+                    style: {
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                      width: "100%",
+                    },
+                    children: [
+                      {
+                        type: "div",
+                        props: {
+                          style: {
+                            background: "rgba(16, 185, 129, 0.15)",
+                            color: "#34d399",
+                            border: "1px solid rgba(16, 185, 129, 0.3)",
+                            borderRadius: "8px",
+                            padding: "6px 16px",
+                            fontSize: 20,
+                            fontWeight: "bold",
+                          },
+                          children: props.data.category || "FINANCIAL RESEARCH",
+                        },
+                      },
+                      {
+                        type: "div",
+                        props: {
+                          style: {
+                            color: "#94a3b8",
+                            fontSize: 22,
+                            fontWeight: "bold",
+                            letterSpacing: "0.05em",
+                          },
+                          children: config.site.title,
+                        },
+                      },
+                    ],
                   },
-                  children: [
-                    {
-                      type: "p",
-                      props: {
-                        style: {
-                          fontSize: 60,
-                          fontWeight: "bold",
-                          maxHeight: "84%",
-                          overflow: "hidden",
-                        },
-                        children: props.data.title,
-                      },
-                    },
-                    {
-                      type: "div",
-                      props: {
-                        style: {
-                          display: "flex",
-                          justifyContent: "space-between",
-                          width: "100%",
-                          marginBottom: "8px",
-                          fontSize: 28,
-                        },
-                        children: [
-                          {
-                            type: "span",
-                            props: {
-                              children: [
-                                "by ",
-                                props.data.author,
-                              ],
-                            },
-                          },
-                          {
-                            type: "span",
-                            props: {
-                              style: { overflow: "hidden", fontWeight: "bold" },
-                              children: config.site.title,
-                            },
-                          },
-                        ],
-                      },
-                    },
-                  ],
                 },
-              },
+                {
+                  type: "p",
+                  props: {
+                    style: {
+                      fontSize: 52,
+                      fontWeight: "bold",
+                      color: "#f8fafc",
+                      lineHeight: "1.3",
+                      maxHeight: "60%",
+                      overflow: "hidden",
+                      margin: "1rem 0",
+                    },
+                    children: props.data.title,
+                  },
+                },
+                {
+                  type: "div",
+                  props: {
+                    style: {
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                      width: "100%",
+                      borderTop: "1px solid #334155",
+                      paddingTop: "1rem",
+                      color: "#94a3b8",
+                      fontSize: 20,
+                    },
+                    children: [
+                      {
+                        type: "span",
+                        props: {
+                          children: "TechCapitalLab Financial Insights",
+                        },
+                      },
+                      {
+                        type: "span",
+                        props: {
+                          style: { color: "#38bdf8", fontWeight: "bold" },
+                          children: "techcapitallab.com",
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
             },
           },
         ],
@@ -187,9 +200,12 @@ export const GET: APIRoute = async ({ props, url }) => {
     }
   );
 
-  const pngBuffer = await sharp(Buffer.from(svg)).png().toBuffer();
+  const png = await sharp(Buffer.from(svg)).png().toBuffer();
 
-  return new Response(new Uint8Array(pngBuffer), {
-    headers: { "Content-Type": "image/png" },
+  return new Response(new Uint8Array(png), {
+    headers: {
+      "Content-Type": "image/png",
+      "Cache-Control": "public, max-age=31536000, immutable",
+    },
   });
 };
