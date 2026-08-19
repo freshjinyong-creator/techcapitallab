@@ -49,7 +49,7 @@ const { page, categoryName, categoryDesc } = Astro.props;
   <Main pageTitle={`카테고리: ${categoryName}`} pageDesc={categoryDesc}>
     {
       page.data.length > 0 ? (
-        <ul>
+        <ul class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 my-6">
           {page.data.map(data => (
             <Card {...data} />
           ))}

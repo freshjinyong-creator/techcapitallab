@@ -1,31 +1,149 @@
 ---
 import type { CollectionEntry } from "astro:content";
-import { getPostUrl } from "@/utils/getPostPaths";
+import { getPostUrl, getPostSlug } from "@/utils/getPostPaths";
 import { toTransitionName } from "@/utils/toTransitionName";
 import Datetime from "./Datetime.astro";
+import { getAssetPath } from "@/utils/withBase";
 
 type Props = {
   variant?: "h2" | "h3";
+  isHero?: boolean;
 } & CollectionEntry<"posts">;
 
-const { variant: Heading = "h2", id, data, filePath } = Astro.props;
+const { variant: Heading = "h2", isHero = false, id, data, filePath } = Astro.props;
 
-const { title, description, ...props } = data;
+const { title, description, category, tags, ogImage, ...props } = data;
+
+const postUrl = getPostUrl(id, filePath, Astro.currentLocale);
+const slug = getPostSlug(id, filePath);
+
+let imageUrl = "";
+if (ogImage) {
+  imageUrl = typeof ogImage === "string" ? getAssetPath(ogImage) : ogImage.src;
+} else {
+  imageUrl = getAssetPath(`posts${slug}/index.png`);
+}
+
+const categoryColor = category?.includes("1")
+  ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/30"
+  : category?.includes("2")
+  ? "bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/30"
+  : "bg-purple-500/10 text-purple-600 dark:text-purple-400 border-purple-500/30";
+
+const categoryCleanName = category ? category.replace(/^[0-9]+\.\s*/, "") : "금융 분석";
 ---
 
-<li class="my-6">
-  <a
-    href={getPostUrl(id, filePath, Astro.currentLocale)}
-    class:list={[
-      "text-accent inline-block text-lg font-medium",
-      "decoration-dashed underline-offset-4 hover:underline",
-      "focus-visible:no-underline focus-visible:underline-offset-0",
-    ]}
-  >
-    <Heading transition:name={toTransitionName(id)}>
-      {title}
-    </Heading>
-  </a>
-  <Datetime {...props} />
-  <p>{description}</p>
-</li>
+{
+  isHero ? (
+    <article class="group relative overflow-hidden rounded-2xl border border-border/80 bg-card/60 p-5 sm:p-6 transition-all duration-300 hover:border-accent/60 hover:shadow-xl dark:bg-card/40">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+        <!-- Image Area -->
+        <a href={postUrl} class="lg:col-span-7 overflow-hidden rounded-xl border border-border/50 block relative aspect-[16/9] group-hover:shadow-md transition-shadow">
+          <img
+            src={imageUrl}
+            alt={title}
+            loading="eager"
+            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+          />
+          <div class="absolute top-3 left-3">
+            <span class={`inline-block px-3 py-1 text-xs font-semibold rounded-full border backdrop-blur-md bg-background/80 shadow-sm ${categoryColor}`}>
+              {categoryCleanName}
+            </span>
+          </div>
+        </a>
+
+        <!-- Content Area -->
+        <div class="lg:col-span-5 flex flex-col justify-between h-full">
+          <div>
+            <div class="flex items-center gap-2 mb-3">
+              <span class="px-2.5 py-0.5 text-[11px] font-bold uppercase tracking-wider text-accent bg-accent/10 border border-accent/20 rounded-md">
+                Featured Report
+              </span>
+              <Datetime {...props} class="text-xs" />
+            </div>
+
+            <a href={postUrl} class="group/title block">
+              <Heading
+                transition:name={toTransitionName(id)}
+                class="text-2xl sm:text-3xl font-extrabold text-foreground group-hover/title:text-accent transition-colors leading-tight tracking-tight mb-3"
+              >
+                {title}
+              </Heading>
+            </a>
+
+            <p class="text-muted-foreground text-sm leading-relaxed line-clamp-3 sm:line-clamp-4 mb-4">
+              {description}
+            </p>
+          </div>
+
+          <div>
+            {tags && tags.length > 0 && (
+              <div class="flex flex-wrap gap-1.5 mb-4">
+                {tags.slice(0, 3).map(tag => (
+                  <span class="text-xs text-muted-foreground bg-muted/60 px-2 py-0.5 rounded border border-border/40">
+                    #{tag}
+                  </span>
+                ))}
+              </div>
+            )}
+
+            <a
+              href={postUrl}
+              class="inline-flex items-center gap-1.5 text-sm font-semibold text-accent hover:gap-2.5 transition-all"
+            >
+              리포트 읽기
+              <svg xmlns="http://www.w3.org/2000/svg" class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M5 12h14"></path>
+                <path d="m12 5 7 7-7 7"></path>
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </article>
+  ) : (
+    <li class="group flex flex-col h-full overflow-hidden rounded-2xl border border-border/70 bg-card/40 transition-all duration-300 hover:border-accent/50 hover:bg-card hover:-translate-y-1 hover:shadow-lg dark:bg-card/20">
+      <!-- Thumbnail Header -->
+      <a href={postUrl} class="relative block aspect-[16/9] w-full overflow-hidden border-b border-border/50 bg-muted">
+        <img
+          src={imageUrl}
+          alt={title}
+          loading="lazy"
+          class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+        />
+        <div class="absolute top-3 left-3">
+          <span class={`inline-block px-2.5 py-0.5 text-xs font-semibold rounded-full border backdrop-blur-md bg-background/80 shadow-sm ${categoryColor}`}>
+            {categoryCleanName}
+          </span>
+        </div>
+      </a>
+
+      <!-- Card Body -->
+      <div class="flex flex-1 flex-col justify-between p-5">
+        <div>
+          <a href={postUrl} class="group/title block">
+            <Heading
+              transition:name={toTransitionName(id)}
+              class="text-lg font-bold text-foreground transition-colors group-hover/title:text-accent line-clamp-2 leading-snug"
+            >
+              {title}
+            </Heading>
+          </a>
+          <p class="mt-2.5 text-sm leading-relaxed text-muted-foreground line-clamp-3">
+            {description}
+          </p>
+        </div>
+
+        <!-- Card Footer -->
+        <div class="mt-5 pt-3 border-t border-border/40 flex items-center justify-between text-xs text-muted-foreground">
+          <Datetime {...props} class="text-xs" />
+          {tags && tags[0] && (
+            <span class="text-xs text-muted-foreground/80 font-medium truncate max-w-[100px]">
+              #{tags[0]}
+            </span>
+          )}
+        </div>
+      </div>
+    </li>
+  )
+}
