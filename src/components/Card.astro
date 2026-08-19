@@ -10,18 +10,32 @@ type Props = {
   isHero?: boolean;
 } & CollectionEntry<"posts">;
 
-const { variant: Heading = "h2", isHero = false, id, data, filePath } = Astro.props;
+const { variant: Heading = "h2", isHero = false, id, body, data, filePath } = Astro.props;
 
 const { title, description, category, tags, ogImage, ...props } = data;
 
 const postUrl = getPostUrl(id, filePath, Astro.currentLocale);
 
-// Custom image check (if user supplied an explicit custom photo/chart in frontmatter `ogImage`)
-const hasCustomImage = Boolean(ogImage);
+// 1. Check frontmatter `ogImage`
 let customImageUrl = "";
 if (ogImage) {
   customImageUrl = typeof ogImage === "string" ? getAssetPath(ogImage) : ogImage.src;
 }
+
+// 2. Fallback: Automatically extract the first image from the markdown body!
+if (!customImageUrl && body) {
+  const imageMatch = body.match(/!\[.*?\]\((.*?)\)|<img[^>]+src=["'](.*?)["']/);
+  if (imageMatch) {
+    const firstImg = imageMatch[1] || imageMatch[2];
+    if (firstImg && !firstImg.startsWith("http")) {
+      customImageUrl = getAssetPath(firstImg);
+    } else if (firstImg) {
+      customImageUrl = firstImg;
+    }
+  }
+}
+
+const hasCustomImage = Boolean(customImageUrl);
 
 // Category styling and metadata for sleek dark cover cards
 let categoryTheme = {
