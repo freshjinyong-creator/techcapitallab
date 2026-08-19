@@ -1,5 +1,7 @@
 ---
 import { type CollectionEntry, getCollection, render } from "astro:content";
+import { Image } from "astro:assets";
+import { getAssetPath } from "@/utils/withBase";
 import PostLayout from "@/layouts/PostLayout.astro";
 import Header from "@/components/Header.astro";
 import Footer from "@/components/Footer.astro";
@@ -133,6 +135,26 @@ const ogImage = ogImageUrl
       </span>
       <EditPost {hideEditPost} {post} class="max-sm:hidden" />
     </div>
+
+    {
+      initOgImage && (
+        <div class="my-6 overflow-hidden rounded-2xl border border-border/60 shadow-md">
+          {typeof initOgImage === "string" ? (
+            <img
+              src={getAssetPath(initOgImage)}
+              alt={title}
+              class="w-full h-auto max-h-[500px] object-contain bg-[#0b0f19]"
+            />
+          ) : (
+            <Image
+              src={initOgImage}
+              alt={title}
+              class="w-full h-auto max-h-[500px] object-contain bg-[#0b0f19]"
+            />
+          )}
+        </div>
+      )
+    }
 
     <article
       id="article"
