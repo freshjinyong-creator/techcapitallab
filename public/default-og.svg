@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#070a13" />
+      <stop offset="50%" stop-color="#0f172a" />
+      <stop offset="100%" stop-color="#070a13" />
+    </linearGradient>
+
+    <linearGradient id="brandGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#38bdf8" />
+      <stop offset="100%" stop-color="#34d399" />
+    </linearGradient>
+
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(255, 255, 255, 0.05)" stroke-width="1.5" />
+    </pattern>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#bgGrad)" />
+  <rect width="1200" height="630" fill="url(#grid)" />
+
+  <!-- Ambient Glow -->
+  <circle cx="250" cy="200" r="220" fill="#38bdf8" opacity="0.15" filter="blur(80px)" />
+  <circle cx="950" cy="450" r="240" fill="#34d399" opacity="0.12" filter="blur(80px)" />
+
+  <!-- Center Card Container -->
+  <g transform="translate(80, 70)">
+    <rect width="1040" height="490" rx="24" fill="#1e293b" fill-opacity="0.8" stroke="#334155" stroke-width="2" />
+
+    <!-- Top Badge -->
+    <g transform="translate(50, 45)">
+      <rect width="260" height="38" rx="8" fill="rgba(56, 189, 248, 0.15)" stroke="rgba(56, 189, 248, 0.4)" stroke-width="1.5" />
+      <text x="130" y="25" font-family="'Pretendard', sans-serif" font-size="15" font-weight="800" fill="#38bdf8" text-anchor="middle">FINANCIAL RESEARCH LAB</text>
+    </g>
+
+    <!-- Main Title -->
+    <text x="50" y="155" font-family="'Pretendard', sans-serif" font-size="64" font-weight="900" fill="url(#brandGrad)" letter-spacing="-1">TechCapitalLab</text>
+
+    <!-- Korean Subtitle -->
+    <text x="50" y="225" font-family="'Pretendard', sans-serif" font-size="30" font-weight="800" fill="#f8fafc">데이터와 리포트로 시장의 본질을 꿰뚫는 금융 투자 매거진</text>
+    
+    <text x="50" y="275" font-family="'Pretendard', sans-serif" font-size="20" font-weight="600" fill="#94a3b8">기초 경제 지식부터 매일의 주요 경제 뉴스, 증권사 산업 리포트 정밀 분석까지</text>
+
+    <!-- 3 Category Badges -->
+    <g transform="translate(50, 335)">
+      <!-- Cat 1 -->
+      <rect x="0" y="0" width="180" height="46" rx="12" fill="rgba(52, 211, 153, 0.15)" stroke="rgba(52, 211, 153, 0.4)" stroke-width="1.5" />
+      <text x="90" y="30" font-family="'Pretendard', sans-serif" font-size="17" font-weight="800" fill="#34d399" text-anchor="middle">📈 경제 기초 지식</text>
+
+      <!-- Cat 2 -->
+      <rect x="205" y="0" width="180" height="46" rx="12" fill="rgba(56, 189, 248, 0.15)" stroke="rgba(56, 189, 248, 0.4)" stroke-width="1.5" />
+      <text x="295" y="30" font-family="'Pretendard', sans-serif" font-size="17" font-weight="800" fill="#38bdf8" text-anchor="middle">🌐 뉴스 속 경제</text>
+
+      <!-- Cat 3 -->
+      <rect x="410" y="0" width="200" height="46" rx="12" fill="rgba(168, 85, 247, 0.15)" stroke="rgba(168, 85, 247, 0.4)" stroke-width="1.5" />
+      <text x="510" y="30" font-family="'Pretendard', sans-serif" font-size="17" font-weight="800" fill="#c084fc" text-anchor="middle">📄 증권사 리포트 읽기</text>
+    </g>
+
+    <!-- Footer Bar -->
+    <g transform="translate(50, 435)">
+      <line x1="0" y1="0" x2="940" y2="0" stroke="#334155" stroke-width="1.5" />
+      <text x="0" y="32" font-family="'Pretendard', sans-serif" font-size="18" font-weight="700" fill="#94a3b8">TechCapitalLab Financial Insights</text>
+      <text x="940" y="32" font-family="'Pretendard', sans-serif" font-size="18" font-weight="800" fill="#38bdf8" text-anchor="end">techcapitallab.com</text>
+    </g>
+  </g>
+</svg>
