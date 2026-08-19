@@ -11,7 +11,7 @@ tags:
   - YMTC
   - 삼성전자
   - SK하이닉스
-category: "1. 경제 기초 지식"
+category: "2. 뉴스 속 경제"
 ogImage: "../../assets/images/china-semiconductor.svg"
 description: CXMT·YMTC가 키옥시아를 제치고 삼성전자·SK하이닉스 턱밑까지 추격했다. 중국 메모리 점유율 확대가 한국 반도체에 미치는 장기 위협과 투자 시사점을 분석한다.
 ---

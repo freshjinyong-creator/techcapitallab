@@ -5,7 +5,7 @@ modDatetime: 2026-08-18T00:00:00Z
 featured: false
 draft: false
 tags: [증권사리포트, MLCC, 우주항공, 인텔리안테크, 상아프론테크, 비에이치아이, 삼양식품]
-category: "1. 경제 기초 지식"
+category: "3. 증권사 리포트 읽기"
 ogImage: "../../assets/images/broker-report-0818.svg"
 description: "2026년 8월 18일 증권사 핵심 리포트를 종합 분석하여 MLCC 품귀 현상, 저궤도 위성 통신, K-Food 및 에너지 인프라 유망 섹터와 주요 6개 종목 목표주가를 정리합니다."
 ---

@@ -11,7 +11,7 @@ tags:
   - DB손해보험
   - 롯데관광개발
   - NAVER
-category: "1. 경제 기초 지식"
+category: "3. 증권사 리포트 읽기"
 ogImage: "../../assets/images/broker-report-0814.svg"
 description: 코스피 7,000선 회복 속 증권사 리포트로 본 테스·삼성화재·DB손보·롯데관광개발·네이버 등 8종목 투자의견과 목표주가, 유망 섹터를 분석한다.
 ---

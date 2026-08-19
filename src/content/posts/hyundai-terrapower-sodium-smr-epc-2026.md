@@ -11,7 +11,7 @@ tags:
   - SMR
   - 나트륨원전
   - 빌게이츠
-category: "1. 경제 기초 지식"
+category: "2. 뉴스 속 경제"
 ogImage: "../../assets/images/hyundai-terrapower-smr.svg"
 description: 빌 게이츠의 테라파워가 추진하는 4세대 나트륨 SMR 최대 8기의 EPC를 현대건설이 총괄한다. HD현대·테라파워·현대건설 3각 동맹이 미국 SMR 시장을 공략하는 구도와 의미를 분석한다.
 ---
