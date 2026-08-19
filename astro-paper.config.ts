@@ -7,7 +7,7 @@ export default defineAstroPaperConfig({
     description: "데이터와 리포트를 바탕으로 금융 및 투자 가치를 재해석하는 전문 블로그입니다.\n기초 경제 지식부터 매일의 주요 경제 뉴스, 증권사 산업 리포트 분석까지—단기적인 소음에 흔들리지 않는 깊이 있는 투자 인사이트를 제공합니다.",
     author: "FreshJinyong",
     profile: "https://techcapitallab.com/",
-    ogImage: "default-og.jpg",
+    ogImage: "default-og.png",
     lang: "ko",
     timezone: "Asia/Seoul",
     dir: "ltr",
