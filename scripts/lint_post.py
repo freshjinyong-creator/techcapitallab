@@ -37,6 +37,13 @@ def lint_and_fix(file_path):
         content = bold_paren_pattern.sub(r"**\1**(\2)\3", content)
         fixed = True
 
+    # 1-3. Check & Auto-fix: **[text]**조사 -> **text**조사 (Bold bracket particle conflict)
+    bold_bracket_particle_pattern = re.compile(r"\*\*\[([^\]\n\r]{5,})\]\*\*([가-힣])")
+    if bold_bracket_particle_pattern.search(content):
+        print("  [FIX] Found bold-bracket particle conflict pattern (**[long text]**Particle). Auto-fixing to **text**Particle...")
+        content = bold_bracket_particle_pattern.sub(r"**\1**\2", content)
+        fixed = True
+
     # 2. Check for banned internal terms
     for term in INTERNAL_BANNED_WORDS:
         if term in content:
