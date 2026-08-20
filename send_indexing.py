@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
 import os
+import sys
 import glob
 import json
 import time
+import argparse
 import urllib.request
 import urllib.error
 from google.oauth2 import service_account
@@ -12,20 +14,51 @@ KEY_PATH = "/home/freshjinyong/techcapitallab/google_indexing_key.json"
 POSTS_DIR = "/home/freshjinyong/techcapitallab/src/content/posts"
 BASE_URL = "https://techcapitallab.com"
 
-def get_urls():
+def get_latest_post_url():
+    files = glob.glob(os.path.join(POSTS_DIR, "*.md"))
+    if not files:
+        return [f"{BASE_URL}/"]
+    # Sort files by modification time (most recent first)
+    files.sort(key=os.path.getmtime, reverse=True)
+    latest_file = files[0]
+    slug = os.path.basename(latest_file).replace(".md", "")
+    return [f"{BASE_URL}/", f"{BASE_URL}/posts/{slug}/"]
+
+def get_all_urls():
     urls = [f"{BASE_URL}/"]
     for f in sorted(glob.glob(os.path.join(POSTS_DIR, "*.md"))):
         slug = os.path.basename(f).replace(".md", "")
         urls.append(f"{BASE_URL}/posts/{slug}/")
     return urls
 
+def parse_target_urls(args):
+    if args.all:
+        return get_all_urls()
+    elif args.targets:
+        urls = [f"{BASE_URL}/"]
+        for target in args.targets:
+            if target.startswith("http://") or target.startswith("https://"):
+                urls.append(target)
+            else:
+                slug = target.replace(".md", "").strip("/")
+                urls.append(f"{BASE_URL}/posts/{slug}/")
+        return list(dict.fromkeys(urls))  # deduplicate preserving order
+    else:
+        # Default: latest published post + homepage
+        return get_latest_post_url()
+
 def main():
+    parser = argparse.ArgumentParser(description="Google Indexing API Sender for TechCapitalLab")
+    parser.add_argument("targets", nargs="*", help="Specific slugs or URLs to index")
+    parser.add_argument("--all", action="store_true", help="Send indexing request for all posts")
+    args = parser.parse_args()
+
     scopes = ["https://www.googleapis.com/auth/indexing"]
     credentials = service_account.Credentials.from_service_account_file(KEY_PATH, scopes=scopes)
     credentials.refresh(Request())
     
-    urls = get_urls()
-    print(f"[*] 총 {len(urls)}개 URL 전송 시작...")
+    urls = parse_target_urls(args)
+    print(f"[*] 총 {len(urls)}개 타겟 URL 전송 시작...")
     
     endpoint = "https://indexing.googleapis.com/v3/urlNotifications:publish"
     
