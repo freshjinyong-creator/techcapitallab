@@ -1,61 +1,70 @@
 ---
+type Props = {
+  id?: string;
+  title?: string;
+  url?: string;
+  appId?: string;
+};
+
+const {
+  id = Astro.url.pathname,
+  title = "",
+  url = Astro.url.href,
+  appId = "2577ac5a-b1c4-4a51-9060-ecba6e3327a8",
+} = Astro.props;
 ---
 
 <section class="mt-8 w-full border-t border-dashed border-border pt-8">
   <h3 class="text-lg font-bold text-foreground mb-4 flex items-center gap-2">
-    💬 댓글 및 이모지 반응
+    💬 댓글 이야기
   </h3>
-  <div class="giscus"></div>
+  <div
+    id="cusdis_thread"
+    data-host="https://cusdis.com"
+    data-app-id={appId}
+    data-page-id={id}
+    data-page-url={url}
+    data-page-title={title}
+    data-lang="ko"
+    class="w-full min-h-[220px]"
+  ></div>
 </section>
 
 <script is:inline data-astro-rerun>
-  function loadGiscus() {
-    const container = document.querySelector(".giscus");
-    if (!container) return;
+  function loadCusdis() {
+    const thread = document.getElementById("cusdis_thread");
+    if (!thread) return;
 
-    const theme =
-      document.documentElement.getAttribute("data-theme") === "dark"
-        ? "dark"
-        : "light";
+    const oldScript = document.getElementById("cusdis-script");
+    if (oldScript) oldScript.remove();
 
-    container.innerHTML = "";
+    const isDark =
+      document.documentElement.getAttribute("data-theme") === "dark";
+    thread.setAttribute("data-theme", isDark ? "dark" : "light");
 
     const script = document.createElement("script");
-    script.src = "https://giscus.app/client.js";
-    script.setAttribute("data-repo", "freshjinyong-creator/techcapitallab");
-    script.setAttribute("data-repo-id", "R_kgDOT2TJeg");
-    script.setAttribute("data-category", "General");
-    script.setAttribute("data-category-id", "DIC_kwDOT2TJes4DDxbT");
-    script.setAttribute("data-mapping", "pathname");
-    script.setAttribute("data-strict", "0");
-    script.setAttribute("data-reactions-enabled", "1");
-    script.setAttribute("data-emit-metadata", "0");
-    script.setAttribute("data-input-position", "bottom");
-    script.setAttribute("data-theme", theme);
-    script.setAttribute("data-lang", "ko");
-    script.setAttribute("crossorigin", "anonymous");
+    script.id = "cusdis-script";
+    script.src = "https://cusdis.com/js/cusdis.es.js";
     script.async = true;
+    script.defer = true;
 
-    container.appendChild(script);
+    document.body.appendChild(script);
   }
 
-  loadGiscus();
+  loadCusdis();
 
-  if (!window.__giscusThemeObserver) {
-    window.__giscusThemeObserver = new MutationObserver(() => {
-      const isDark =
-        document.documentElement.getAttribute("data-theme") === "dark";
-      const giscusTheme = isDark ? "dark" : "light";
-      const iframe = document.querySelector("iframe.giscus-frame");
-      if (iframe && iframe.contentWindow) {
-        iframe.contentWindow.postMessage(
-          { giscus: { setConfig: { theme: giscusTheme } } },
-          "https://giscus.app"
-        );
+  if (!window.__cusdisThemeObserver) {
+    window.__cusdisThemeObserver = new MutationObserver(() => {
+      const thread = document.getElementById("cusdis_thread");
+      if (thread) {
+        const isDark =
+          document.documentElement.getAttribute("data-theme") === "dark";
+        thread.setAttribute("data-theme", isDark ? "dark" : "light");
+        loadCusdis();
       }
     });
 
-    window.__giscusThemeObserver.observe(document.documentElement, {
+    window.__cusdisThemeObserver.observe(document.documentElement, {
       attributes: true,
       attributeFilter: ["data-theme"],
     });
