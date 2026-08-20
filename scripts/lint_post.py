@@ -23,11 +23,15 @@ def lint_and_fix(file_path):
     fixed = False
     errors = []
 
-    # 1. Check & Auto-fix: **'text'** or **"text"** markdown bold parsing bug
-    bold_quote_pattern = re.compile(r"\*\*([\'\"])(.*?)\1\*\*")
+    # 1. Check & Auto-fix: **'text'** or quotes inside bold markdown
+    def fix_bold_quotes(match):
+        inner = match.group(1).replace("'", "").replace('"', "")
+        return f"**{inner}**"
+
+    bold_quote_pattern = re.compile(r"\*\*([^\*\n\r]*?[\'\"][^\*\n\r]*?)\*\*")
     if bold_quote_pattern.search(content):
-        print("  [FIX] Found bold-quote conflict pattern (**'text'**). Auto-fixing to **text**...")
-        content = bold_quote_pattern.sub(r"**\2**", content)
+        print("  [FIX] Found quotes inside bold markdown. Auto-fixing...")
+        content = bold_quote_pattern.sub(fix_bold_quotes, content)
         fixed = True
 
     # 1-2. Check & Auto-fix: **Korean(English)**조사 -> **Korean**(English)조사
