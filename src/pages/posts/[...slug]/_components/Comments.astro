@@ -1,0 +1,61 @@
+---
+---
+
+<section class="mt-8 w-full">
+  <div class="giscus"></div>
+</section>
+
+<script is:inline data-astro-rerun>
+  function loadGiscus() {
+    const container = document.querySelector(".giscus");
+    if (!container) return;
+
+    // Check current theme from html[data-theme]
+    const theme =
+      document.documentElement.getAttribute("data-theme") === "dark"
+        ? "dark"
+        : "light";
+
+    container.innerHTML = "";
+
+    const script = document.createElement("script");
+    script.src = "https://giscus.app/client.js";
+    script.setAttribute("data-repo", "freshjinyong-creator/techcapitallab");
+    script.setAttribute("data-repo-id", "R_kgDOT2TJeg");
+    script.setAttribute("data-category", "Announcements");
+    script.setAttribute("data-category-id", "DIC_kwDOT2TJes4DDxbS");
+    script.setAttribute("data-mapping", "pathname");
+    script.setAttribute("data-strict", "0");
+    script.setAttribute("data-reactions-enabled", "1");
+    script.setAttribute("data-emit-metadata", "0");
+    script.setAttribute("data-input-position", "bottom");
+    script.setAttribute("data-theme", theme);
+    script.setAttribute("data-lang", "ko");
+    script.setAttribute("crossorigin", "anonymous");
+    script.async = true;
+
+    container.appendChild(script);
+  }
+
+  loadGiscus();
+
+  if (!window.__giscusThemeObserver) {
+    window.__giscusThemeObserver = new MutationObserver(() => {
+      const isDark =
+        document.documentElement.getAttribute("data-theme") === "dark";
+      const giscusTheme = isDark ? "dark" : "light";
+      const iframe = document.querySelector("iframe.giscus-frame");
+      if (iframe && iframe.contentWindow) {
+        iframe.contentWindow.postMessage(
+          { giscus: { setConfig: { theme: giscusTheme } } },
+          "https://giscus.app"
+        );
+      }
+    });
+
+    window.__giscusThemeObserver.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["data-theme"],
+    });
+  }
+</script>
