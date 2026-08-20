@@ -16,7 +16,7 @@ const {
 
 <section class="mt-8 w-full border-t border-dashed border-border pt-8">
   <h3 class="text-lg font-bold text-foreground mb-4 flex items-center gap-2">
-    💬 댓글 이야기
+    💬 댓글 작성
   </h3>
   <div
     id="cusdis_thread"
@@ -26,9 +26,17 @@ const {
     data-page-url={url}
     data-page-title={title}
     data-lang="ko"
-    class="w-full min-h-[220px]"
+    class="w-full min-h-[380px]"
   ></div>
 </section>
+
+<style is:global>
+  #cusdis_thread iframe {
+    width: 100% !important;
+    min-height: 380px !important;
+    border: none !important;
+  }
+</style>
 
 <script is:inline data-astro-rerun>
   function loadCusdis() {
@@ -52,6 +60,23 @@ const {
   }
 
   loadCusdis();
+
+  if (!window.__cusdisResizeListener) {
+    window.__cusdisResizeListener = true;
+    window.addEventListener("message", function (e) {
+      if (e.origin === "https://cusdis.com") {
+        try {
+          const data = typeof e.data === "string" ? JSON.parse(e.data) : e.data;
+          if (data && (data.event === "resize" || data.type === "resize") && data.data) {
+            const iframe = document.querySelector("#cusdis_thread iframe");
+            if (iframe) {
+              iframe.style.height = Math.max(Number(data.data) + 40, 380) + "px";
+            }
+          }
+        } catch (err) {}
+      }
+    });
+  }
 
   if (!window.__cusdisThemeObserver) {
     window.__cusdisThemeObserver = new MutationObserver(() => {
