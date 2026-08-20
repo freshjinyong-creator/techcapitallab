@@ -3,14 +3,12 @@ type Props = {
   id?: string;
   title?: string;
   url?: string;
-  appId?: string;
 };
 
 const {
   id = Astro.url.pathname,
   title = "",
   url = Astro.url.href,
-  appId = "2577ac5a-b1c4-4a51-9060-ecba6e3327a8",
 } = Astro.props;
 ---
 
@@ -18,80 +16,28 @@ const {
   <h3 class="text-lg font-bold text-foreground mb-4 flex items-center gap-2">
     💬 댓글 작성
   </h3>
-  <div
-    id="cusdis_thread"
-    data-host="https://cusdis.com"
-    data-app-id={appId}
-    data-page-id={id}
-    data-page-url={url}
-    data-page-title={title}
-    data-lang="ko"
-    class="w-full min-h-[380px]"
-  ></div>
+  <div id="disqus_thread" class="w-full min-h-[250px]"></div>
 </section>
 
-<style is:global>
-  #cusdis_thread iframe {
-    width: 100% !important;
-    min-height: 380px !important;
-    border: none !important;
-  }
-</style>
-
 <script is:inline data-astro-rerun>
-  function loadCusdis() {
-    const thread = document.getElementById("cusdis_thread");
+  function loadDisqus() {
+    const thread = document.getElementById("disqus_thread");
     if (!thread) return;
 
-    const oldScript = document.getElementById("cusdis-script");
+    window.disqus_config = function () {
+      this.page.url = window.location.href;
+      this.page.identifier = window.location.pathname;
+    };
+
+    const oldScript = document.getElementById("disqus-script");
     if (oldScript) oldScript.remove();
 
-    const isDark =
-      document.documentElement.getAttribute("data-theme") === "dark";
-    thread.setAttribute("data-theme", isDark ? "dark" : "light");
-
-    const script = document.createElement("script");
-    script.id = "cusdis-script";
-    script.src = "https://cusdis.com/js/cusdis.es.js";
-    script.async = true;
-    script.defer = true;
-
-    document.body.appendChild(script);
+    const d = document, s = d.createElement("script");
+    s.id = "disqus-script";
+    s.src = "https://techcapitallab.disqus.com/embed.js";
+    s.setAttribute("data-timestamp", +new Date());
+    (d.head || d.body).appendChild(s);
   }
 
-  loadCusdis();
-
-  if (!window.__cusdisResizeListener) {
-    window.__cusdisResizeListener = true;
-    window.addEventListener("message", function (e) {
-      if (e.origin === "https://cusdis.com") {
-        try {
-          const data = typeof e.data === "string" ? JSON.parse(e.data) : e.data;
-          if (data && (data.event === "resize" || data.type === "resize") && data.data) {
-            const iframe = document.querySelector("#cusdis_thread iframe");
-            if (iframe) {
-              iframe.style.height = Math.max(Number(data.data) + 40, 380) + "px";
-            }
-          }
-        } catch (err) {}
-      }
-    });
-  }
-
-  if (!window.__cusdisThemeObserver) {
-    window.__cusdisThemeObserver = new MutationObserver(() => {
-      const thread = document.getElementById("cusdis_thread");
-      if (thread) {
-        const isDark =
-          document.documentElement.getAttribute("data-theme") === "dark";
-        thread.setAttribute("data-theme", isDark ? "dark" : "light");
-        loadCusdis();
-      }
-    });
-
-    window.__cusdisThemeObserver.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ["data-theme"],
-    });
-  }
+  loadDisqus();
 </script>
