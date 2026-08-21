@@ -1,7 +1,7 @@
 ---
 title: "AI 데이터센터 때문에 전력 부족할까? 2040 전력수요 대폭 상향과 전력망 수혜주 분석"
-pubDatetime: 2026-08-21T09:30:00Z
-modDatetime: 2026-08-21T09:30:00Z
+pubDatetime: 2026-08-21T00:30:00Z
+modDatetime: 2026-08-21T00:30:00Z
 featured: false
 draft: false
 tags: [전력망, AI데이터센터, 전력수요, 증권사리포트, ESS배터리, 전기요금]
