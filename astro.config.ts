@@ -24,8 +24,13 @@ export default defineConfig({
   integrations: [
     mdx(),
     sitemap({
-      filter: page =>
-        config.features?.showArchives !== false || !page.endsWith("/archives/"),
+      filter: page => {
+        // Search and tag pages are excluded to prevent thin content & conserve crawl budget
+        if (page.includes("/tags/") || page.endsWith("/tags") || page.endsWith("/tags/")) return false;
+        if (page.includes("/search/") || page.endsWith("/search") || page.endsWith("/search/")) return false;
+        if (config.features?.showArchives === false && page.endsWith("/archives/")) return false;
+        return true;
+      },
     }),
   ],
   i18n: {
