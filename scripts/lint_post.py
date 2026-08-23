@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 TechCapitalLab Blog Post Linter & Auto-Fixer
-Prevents markdown parsing bugs (e.g. **'keyword'**), leaks of internal terms, and verifies formatting.
+Prevents markdown parsing bugs (e.g. **'keyword'**, ~ strikethrough), leaks of internal terms, and verifies formatting.
 """
 
 import sys
@@ -19,7 +19,6 @@ def lint_and_fix(file_path):
     with open(file_path, "r", encoding="utf-8") as f:
         content = f.read()
 
-    original_content = content
     fixed = False
     errors = []
 
@@ -46,6 +45,36 @@ def lint_and_fix(file_path):
     if bold_bracket_particle_pattern.search(content):
         print("  [FIX] Found bold-bracket particle conflict pattern (**[long text]**Particle). Auto-fixing to **text**Particle...")
         content = bold_bracket_particle_pattern.sub(r"**\1**\2", content)
+        fixed = True
+
+    # 1-4. Check & Auto-fix: Tilde range causing markdown strikethrough (e.g. 15~20% -> 15%에서 20% 수준)
+    tilde_range_pattern = re.compile(r"(\d+)~(\d+)(%|자|개|원|달러|배)?")
+    if tilde_range_pattern.search(content):
+        print("  [FIX] Found tilde (~) range that triggers markdown strikethrough (<del>). Auto-fixing...")
+        def fix_tilde(m):
+            unit = m.group(3) if m.group(3) else ""
+            if unit:
+                return f"{m.group(1)}{unit}에서 {m.group(2)}{unit}"
+            return f"{m.group(1)}에서 {m.group(2)}"
+        content = tilde_range_pattern.sub(fix_tilde, content)
+        fixed = True
+
+    # 1-5. Check & Auto-fix: Misplaced '작성 기준일' in middle of body (must only be at bottom)
+    lines = content.splitlines()
+    cleaned_lines = []
+    found_mid_date = False
+    in_bottom_section = False
+    for i, line in enumerate(lines):
+        if line.strip().startswith("**작성 기준일:") or line.strip().startswith("*작성 기준일:"):
+            # Check if this is before the last 15 lines of the document
+            if i < len(lines) - 15:
+                print("  [FIX] Removed misplaced '작성 기준일' from middle of body.")
+                found_mid_date = True
+                continue
+        cleaned_lines.append(line)
+
+    if found_mid_date:
+        content = "\n".join(cleaned_lines)
         fixed = True
 
     # 2. Check for banned internal terms
