@@ -12,7 +12,7 @@ tags:
   - 패닉셀
   - 가치투자
   - 수급붕괴
-ogImage: "../../assets/images/bubble-history-dotcom-japan-financial-crisis.jpg"
+ogImage: "../../assets/images/stock-market-crash-mechanism-margin-call-panic-sell.png"
 draft: false
 ---
 
