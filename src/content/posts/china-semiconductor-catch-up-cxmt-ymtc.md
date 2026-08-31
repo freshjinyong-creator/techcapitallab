@@ -129,3 +129,10 @@ description: CXMT·YMTC가 키옥시아를 제치고 삼성전자·SK하이닉�
 *본 포스팅은 뉴스·언론 보도 종합 분석 자료이며, 최종 투자 결정과 책임은 투자자 본인에게 있습니다.*
 
 > 본 콘텐츠는 교육·정보 제공 목적이며 특정 종목의 매수·매도 추천이 아닙니다. 투자 판단의 책임은 투자자 본인에게 있습니다.
+
+
+---
+
+### 💡 함께 읽으면 좋은 연관 칼럼
+* [엔비디아 호실적인데 삼성전자·SK하이닉스는 왜 하락? 반도체주 디커플링 원인 3가지](/posts/semiconductor-decoupling-nvidia-samsung-sk-hynix/)
+* [미국 반도체 리쇼어링 관세 압박과 한국은행 연속 금리 인상, 거시경제 이중 장벽 앞에 선 한국 반도체](/posts/us-semiconductor-reshoring-tariff-and-bok-rate-hike/)

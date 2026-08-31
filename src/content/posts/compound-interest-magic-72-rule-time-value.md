@@ -131,3 +131,10 @@ description: 복리와 단리의 기하학적 차이, 72의 법칙 암산법, �
 ---
 
 *본 콘텐츠는 가치투자 교육 목적의 자료이며, 특정 종목의 매수·매도 추천이 아닙니다. 최종 투자 결정과 책임은 투자자 본인에게 있습니다.*
+
+
+---
+
+### 💡 함께 읽으면 좋은 연관 칼럼
+* [미국 금리가 오르면 한국 주식은 왜 떨어질까? 환율, 엔캐리, 중국 공급망이 코스피를 흔드는 원리](/posts/us-interest-rate-yen-carry-china-supply-chain-kospi/)
+* [2-3강. 주식 버블은 왜 반복될까? 닷컴 버블·일본 버블·2008 금융위기 3대 거품 역사와 4대 진단법](/posts/bubble-history-dotcom-japan-financial-crisis-analysis/)

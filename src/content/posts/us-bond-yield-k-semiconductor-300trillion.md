@@ -107,3 +107,8 @@ A3. 주주환원 기대감에 따른 신용 거래(빚투) 증가는 증시 조�
 ### 관련 글 함께 읽기
 * [/posts/us-interest-rate-yen-carry-china-supply-chain-kospi](https://techcapitallab.com/posts/us-interest-rate-yen-carry-china-supply-chain-kospi/) — 미 금리와 엔캐리 트레이드, KOSPI 영향 종합 분석
 * [/posts/samsung-skhynix-semiconductor-concentration-2026](https://techcapitallab.com/posts/samsung-skhynix-semiconductor-concentration-2026/) — 삼성전자·SK하이닉스 반도체 쏠림 현상과 코스피의 구조적 한계
+
+---
+
+### 💡 함께 읽으면 좋은 연관 칼럼
+* [엔비디아 호실적인데 삼성전자·SK하이닉스는 왜 하락? 반도체주 디커플링 원인 3가지](/posts/semiconductor-decoupling-nvidia-samsung-sk-hynix/)

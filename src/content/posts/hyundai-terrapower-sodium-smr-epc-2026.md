@@ -99,10 +99,18 @@ description: 빌 게이츠의 테라파워가 추진하는 4세대 나트륨 SMR
 
 빌 게이츠의 나트륨 SMR을 현대건설이 짓고, HD현대가 원자로 용기를 만들고, SK이노베이션이 자본을 대는 구도가 완성됐습니다. 기술과 자본, 시공과 제조가 한 팀으로 묶인 것은 한국 원전 생태계가 차세대 원전 시장에서 단순 하청이 아닌 **핵심 동맹**으로 자리 잡았다는 뜻입니다. 다만 원전 사업의 성패는 결국 규제 인허가와 기술 실증이라는 시간 싸움이므로, 이 동맹이 실제 전력 생산으로 이어지는 과정을 차분히 지켜볼 필요가 있습니다.
 
-- **연관 읽을거리:** [차세대 SMR 시장 여는 SK이노베이션, 테라파워와 나트륨 원전 동맹](https://techcapitallab.com/posts/sk-inn...ship/) — 이번 3각 동맹의 출발점이 된 합의 분석
+- **연관 읽을거리:** [차세대 SMR 시장 여는 SK이노베이션, 테라파워와 나트륨 원전 동맹](https://techcapitallab.com/posts/sk-innovation-terrapower-smr-partnership/) — 이번 3각 동맹의 출발점이 된 합의 분석
 
 ---
 
 *본 포스팅은 글로벌 에너지 및 산업 뉴스 분석 자료이며, 최종 투자 결정과 책임은 투자자 본인에게 있습니다.*
 
 > 본 콘텐츠는 교육·정보 제공 목적이며 특정 종목의 매수·매도 추천이 아닙니다. 투자 판단의 책임은 투자자 본인에게 있습니다.
+
+
+---
+
+### 💡 함께 읽으면 좋은 연관 칼럼
+* [차세대 SMR 시장 여는 SK이노베이션, 테라파워와 나트륨 원전 동맹](/posts/sk-innovation-terrapower-smr-partnership/)
+* [AI 거품론 끝났을까? 앤트로픽 92조 매출과 엔비디아·LG 피지컬 AI 동맹의 의미](/posts/ai-monetization-anthropic-92t-lg-nvidia-physical-ai/)
+* [잭슨홀 미팅 끝났는데 내 주식은 왜 안 오를까? 9월 FOMC 금리 경로와 빅테크 AI CAPEX 2,500억 달러의 운명](/posts/jackson-hole-2026-fomc-bigtech-ai-capex/)

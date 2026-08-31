@@ -111,3 +111,9 @@ A. 신용을 쓰지 않았다면 강제 청산 위험은 없으므로 계좌 파
 
 - **연관 읽을거리:** [주식 버블의 역사와 진단법 분석](/posts/bubble-history-dotcom-japan-financial-crisis-analysis/)
 - **연관 읽을거리:** [투자란 무엇인가? 내재가치와 시장가격의 간극](/posts/stock-essence-intrinsic-value-market-price/)
+
+
+---
+
+### 💡 함께 읽으면 좋은 연관 칼럼
+* [3강. 복리의 마법과 시간의 가치: 눈덩이가 굴러갈수록 거대해지는 수학적 원리](/posts/compound-interest-magic-72-rule-time-value/)

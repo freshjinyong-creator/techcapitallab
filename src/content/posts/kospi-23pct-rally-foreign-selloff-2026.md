@@ -109,3 +109,11 @@ description: 외국인이 185조 원어치를 팔았는데 코스피는 열흘 �
 *본 포스팅은 투자 판단의 참고 자료이며, 최종 투자 결정과 책임은 투자자 본인에게 있습니다.*
 
 > 본 콘텐츠는 교육·정보 제공 목적이며 특정 종목의 매수·매도 추천이 아닙니다. 투자 판단의 책임은 투자자 본인에게 있습니다.
+
+
+---
+
+### 💡 함께 읽으면 좋은 연관 칼럼
+* [엔비디아 호실적인데 삼성전자·SK하이닉스는 왜 하락? 반도체주 디커플링 원인 3가지](/posts/semiconductor-decoupling-nvidia-samsung-sk-hynix/)
+* [중국 반도체, 키옥시아 제치고 삼전닉스 턱밑 추격 — 메모리 패권 위협 분석](/posts/china-semiconductor-catch-up-cxmt-ymtc/)
+* [삼성전자 SK하이닉스 역대급 내년 실적 전망과 반도체 쏠림 현상의 명과 암](/posts/samsung-skhynix-semiconductor-concentration-2026/)

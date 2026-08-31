@@ -100,5 +100,14 @@ ogImage: "../../assets/images/jackson-hole-2026-fomc-bigtech-ai-capex.png"
 
 ---
 
+
+
+---
+
+### 💡 함께 읽으면 좋은 연관 칼럼
+* [AI 거품론 끝났을까? 앤트로픽 92조 매출과 엔비디아·LG 피지컬 AI 동맹의 의미](/posts/ai-monetization-anthropic-92t-lg-nvidia-physical-ai/)
+* [엔비디아 AI 서버 15% 전격 인상과 실적 발표, 반도체 공급망의 향방은? 메모리 품귀의 역습과 차세대 루빈 아키텍처 관전 포인트](/posts/nvidia-ai-server-15pct-price-hike-earnings-preview/)
+* [2026년 7월 미국 CPI 3.4% 발표, 연준 금리 인하 신호 해석](/posts/us-cpi-july-2026-34-fed-rate-cut/)
+
 **면책 조항 (Disclaimer)**  
 본 포스팅은 공개된 경제 지표 및 기업 데이터를 기반으로 작성된 분석 자료이며, 특정 주식이나 금융 상품에 대한 매수 또는 매도 추천이 아닙니다. 모든 투자 판단과 그에 따른 책임은 투자자 본인에게 있습니다.

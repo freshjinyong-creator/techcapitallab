@@ -174,3 +174,10 @@ description: 주식이란 무엇인가? 1602년 동인도회사에서 시작된 
 ---
 
 *본 콘텐츠는 가치투자 교육 목적의 자료이며, 특정 종목의 매수·매도 추천이 아닙니다. 최종 투자 결정과 책임은 투자자 본인에게 있습니다.*
+
+
+---
+
+### 💡 함께 읽으면 좋은 연관 칼럼
+* [2강. 투자와 도박의 차이, 기대값으로 가르는 한 줄의 경계](/posts/investing-vs-gambling-expected-value-edge/)
+* [2-3강. 주식 버블은 왜 반복될까? 닷컴 버블·일본 버블·2008 금융위기 3대 거품 역사와 4대 진단법](/posts/bubble-history-dotcom-japan-financial-crisis-analysis/)

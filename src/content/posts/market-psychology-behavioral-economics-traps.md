@@ -126,3 +126,10 @@ description: 주가가 오를 때 사고 내릴 때 파는 이유는 행동경�
 ---
 
 *본 콘텐츠는 가치투자 교육 목적의 자료이며, 특정 종목의 매수·매도 추천이 아닙니다. 최종 투자 결정과 책임은 투자자 본인에게 있습니다.*
+
+
+---
+
+### 💡 함께 읽으면 좋은 연관 칼럼
+* [2-3강. 주식 버블은 왜 반복될까? 닷컴 버블·일본 버블·2008 금융위기 3대 거품 역사와 4대 진단법](/posts/bubble-history-dotcom-japan-financial-crisis-analysis/)
+* [5강. 워렌 버핏부터 이세옥까지, 성공 투자를 완성하는 가치투자 5계명](/posts/five-essential-value-investing-rules/)

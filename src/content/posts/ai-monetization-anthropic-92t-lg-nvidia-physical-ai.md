@@ -123,3 +123,11 @@ LG전자는 전 세계 수천만 가구에 보급된 가전 기기와 글로벌 
 ---
 
 > *본 콘텐츠는 교육 및 정보 제공 목적이며 특정 종목의 매수·매도 추천이 아닙니다. 모든 투자 판단과 책임은 투자자 본인에게 있습니다.*
+
+
+---
+
+### 💡 함께 읽으면 좋은 연관 칼럼
+* [엔비디아 AI 서버 15% 전격 인상과 실적 발표, 반도체 공급망의 향방은? 메모리 품귀의 역습과 차세대 루빈 아키텍처 관전 포인트](/posts/nvidia-ai-server-15pct-price-hike-earnings-preview/)
+* [빌 게이츠 나트륨 원전, 현대건설이 짓는다: 4세대 SMR 8기 EPC 총괄의 의미](/posts/hyundai-terrapower-sodium-smr-epc-2026/)
+* [잭슨홀 미팅 끝났는데 내 주식은 왜 안 오를까? 9월 FOMC 금리 경로와 빅테크 AI CAPEX 2,500억 달러의 운명](/posts/jackson-hole-2026-fomc-bigtech-ai-capex/)

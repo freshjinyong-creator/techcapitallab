@@ -94,3 +94,11 @@ description: 엔비디아가 월가와 710조원 AI 인프라 펀드를 조성�
 - **연관 읽을거리:** [뉴스 속 경제 카테고리](https://techcapitallab.com/category/news-macro/)
 
 > 본 콘텐츠는 교육·정보 제공 목적이며 특정 종목의 매수·매도 추천이 아닙니다. 투자 판단의 책임은 투자자 본인에게 있습니다.
+
+
+---
+
+### 💡 함께 읽으면 좋은 연관 칼럼
+* [엔비디아 호실적인데 삼성전자·SK하이닉스는 왜 하락? 반도체주 디커플링 원인 3가지](/posts/semiconductor-decoupling-nvidia-samsung-sk-hynix/)
+* [엔비디아 AI 서버 15% 전격 인상과 실적 발표, 반도체 공급망의 향방은? 메모리 품귀의 역습과 차세대 루빈 아키텍처 관전 포인트](/posts/nvidia-ai-server-15pct-price-hike-earnings-preview/)
+* [AI 거품론 끝났을까? 앤트로픽 92조 매출과 엔비디아·LG 피지컬 AI 동맹의 의미](/posts/ai-monetization-anthropic-92t-lg-nvidia-physical-ai/)
