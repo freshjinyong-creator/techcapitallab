@@ -52,5 +52,5 @@ TechCapitalLab은 단기적인 시장 소음과 감정에 흔들리지 않고, �
 
 글 내용 중 오류나 수정이 필요한 부분이 있으면 언제든 알려주시기 바랍니다. 확인 후 빠르게 반영하겠습니다.
 
-- **이메일:** `techcapitallab@gmail.com`
+- **이메일:** <!--email_off-->`freshjinyong@gmail.com`<!--/email_off-->
 - **최종 업데이트:** 2026년 8월 18일

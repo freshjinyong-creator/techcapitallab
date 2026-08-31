@@ -46,5 +46,5 @@ TechCapitalLab(이하 '본 블로그')은 독자의 개인정보 보호를 매�
 본 블로그의 개인정보처리방침에 대한 문의사항이나 의견이 있으신 경우 아래 연락처로 문의해 주시기 바랍니다.
 
 - **블로그명:** TechCapitalLab
-- **운영자 문의 이메일:** `techcapitallab@gmail.com`
+- **운영자 문의 이메일:** <!--email_off-->`freshjinyong@gmail.com`<!--/email_off-->
 - **시행 일자:** 2026년 8월 18일
