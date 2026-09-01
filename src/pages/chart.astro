@@ -1,0 +1,27 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import Header from "@/components/Header.astro";
+import Breadcrumb from "@/components/Breadcrumb.astro";
+import Main from "@/components/Main.astro";
+import Footer from "@/components/Footer.astro";
+import StockChartViewer from "@/components/StockChartViewer.astro";
+import config from "@/config";
+
+const pageTitle = "종목 차트 & 전략 백테스터";
+const pageDesc = "증권사 일봉 데이터 기반의 실시간 인터랙티브 차트 분석, 기술적 보조지표 및 전략 백테스팅";
+---
+
+<Layout
+  title={`${pageTitle} | ${config.site.title}`}
+  description={pageDesc}
+>
+  <Header />
+
+  <Breadcrumb />
+
+  <Main pageTitle={pageTitle} pageDesc={pageDesc}>
+    <StockChartViewer initialCode="000660" />
+  </Main>
+
+  <Footer />
+</Layout>

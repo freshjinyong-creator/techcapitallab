@@ -1,0 +1,826 @@
+---
+/**
+ * StockChartViewer.astro
+ * Interactive stock chart & backtesting component powered by TradingView Lightweight Charts
+ */
+interface Props {
+  initialCode?: string;
+  defaultTab?: "chart" | "backtest";
+}
+
+const { initialCode = "000660", defaultTab = "chart" } = Astro.props;
+---
+
+<div class="stock-chart-viewer my-6 w-full rounded-2xl border border-border bg-background p-4 shadow-sm sm:p-6">
+  <!-- Stock Search & Summary Bar -->
+  <div class="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+    <div class="relative flex-1 max-w-md">
+      <div class="relative">
+        <input
+          type="text"
+          id="stock-search-input"
+          placeholder="종목명 또는 6자리 코드 검색 (예: SK하이닉스, 005930)"
+          class="w-full rounded-xl border border-border bg-muted/40 px-4 py-2.5 pl-10 text-sm font-medium text-foreground placeholder:text-muted-foreground focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent"
+        />
+        <svg
+          class="absolute left-3 top-3 size-4 text-muted-foreground"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+        </svg>
+      </div>
+
+      <!-- Auto-complete Dropdown -->
+      <div
+        id="stock-search-dropdown"
+        class="absolute left-0 top-full z-50 mt-1.5 hidden max-h-64 w-full overflow-y-auto rounded-xl border border-border bg-background py-1.5 shadow-xl"
+      ></div>
+    </div>
+
+    <!-- Quick Stock Pills -->
+    <div class="flex flex-wrap items-center gap-1.5 text-xs">
+      <span class="text-muted-foreground mr-1">인기 종목:</span>
+      <button class="quick-stock-btn rounded-lg bg-muted/60 px-2.5 py-1 font-medium hover:bg-accent/20 hover:text-accent transition-colors" data-code="000660">SK하이닉스</button>
+      <button class="quick-stock-btn rounded-lg bg-muted/60 px-2.5 py-1 font-medium hover:bg-accent/20 hover:text-accent transition-colors" data-code="005930">삼성전자</button>
+      <button class="quick-stock-btn rounded-lg bg-muted/60 px-2.5 py-1 font-medium hover:bg-accent/20 hover:text-accent transition-colors" data-code="035420">NAVER</button>
+      <button class="quick-stock-btn rounded-lg bg-muted/60 px-2.5 py-1 font-medium hover:bg-accent/20 hover:text-accent transition-colors" data-code="035720">카카오</button>
+      <button class="quick-stock-btn rounded-lg bg-muted/60 px-2.5 py-1 font-medium hover:bg-accent/20 hover:text-accent transition-colors" data-code="005380">현대차</button>
+    </div>
+  </div>
+
+  <!-- Selected Stock Title & Real-time Quote Card -->
+  <div class="mb-4 flex flex-wrap items-center justify-between gap-2 border-y border-border/60 py-3">
+    <div class="flex items-baseline gap-2.5">
+      <h2 id="current-stock-name" class="text-xl font-bold text-foreground sm:text-2xl">SK하이닉스</h2>
+      <span id="current-stock-code" class="text-sm font-mono text-muted-foreground">000660</span>
+      <span id="current-stock-bars" class="rounded-md bg-muted px-2 py-0.5 text-xs text-muted-foreground font-mono">243일 일봉</span>
+    </div>
+
+    <div class="flex items-baseline gap-3">
+      <div id="current-stock-price" class="text-xl font-bold font-mono text-foreground sm:text-2xl">- 원</div>
+      <div id="current-stock-change" class="text-sm font-semibold font-mono">-</div>
+    </div>
+  </div>
+
+  <!-- Mode Switcher Tabs -->
+  <div class="mb-4 flex items-center justify-between border-b border-border">
+    <div class="flex gap-2">
+      <button
+        id="tab-btn-chart"
+        class="tab-btn active-tab flex items-center gap-1.5 border-b-2 border-accent px-4 py-2.5 text-sm font-bold text-accent transition-colors"
+      >
+        <svg class="size-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z" />
+        </svg>
+        인터랙티브 차트
+      </button>
+      <button
+        id="tab-btn-backtest"
+        class="tab-btn border-b-2 border-transparent px-4 py-2.5 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+      >
+        <svg class="size-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+        </svg>
+        실전 전략 백테스터
+      </button>
+    </div>
+
+    <!-- Chart Quick Controls -->
+    <div id="chart-controls" class="flex flex-wrap items-center gap-1.5 text-xs">
+      <button id="btn-fit-chart" class="rounded-lg bg-muted/70 px-2.5 py-1 font-medium hover:bg-muted transition-colors">
+        전체 보기
+      </button>
+    </div>
+  </div>
+
+  <!-- Section 1: Chart View -->
+  <div id="section-chart" class="flex flex-col gap-3">
+    <!-- Indicator Toolbar -->
+    <div class="flex flex-wrap items-center justify-between gap-2 rounded-xl bg-muted/30 p-2.5 text-xs">
+      <!-- MA Checkboxes -->
+      <div class="flex flex-wrap items-center gap-3">
+        <span class="font-bold text-foreground">이동평균선:</span>
+        <label class="flex items-center gap-1 cursor-pointer">
+          <input type="checkbox" id="toggle-ma-5" checked class="accent-[#e91e63]" />
+          <span class="inline-block size-2 rounded-full bg-[#e91e63]"></span>
+          <span class="font-mono">5일</span>
+        </label>
+        <label class="flex items-center gap-1 cursor-pointer">
+          <input type="checkbox" id="toggle-ma-20" checked class="accent-[#ff9800]" />
+          <span class="inline-block size-2 rounded-full bg-[#ff9800]"></span>
+          <span class="font-mono">20일</span>
+        </label>
+        <label class="flex items-center gap-1 cursor-pointer">
+          <input type="checkbox" id="toggle-ma-60" checked class="accent-[#4caf50]" />
+          <span class="inline-block size-2 rounded-full bg-[#4caf50]"></span>
+          <span class="font-mono">60일</span>
+        </label>
+        <label class="flex items-center gap-1 cursor-pointer">
+          <input type="checkbox" id="toggle-ma-120" checked class="accent-[#9c27b0]" />
+          <span class="inline-block size-2 rounded-full bg-[#9c27b0]"></span>
+          <span class="font-mono">120일</span>
+        </label>
+        <label class="flex items-center gap-1 cursor-pointer">
+          <input type="checkbox" id="toggle-bb" class="accent-[#00bcd4]" />
+          <span class="inline-block size-2 rounded-full bg-[#00bcd4]"></span>
+          <span>볼린저밴드(20,2)</span>
+        </label>
+      </div>
+
+      <!-- Sub-Indicator Select -->
+      <div class="flex items-center gap-2">
+        <span class="font-bold text-foreground">하단 보조지표:</span>
+        <select id="select-sub-indicator" class="rounded-lg border border-border bg-background px-2.5 py-1 font-medium text-foreground focus:outline-none">
+          <option value="none">없음</option>
+          <option value="rsi" selected>RSI (14)</option>
+          <option value="macd">MACD (12, 26, 9)</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Live Legend / Tooltip Info -->
+    <div id="chart-legend" class="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs font-mono text-muted-foreground min-h-[22px]">
+      <span>일자: <b id="leg-date" class="text-foreground">-</b></span>
+      <span>시: <b id="leg-open" class="text-foreground">-</b></span>
+      <span>고: <b id="leg-high" class="text-foreground">-</b></span>
+      <span>저: <b id="leg-low" class="text-foreground">-</b></span>
+      <span>종: <b id="leg-close" class="text-foreground">-</b></span>
+      <span>거래량: <b id="leg-vol" class="text-foreground">-</b></span>
+      <span id="leg-ma-container" class="hidden sm:inline-flex gap-2"></span>
+    </div>
+
+    <!-- Main Chart Canvas -->
+    <div id="tv-chart-container" class="relative h-[420px] w-full overflow-hidden rounded-xl border border-border/80 bg-background">
+      <div id="chart-loading" class="absolute inset-0 flex items-center justify-center bg-background/80 backdrop-blur-xs z-10">
+        <div class="flex items-center gap-2 text-sm text-muted-foreground">
+          <svg class="size-5 animate-spin text-accent" viewBox="0 0 24 24" fill="none">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+          </svg>
+          일봉 차트 로딩 중...
+        </div>
+      </div>
+    </div>
+
+    <!-- Sub Chart Canvas (RSI / MACD) -->
+    <div id="tv-subchart-container" class="relative h-[160px] w-full overflow-hidden rounded-xl border border-border/80 bg-background">
+      <div id="subchart-title" class="absolute left-3 top-2 z-10 text-[11px] font-bold font-mono text-muted-foreground">RSI (14)</div>
+    </div>
+  </div>
+
+  <!-- Section 2: Backtester View -->
+  <div id="section-backtest" class="hidden flex-col gap-6">
+    <!-- Strategy Configuration Card -->
+    <div class="rounded-xl border border-border bg-muted/20 p-4 sm:p-5">
+      <div class="mb-4 flex items-center justify-between">
+        <h3 class="text-base font-bold text-foreground flex items-center gap-2">
+          <span>⚙️</span> 전략 파라미터 설정
+        </h3>
+        <span class="text-xs text-muted-foreground">차트에 로드된 일봉 데이터로 즉시 시뮬레이션</span>
+      </div>
+
+      <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <!-- Strategy Selection -->
+        <div class="flex flex-col gap-1.5">
+          <label class="text-xs font-semibold text-muted-foreground">매매 전략 선택</label>
+          <select id="bt-strategy" class="rounded-xl border border-border bg-background px-3 py-2 text-sm font-medium text-foreground focus:border-accent focus:outline-none">
+            <option value="MA_CROSS">이평선 골든크로스 (5일/20일)</option>
+            <option value="RSI_OVERSOLD">RSI 과매도 반등 (30 이하 매수)</option>
+            <option value="BOLLINGER_REVERSAL">볼린저 밴드 하단 반등 매매</option>
+            <option value="BREAKOUT_HIGH">20일 신고가 돌파 매매</option>
+            <option value="SURGE_PULLBACK">10%+ 급등 후 눌림목 반등</option>
+          </select>
+        </div>
+
+        <!-- Take Profit -->
+        <div class="flex flex-col gap-1.5">
+          <label class="text-xs font-semibold text-muted-foreground">익절 목표 (%) <span class="font-normal text-muted-foreground">(0은 무제한)</span></label>
+          <input type="number" id="bt-tp" value="10" min="0" max="100" step="0.5" class="rounded-xl border border-border bg-background px-3 py-2 text-sm font-mono font-medium text-foreground focus:border-accent focus:outline-none" />
+        </div>
+
+        <!-- Stop Loss -->
+        <div class="flex flex-col gap-1.5">
+          <label class="text-xs font-semibold text-muted-foreground">손절 제한 (%) <span class="font-normal text-muted-foreground">(0은 무제한)</span></label>
+          <input type="number" id="bt-sl" value="5" min="0" max="50" step="0.5" class="rounded-xl border border-border bg-background px-3 py-2 text-sm font-mono font-medium text-foreground focus:border-accent focus:outline-none" />
+        </div>
+
+        <!-- Max Holding Days -->
+        <div class="flex flex-col gap-1.5">
+          <label class="text-xs font-semibold text-muted-foreground">최대 보유 영업일 <span class="font-normal text-muted-foreground">(0은 무제한)</span></label>
+          <input type="number" id="bt-max-days" value="20" min="0" max="250" step="1" class="rounded-xl border border-border bg-background px-3 py-2 text-sm font-mono font-medium text-foreground focus:border-accent focus:outline-none" />
+        </div>
+      </div>
+
+      <div class="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between border-t border-border/60 pt-3">
+        <div class="flex items-center gap-4 text-xs text-muted-foreground">
+          <span class="flex items-center gap-1">
+            <span class="inline-block size-2 rounded-full bg-accent"></span>
+            수수료/세금: <b>0.2%</b> (매매당 자동 차감)
+          </span>
+        </div>
+
+        <button
+          id="btn-run-backtest"
+          class="flex items-center justify-center gap-2 rounded-xl bg-accent px-6 py-2.5 text-sm font-bold text-white shadow-md hover:opacity-90 transition-opacity"
+        >
+          <svg class="size-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          전략 백테스트 실행
+        </button>
+      </div>
+    </div>
+
+    <!-- Backtest Results KPI Dashboard -->
+    <div id="bt-result-dashboard" class="flex flex-col gap-4">
+      <div class="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
+        <!-- KPI 1: Total Return -->
+        <div class="flex flex-col rounded-xl border border-border bg-muted/10 p-3.5">
+          <span class="text-xs text-muted-foreground">전략 누적 수익률</span>
+          <span id="kpi-return" class="text-lg font-bold font-mono mt-1 text-foreground">-</span>
+        </div>
+
+        <!-- KPI 2: Buy & Hold Return -->
+        <div class="flex flex-col rounded-xl border border-border bg-muted/10 p-3.5">
+          <span class="text-xs text-muted-foreground">단순 보유 수익률</span>
+          <span id="kpi-bnh" class="text-lg font-bold font-mono mt-1 text-muted-foreground">-</span>
+        </div>
+
+        <!-- KPI 3: Win Rate -->
+        <div class="flex flex-col rounded-xl border border-border bg-muted/10 p-3.5">
+          <span class="text-xs text-muted-foreground">승률 (Win Rate)</span>
+          <span id="kpi-winrate" class="text-lg font-bold font-mono mt-1 text-foreground">-</span>
+        </div>
+
+        <!-- KPI 4: Profit Factor -->
+        <div class="flex flex-col rounded-xl border border-border bg-muted/10 p-3.5">
+          <span class="text-xs text-muted-foreground">손익비 (PF)</span>
+          <span id="kpi-pf" class="text-lg font-bold font-mono mt-1 text-foreground">-</span>
+        </div>
+
+        <!-- KPI 5: Max Drawdown -->
+        <div class="flex flex-col rounded-xl border border-border bg-muted/10 p-3.5">
+          <span class="text-xs text-muted-foreground">최대 낙폭 (MDD)</span>
+          <span id="kpi-mdd" class="text-lg font-bold font-mono mt-1 text-blue-500">-</span>
+        </div>
+
+        <!-- KPI 6: Total Trades -->
+        <div class="flex flex-col rounded-xl border border-border bg-muted/10 p-3.5">
+          <span class="text-xs text-muted-foreground">총 거래 횟수</span>
+          <span id="kpi-trades" class="text-lg font-bold font-mono mt-1 text-foreground">-</span>
+        </div>
+      </div>
+
+      <!-- Trade History Table -->
+      <div class="overflow-hidden rounded-xl border border-border">
+        <div class="flex items-center justify-between bg-muted/40 px-4 py-3 border-b border-border">
+          <h4 class="text-sm font-bold text-foreground">📋 매매 세부 내역 (Trade Log)</h4>
+          <span id="trade-log-count" class="text-xs text-muted-foreground">0건의 매매 기록</span>
+        </div>
+
+        <div class="max-h-72 overflow-y-auto">
+          <table class="w-full text-left text-xs">
+            <thead class="bg-muted/20 text-muted-foreground sticky top-0 border-b border-border font-medium">
+              <tr>
+                <th class="py-2.5 px-3">#</th>
+                <th class="py-2.5 px-3">진입일</th>
+                <th class="py-2.5 px-3">진입가</th>
+                <th class="py-2.5 px-3">청산일</th>
+                <th class="py-2.5 px-3">청산가</th>
+                <th class="py-2.5 px-3">보유일</th>
+                <th class="py-2.5 px-3">수익률</th>
+                <th class="py-2.5 px-3">청산사유</th>
+              </tr>
+            </thead>
+            <tbody id="trade-log-tbody" class="divide-y divide-border/60 font-mono">
+              <tr>
+                <td colspan="8" class="py-6 text-center text-muted-foreground font-sans">
+                  '전략 백테스트 실행' 버튼을 클릭하여 시뮬레이션을 시작하세요.
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  import { createChart, ColorType, LineStyle } from "lightweight-charts";
+  import {
+    calculateSMA,
+    calculateBollingerBands,
+    calculateRSI,
+    calculateMACD,
+  } from "@/utils/technicalIndicators";
+  import { runBacktest, type StrategyType } from "@/utils/backtestEngine";
+
+  let stockList: Array<{ code: string; name: string; bars: number; lastClose: number }> = [];
+  let currentStockData: any[] = [];
+  let currentCode = "000660";
+
+  let mainChart: any = null;
+  let subChart: any = null;
+
+  let candleSeries: any = null;
+  let volumeSeries: any = null;
+
+  let maSeries5: any = null;
+  let maSeries20: any = null;
+  let maSeries60: any = null;
+  let maSeries120: any = null;
+
+  let bbUpperSeries: any = null;
+  let bbMiddleSeries: any = null;
+  let bbLowerSeries: any = null;
+
+  let rsiSeries: any = null;
+  let macdLineSeries: any = null;
+  let macdSignalSeries: any = null;
+  let macdHistSeries: any = null;
+
+  // Check dark mode
+  const isDarkMode = () =>
+    document.documentElement.classList.contains("dark") ||
+    document.documentElement.getAttribute("data-theme") === "dark";
+
+  function getThemeColors() {
+    const dark = isDarkMode();
+    return {
+      bg: dark ? "#1a1b26" : "#ffffff",
+      text: dark ? "#9aa5ce" : "#374151",
+      grid: dark ? "rgba(255, 255, 255, 0.05)" : "rgba(0, 0, 0, 0.05)",
+      border: dark ? "rgba(255, 255, 255, 0.1)" : "rgba(0, 0, 0, 0.1)",
+      upColor: "#ef5350",
+      downColor: "#26a69a",
+    };
+  }
+
+  // Initialize Charts
+  function initCharts() {
+    const mainContainer = document.getElementById("tv-chart-container");
+    const subContainer = document.getElementById("tv-subchart-container");
+    if (!mainContainer || !subContainer) return;
+
+    mainContainer.innerHTML = '<div id="chart-loading" class="absolute inset-0 flex items-center justify-center bg-background/80 backdrop-blur-xs z-10"><div class="flex items-center gap-2 text-sm text-muted-foreground"><svg class="size-5 animate-spin text-accent" viewBox="0 0 24 24" fill="none"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path></svg>일봉 차트 로딩 중...</div></div>';
+    subContainer.innerHTML = '<div id="subchart-title" class="absolute left-3 top-2 z-10 text-[11px] font-bold font-mono text-muted-foreground">RSI (14)</div>';
+
+    const colors = getThemeColors();
+
+    mainChart = createChart(mainContainer, {
+      layout: {
+        background: { type: ColorType.Solid, color: "transparent" },
+        textColor: colors.text,
+      },
+      grid: {
+        vertLines: { color: colors.grid },
+        horzLines: { color: colors.grid },
+      },
+      timeScale: {
+        borderColor: colors.border,
+        timeVisible: true,
+      },
+      rightPriceScale: {
+        borderColor: colors.border,
+        scaleMargins: { top: 0.1, bottom: 0.2 },
+      },
+      crosshair: {
+        vertLine: { labelBackgroundColor: "#5c6ac4" },
+        horzLine: { labelBackgroundColor: "#5c6ac4" },
+      },
+    });
+
+    // Candlestick series
+    candleSeries = mainChart.addCandlestickSeries({
+      upColor: colors.upColor,
+      downColor: colors.downColor,
+      borderUpColor: colors.upColor,
+      borderDownColor: colors.downColor,
+      wickUpColor: colors.upColor,
+      wickDownColor: colors.downColor,
+    });
+
+    // Volume series
+    volumeSeries = mainChart.addHistogramSeries({
+      color: "#26a69a",
+      priceFormat: { type: "volume" },
+      priceScaleId: "",
+    });
+    volumeSeries.priceScale().applyOptions({
+      scaleMargins: { top: 0.8, bottom: 0 },
+    });
+
+    // Moving Averages
+    maSeries5 = mainChart.addLineSeries({ color: "#e91e63", lineWidth: 1.5, title: "MA5" });
+    maSeries20 = mainChart.addLineSeries({ color: "#ff9800", lineWidth: 1.5, title: "MA20" });
+    maSeries60 = mainChart.addLineSeries({ color: "#4caf50", lineWidth: 1.5, title: "MA60" });
+    maSeries120 = mainChart.addLineSeries({ color: "#9c27b0", lineWidth: 1.5, title: "MA120" });
+
+    // Bollinger Bands
+    bbUpperSeries = mainChart.addLineSeries({ color: "#00bcd4", lineWidth: 1, lineStyle: LineStyle.Dashed });
+    bbMiddleSeries = mainChart.addLineSeries({ color: "#00bcd4", lineWidth: 1 });
+    bbLowerSeries = mainChart.addLineSeries({ color: "#00bcd4", lineWidth: 1, lineStyle: LineStyle.Dashed });
+
+    // Sub Chart (RSI / MACD)
+    subChart = createChart(subContainer, {
+      layout: {
+        background: { type: ColorType.Solid, color: "transparent" },
+        textColor: colors.text,
+      },
+      grid: {
+        vertLines: { color: colors.grid },
+        horzLines: { color: colors.grid },
+      },
+      timeScale: {
+        borderColor: colors.border,
+        visible: false,
+      },
+      rightPriceScale: {
+        borderColor: colors.border,
+        scaleMargins: { top: 0.1, bottom: 0.1 },
+      },
+    });
+
+    rsiSeries = subChart.addLineSeries({ color: "#e91e63", lineWidth: 1.5 });
+    macdLineSeries = subChart.addLineSeries({ color: "#2196f3", lineWidth: 1.5 });
+    macdSignalSeries = subChart.addLineSeries({ color: "#ff9800", lineWidth: 1.5 });
+    macdHistSeries = subChart.addHistogramSeries({ color: "#26a69a" });
+
+    // Sync TimeScales
+    mainChart.timeScale().subscribeVisibleLogicalRangeChange((range: any) => {
+      if (range && subChart) subChart.timeScale().setVisibleLogicalRange(range);
+    });
+
+    // Crosshair tooltip tracking
+    mainChart.subscribeCrosshairMove((param: any) => {
+      if (!param || !param.time || !param.seriesData.get(candleSeries)) {
+        updateLegendDefault();
+        return;
+      }
+      const c = param.seriesData.get(candleSeries);
+      const v = param.seriesData.get(volumeSeries);
+      const d = param.time;
+
+      const dateEl = document.getElementById("leg-date");
+      const openEl = document.getElementById("leg-open");
+      const highEl = document.getElementById("leg-high");
+      const lowEl = document.getElementById("leg-low");
+      const closeEl = document.getElementById("leg-close");
+      const volEl = document.getElementById("leg-vol");
+
+      if (dateEl) dateEl.innerText = typeof d === "string" ? d : `${d.year}-${d.month}-${d.day}`;
+      if (openEl) openEl.innerText = c.open?.toLocaleString() ?? "-";
+      if (highEl) highEl.innerText = c.high?.toLocaleString() ?? "-";
+      if (lowEl) lowEl.innerText = c.low?.toLocaleString() ?? "-";
+      if (closeEl) closeEl.innerText = c.close?.toLocaleString() ?? "-";
+      if (volEl) volEl.innerText = v?.value?.toLocaleString() ?? "-";
+    });
+
+    // Resize Observer
+    const resizeObserver = new ResizeObserver(() => {
+      if (mainContainer && mainChart) mainChart.applyOptions({ width: mainContainer.clientWidth });
+      if (subContainer && subChart) subChart.applyOptions({ width: subContainer.clientWidth });
+    });
+    resizeObserver.observe(mainContainer);
+  }
+
+  function updateLegendDefault() {
+    if (!currentStockData || currentStockData.length === 0) return;
+    const last = currentStockData[currentStockData.length - 1];
+    const dateEl = document.getElementById("leg-date");
+    const openEl = document.getElementById("leg-open");
+    const highEl = document.getElementById("leg-high");
+    const lowEl = document.getElementById("leg-low");
+    const closeEl = document.getElementById("leg-close");
+    const volEl = document.getElementById("leg-vol");
+
+    if (dateEl) dateEl.innerText = last.time;
+    if (openEl) openEl.innerText = last.open.toLocaleString();
+    if (highEl) highEl.innerText = last.high.toLocaleString();
+    if (lowEl) lowEl.innerText = last.low.toLocaleString();
+    if (closeEl) closeEl.innerText = last.close.toLocaleString();
+    if (volEl) volEl.innerText = last.volume.toLocaleString();
+  }
+
+  // Load Stock Data
+  async function loadStock(code: string) {
+    const loadingEl = document.getElementById("chart-loading");
+    if (loadingEl) loadingEl.classList.remove("hidden");
+
+    try {
+      const resp = await fetch(`/data/daily/${code}.json`);
+      if (!resp.ok) throw new Error("데이터를 찾을 수 없습니다.");
+      const data = await resp.json();
+      currentStockData = data;
+      currentCode = code;
+
+      // Update Stock Header Info
+      const stockInfo = stockList.find(s => s.code === code);
+      const stockNameEl = document.getElementById("current-stock-name");
+      const stockCodeEl = document.getElementById("current-stock-code");
+      const stockBarsEl = document.getElementById("current-stock-bars");
+      const stockPriceEl = document.getElementById("current-stock-price");
+      const stockChangeEl = document.getElementById("current-stock-change");
+
+      if (stockNameEl) stockNameEl.innerText = stockInfo?.name || code;
+      if (stockCodeEl) stockCodeEl.innerText = code;
+      if (stockBarsEl) stockBarsEl.innerText = `${data.length}일 일봉`;
+
+      if (data.length > 0) {
+        const last = data[data.length - 1];
+        const prev = data.length > 1 ? data[data.length - 2] : last;
+        const diff = last.close - prev.close;
+        const pct = prev.close > 0 ? (diff / prev.close) * 100 : 0;
+
+        if (stockPriceEl) stockPriceEl.innerText = `${last.close.toLocaleString()} 원`;
+        if (stockChangeEl) {
+          const sign = diff > 0 ? "+" : "";
+          stockChangeEl.innerText = `${sign}${diff.toLocaleString()}원 (${sign}${pct.toFixed(2)}%)`;
+          stockChangeEl.className = `text-sm font-semibold font-mono ${diff > 0 ? "text-red-500" : diff < 0 ? "text-blue-500" : "text-foreground"}`;
+        }
+      }
+
+      // Update Chart Series
+      if (candleSeries) candleSeries.setData(data);
+
+      const volData = data.map((d: any, i: number) => {
+        const prevClose = i > 0 ? data[i - 1].close : d.open;
+        return {
+          time: d.time,
+          value: d.volume,
+          color: d.close >= prevClose ? "rgba(239, 83, 80, 0.4)" : "rgba(38, 166, 154, 0.4)",
+        };
+      });
+      if (volumeSeries) volumeSeries.setData(volData);
+
+      // Moving Averages
+      updateIndicators();
+      updateSubChart();
+
+      mainChart?.timeScale().fitContent();
+      updateLegendDefault();
+    } catch (e) {
+      console.error(e);
+      alert("종목 데이터를 불러오는데 실패했습니다.");
+    } finally {
+      if (loadingEl) loadingEl.classList.add("hidden");
+    }
+  }
+
+  function updateIndicators() {
+    if (!currentStockData || currentStockData.length === 0) return;
+
+    const showMa5 = (document.getElementById("toggle-ma-5") as HTMLInputElement)?.checked;
+    const showMa20 = (document.getElementById("toggle-ma-20") as HTMLInputElement)?.checked;
+    const showMa60 = (document.getElementById("toggle-ma-60") as HTMLInputElement)?.checked;
+    const showMa120 = (document.getElementById("toggle-ma-120") as HTMLInputElement)?.checked;
+    const showBB = (document.getElementById("toggle-bb") as HTMLInputElement)?.checked;
+
+    if (maSeries5) maSeries5.setData(showMa5 ? calculateSMA(currentStockData, 5) : []);
+    if (maSeries20) maSeries20.setData(showMa20 ? calculateSMA(currentStockData, 20) : []);
+    if (maSeries60) maSeries60.setData(showMa60 ? calculateSMA(currentStockData, 60) : []);
+    if (maSeries120) maSeries120.setData(showMa120 ? calculateSMA(currentStockData, 120) : []);
+
+    if (showBB) {
+      const bb = calculateBollingerBands(currentStockData, 20, 2);
+      bbUpperSeries?.setData(bb.upper);
+      bbMiddleSeries?.setData(bb.middle);
+      bbLowerSeries?.setData(bb.lower);
+    } else {
+      bbUpperSeries?.setData([]);
+      bbMiddleSeries?.setData([]);
+      bbLowerSeries?.setData([]);
+    }
+  }
+
+  function updateSubChart() {
+    if (!currentStockData || currentStockData.length === 0) return;
+    const select = (document.getElementById("select-sub-indicator") as HTMLSelectElement)?.value;
+    const subContainer = document.getElementById("tv-subchart-container");
+    const subTitle = document.getElementById("subchart-title");
+
+    if (select === "none") {
+      if (subContainer) subContainer.classList.add("hidden");
+      return;
+    }
+
+    if (subContainer) subContainer.classList.remove("hidden");
+
+    if (select === "rsi") {
+      if (subTitle) subTitle.innerText = "RSI (14)";
+      rsiSeries?.setData(calculateRSI(currentStockData, 14));
+      macdLineSeries?.setData([]);
+      macdSignalSeries?.setData([]);
+      macdHistSeries?.setData([]);
+    } else if (select === "macd") {
+      if (subTitle) subTitle.innerText = "MACD (12, 26, 9)";
+      const macd = calculateMACD(currentStockData, 12, 26, 9);
+      macdLineSeries?.setData(macd.macd);
+      macdSignalSeries?.setData(macd.signal);
+      macdHistSeries?.setData(macd.histogram);
+      rsiSeries?.setData([]);
+    }
+    subChart?.timeScale().fitContent();
+  }
+
+  // Backtest Execution
+  function executeBacktest() {
+    if (!currentStockData || currentStockData.length === 0) return;
+
+    const strategy = (document.getElementById("bt-strategy") as HTMLSelectElement)?.value as StrategyType;
+    const tp = parseFloat((document.getElementById("bt-tp") as HTMLInputElement)?.value || "0");
+    const sl = parseFloat((document.getElementById("bt-sl") as HTMLInputElement)?.value || "0");
+    const maxDays = parseInt((document.getElementById("bt-max-days") as HTMLInputElement)?.value || "0");
+
+    const result = runBacktest(currentStockData, {
+      strategy,
+      takeProfitPct: tp > 0 ? tp : undefined,
+      stopLossPct: sl > 0 ? sl : undefined,
+      maxHoldDays: maxDays > 0 ? maxDays : undefined,
+    });
+
+    // Update KPI Cards
+    const kpiReturn = document.getElementById("kpi-return");
+    const kpiBnh = document.getElementById("kpi-bnh");
+    const kpiWinrate = document.getElementById("kpi-winrate");
+    const kpiPf = document.getElementById("kpi-pf");
+    const kpiMdd = document.getElementById("kpi-mdd");
+    const kpiTrades = document.getElementById("kpi-trades");
+
+    if (kpiReturn) {
+      kpiReturn.innerText = `${result.totalReturnPct >= 0 ? "+" : ""}${result.totalReturnPct.toFixed(2)}%`;
+      kpiReturn.className = `text-lg font-bold font-mono mt-1 ${result.totalReturnPct >= 0 ? "text-red-500" : "text-blue-500"}`;
+    }
+    if (kpiBnh) kpiBnh.innerText = `${result.buyAndHoldReturnPct >= 0 ? "+" : ""}${result.buyAndHoldReturnPct.toFixed(2)}%`;
+    if (kpiWinrate) kpiWinrate.innerText = `${result.winRatePct.toFixed(1)}% (${result.winCount}승 ${result.lossCount}패)`;
+    if (kpiPf) kpiPf.innerText = `${result.profitFactor.toFixed(2)}`;
+    if (kpiMdd) kpiMdd.innerText = `-${result.maxDrawdownPct.toFixed(2)}%`;
+    if (kpiTrades) kpiTrades.innerText = `${result.totalTrades}회`;
+
+    // Render Trade Log Table
+    const tbody = document.getElementById("trade-log-tbody");
+    const countEl = document.getElementById("trade-log-count");
+    if (countEl) countEl.innerText = `총 ${result.trades.length}건의 거래`;
+
+    if (tbody) {
+      if (result.trades.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="8" class="py-6 text-center text-muted-foreground font-sans">조건에 만족하는 매매 신호가 발생하지 않았습니다.</td></tr>';
+      } else {
+        tbody.innerHTML = result.trades
+          .map(
+            (t, idx) => `
+          <tr class="hover:bg-muted/30 transition-colors">
+            <td class="py-2.5 px-3 text-muted-foreground">${idx + 1}</td>
+            <td class="py-2.5 px-3">${t.entryDate}</td>
+            <td class="py-2.5 px-3">${t.entryPrice.toLocaleString()}</td>
+            <td class="py-2.5 px-3">${t.exitDate}</td>
+            <td class="py-2.5 px-3">${t.exitPrice.toLocaleString()}</td>
+            <td class="py-2.5 px-3">${t.holdDays}일</td>
+            <td class="py-2.5 px-3 font-bold ${t.returnPct >= 0 ? "text-red-500" : "text-blue-500"}">
+              ${t.returnPct >= 0 ? "+" : ""}${t.returnPct.toFixed(2)}%
+            </td>
+            <td class="py-2.5 px-3">
+              <span class="rounded px-1.5 py-0.5 text-[10px] font-bold ${
+                t.exitReason === "TP"
+                  ? "bg-red-500/10 text-red-500"
+                  : t.exitReason === "SL"
+                    ? "bg-blue-500/10 text-blue-500"
+                    : "bg-muted text-muted-foreground"
+              }">${t.exitReason}</span>
+            </td>
+          </tr>`
+          )
+          .join("");
+      }
+    }
+
+    // Set Chart Markers
+    if (candleSeries && result.markers) {
+      candleSeries.setMarkers(result.markers);
+    }
+  }
+
+  // Event Listeners Setup
+  async function setup() {
+    // 1. Fetch Stock Master List
+    try {
+      const resp = await fetch("/data/stock_list.json");
+      stockList = await resp.json();
+    } catch (e) {
+      console.error("Failed to load stock list", e);
+    }
+
+    // 2. Initialize Charts
+    initCharts();
+
+    // 3. Load Initial Stock
+    loadStock(currentCode);
+
+    // 4. Setup Search Input Auto-complete
+    const searchInput = document.getElementById("stock-search-input") as HTMLInputElement;
+    const searchDropdown = document.getElementById("stock-search-dropdown");
+
+    if (searchInput && searchDropdown) {
+      searchInput.addEventListener("input", () => {
+        const query = searchInput.value.trim().toLowerCase();
+        if (!query) {
+          searchDropdown.classList.add("hidden");
+          return;
+        }
+
+        const filtered = stockList
+          .filter(s => s.name.toLowerCase().includes(query) || s.code.includes(query))
+          .slice(0, 10);
+
+        if (filtered.length === 0) {
+          searchDropdown.innerHTML = '<div class="px-4 py-3 text-xs text-muted-foreground text-center">검색 결과가 없습니다.</div>';
+        } else {
+          searchDropdown.innerHTML = filtered
+            .map(
+              s => `
+            <button class="search-item flex w-full items-center justify-between px-4 py-2 text-left text-xs hover:bg-muted transition-colors" data-code="${s.code}">
+              <span class="font-medium text-foreground">${s.name}</span>
+              <span class="font-mono text-muted-foreground">${s.code}</span>
+            </button>`
+            )
+            .join("");
+        }
+        searchDropdown.classList.remove("hidden");
+      });
+
+      // Handle dropdown click
+      searchDropdown.addEventListener("click", e => {
+        const btn = (e.target as HTMLElement).closest(".search-item") as HTMLElement;
+        if (btn && btn.dataset.code) {
+          loadStock(btn.dataset.code);
+          searchInput.value = "";
+          searchDropdown.classList.add("hidden");
+        }
+      });
+
+      // Close dropdown on outside click
+      document.addEventListener("click", e => {
+        if (!searchInput.contains(e.target as Node) && !searchDropdown.contains(e.target as Node)) {
+          searchDropdown.classList.add("hidden");
+        }
+      });
+    }
+
+    // Quick stock pills
+    document.querySelectorAll(".quick-stock-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const code = (btn as HTMLElement).dataset.code;
+        if (code) loadStock(code);
+      });
+    });
+
+    // Tab switcher
+    const tabChart = document.getElementById("tab-btn-chart");
+    const tabBacktest = document.getElementById("tab-btn-backtest");
+    const sectionChart = document.getElementById("section-chart");
+    const sectionBacktest = document.getElementById("section-backtest");
+
+    tabChart?.addEventListener("click", () => {
+      tabChart.className = "tab-btn active-tab flex items-center gap-1.5 border-b-2 border-accent px-4 py-2.5 text-sm font-bold text-accent transition-colors";
+      tabBacktest?.classList.remove("active-tab", "border-accent", "text-accent", "font-bold");
+      tabBacktest?.classList.add("border-transparent", "text-muted-foreground", "font-medium");
+      sectionChart?.classList.remove("hidden");
+      sectionBacktest?.classList.add("hidden");
+      mainChart?.timeScale().fitContent();
+    });
+
+    tabBacktest?.addEventListener("click", () => {
+      tabBacktest.className = "tab-btn active-tab flex items-center gap-1.5 border-b-2 border-accent px-4 py-2.5 text-sm font-bold text-accent transition-colors";
+      tabChart?.classList.remove("active-tab", "border-accent", "text-accent", "font-bold");
+      tabChart?.classList.add("border-transparent", "text-muted-foreground", "font-medium");
+      sectionBacktest?.classList.remove("hidden");
+      sectionChart?.classList.add("hidden");
+      executeBacktest();
+    });
+
+    // Checkbox and select listeners
+    ["toggle-ma-5", "toggle-ma-20", "toggle-ma-60", "toggle-ma-120", "toggle-bb"].forEach(id => {
+      document.getElementById(id)?.addEventListener("change", updateIndicators);
+    });
+
+    document.getElementById("select-sub-indicator")?.addEventListener("change", updateSubChart);
+
+    document.getElementById("btn-fit-chart")?.addEventListener("click", () => {
+      mainChart?.timeScale().fitContent();
+      subChart?.timeScale().fitContent();
+    });
+
+    document.getElementById("btn-run-backtest")?.addEventListener("click", () => {
+      executeBacktest();
+    });
+  }
+
+  // Run on mount
+  setup();
+  document.addEventListener("astro:after-swap", setup);
+</script>
