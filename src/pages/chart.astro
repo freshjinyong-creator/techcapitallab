@@ -8,7 +8,7 @@ import StockChartViewer from "@/components/StockChartViewer.astro";
 import config from "@/config";
 
 const pageTitle = "종목 차트 & 전략 백테스터";
-const pageDesc = "증권사 일봉 데이터 기반의 실시간 인터랙티브 차트 분석, 기술적 보조지표 및 전략 백테스팅";
+const pageDesc = "한국 주식 전 종목 15년 일봉 데이터 기반의 인터랙티브 차트 분석, 이동평균선·RSI·MACD 보조지표 및 전략 백테스팅 가이드";
 ---
 
 <Layout
@@ -20,7 +20,106 @@ const pageDesc = "증권사 일봉 데이터 기반의 실시간 인터랙티브
   <Breadcrumb />
 
   <Main pageTitle={pageTitle} pageDesc={pageDesc}>
-    <StockChartViewer initialCode="000660" />
+    <!-- 1. Interactive Tool Viewer Component -->
+    <section class="mb-10">
+      <StockChartViewer initialCode="000660" />
+    </section>
+
+    <!-- 2. Rich Static HTML Content (AdSense Thin Content Prevention & User Guide) -->
+    <article class="app-prose border-t border-slate-700/50 pt-8 mt-12">
+      <h2>종목 차트 분석기 및 전략 백테스터 사용 가이드</h2>
+      <p>
+        본 도구는 한국 주식시장(코스피·코스닥) 상장 종목의 15년치 수정주가 일봉 데이터를 기반으로, 
+        주요 기술적 보조지표를 시각화하고 자체 매매 전략의 정량적 성과(CAGR, MDD, 승률, 손익비)를 실시간 백테스팅할 수 있도록 제공되는 분석 시스템입니다.
+      </p>
+
+      <h3>1. 차트 분석기 주요 기능</h3>
+      <ul>
+        <li><strong>수정주가 차트 분석:</strong> 무상증자, 주식분할, 배당락 등의 가격 왜곡을 보정한 15년 일봉 차트를 제공합니다.</li>
+        <li><strong>주요 이동평균선 세팅:</strong> 5일, 20일(생명선), 60일(수급선), 120일/240일(대세선) 정배열 및 수렴·발산 파동을 한눈에 파악할 수 있습니다.</li>
+        <li><strong>모멘텀 보조지표 연동:</strong> MACD(이동평균수렴·다이버전스), RSI(상대강도지수), 볼린저 밴드 지표를 차트와 수평 비교할 수 있습니다.</li>
+      </ul>
+
+      <h3>2. 전략 백테스터 성과 지표(Metric) 해석법</h3>
+      <p>
+        백테스트 실행 시 산출되는 4대 핵심 정량 지표는 투자 전략의 신뢰도와 위험 대비 보상 비율을 측정하는 기준이 됩니다.
+      </p>
+
+      <div class="overflow-x-auto my-6">
+        <table class="w-full text-left border-collapse border border-slate-700">
+          <thead>
+            <tr class="bg-slate-800 text-slate-200">
+              <th class="p-3 border border-slate-700">지표명</th>
+              <th class="p-3 border border-slate-700">영문 풀임</th>
+              <th class="p-3 border border-slate-700">의미 및 목표 기준값</th>
+            </tr>
+          </thead>
+          <tbody class="text-slate-300 text-sm">
+            <tr class="border border-slate-700">
+              <td class="p-3 font-semibold text-emerald-400">CAGR</td>
+              <td class="p-3">Compound Annual Growth Rate</td>
+              <td class="p-3">연평균 복리 수익률. 복리 효과를 감안한 기계적 전략의 연간 평균 기대 수익률입니다.</td>
+            </tr>
+            <tr class="border border-slate-700">
+              <td class="p-3 font-semibold text-rose-400">MDD</td>
+              <td class="p-3">Maximum Drawdown</td>
+              <td class="p-3">최대 낙폭. 고점 대비 계좌가 입을 수 있는 최악의 손실 비율로, -15% 이내 유지를 권장합니다.</td>
+            </tr>
+            <tr class="border border-slate-700">
+              <td class="p-3 font-semibold text-amber-400">승률 (Win Rate)</td>
+              <td class="p-3">Winning Trade Ratio</td>
+              <td class="p-3">전체 매매 횟수 중 이익 청산된 매매 비율. 손익비와 조합하여 전략의 기대값을 결정합니다.</td>
+            </tr>
+            <tr class="border border-slate-700">
+              <td class="p-3 font-semibold text-sky-400">손익비 (R:R)</td>
+              <td class="p-3">Risk-Reward Ratio</td>
+              <td class="p-3">평균 수익금 대비 평균 손실금의 비율. 최소 2:1 이상의 손익비 타점을 골라내는 것이 정석입니다.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>3. 기술적 보조지표 활용 매뉴얼</h3>
+      <ul>
+        <li><strong>이동평균선 정배열 매매:</strong> 20일선이 60일선 위에 있고 주가가 20일선 눌림목을 지지받을 때 손익비 높은 매수 타점을 포착합니다.</li>
+        <li><strong>RSI 과매도 반등:</strong> RSI 지수가 30 이하(과매도)로 떨어진 후 50선을 재돌파할 때 추세 반전 시그널을 확인합니다.</li>
+        <li><strong>MACD 다이버전스:</strong> 주가는 저점을 낮추는데 MACD 히스토그램은 저점을 높이는 다이버전스가 출현할 때 강한 진바닥을 판별합니다.</li>
+      </ul>
+
+      <h3>4. 연관 실전 차트 분석 가이드</h3>
+      <p>더 깊이 있는 차트 분석법과 백테스트 활용법은 아래 실전 가이드 글을 참고하시기 바랍니다.</p>
+      <ul>
+        <li>
+          <a href="/posts/candlestick-chart-basics-1-1/" class="text-sky-400 hover:underline">
+            1-1강. 캔들(Candlestick)의 일월성신: 시가·고가·저가·종가 속 세력 심리와 매매 타점
+          </a>
+        </li>
+        <li>
+          <a href="/posts/backtest-cagr-mdd-winrate-risk-reward-guide/" class="text-sky-400 hover:underline">
+            백테스터와 차트를 활용한 주식 투자 전략 수립법: CAGR, MDD, 승률, 손익비 계산 가이드
+          </a>
+        </li>
+        <li>
+          <a href="/posts/technical-indicators-ma-rsi-macd-backtest-guide/" class="text-sky-400 hover:underline">
+            이동평균선과 RSI, MACD 보조지표 실전 매매 전략 및 차트 백테스팅 정밀 가이드
+          </a>
+        </li>
+        <li>
+          <a href="/category/chart-analysis/" class="text-sky-400 hover:underline">
+            4. 실전 차트 분석 카테고리 전체 글 모아보기
+          </a>
+        </li>
+      </ul>
+
+      <div class="bg-slate-800/80 border border-slate-700 rounded-lg p-5 my-8">
+        <h4 class="text-slate-200 font-bold mb-2">📢 투자 위험 고지 및 면책 조항 (YMYL Disclaimer)</h4>
+        <p class="text-xs text-slate-400 leading-relaxed m-0">
+          본 웹사이트의 종목 차트, 보조지표 시각화 및 전략 백테스팅 시뮬레이션 결과는 과거 15년 수정주가 데이터에 기반한 교육 및 분석 참고용 자료이며, 미래의 투자 수익을 보장하지 않습니다. 
+          본 도구는 특정 종목의 매수·매도·보유를 권유하는 투자 자문이 아니며, 금융투자상품의 가격 변동 및 손실 리스크는 전적으로 투자자 본인에게 귀속됩니다. 
+          자세한 블로그 운영 목적과 원칙은 <a href="/about/" class="text-sky-400 underline">서비스 소개(About)</a> 및 <a href="/privacy/" class="text-sky-400 underline">개인정보처리방침(Privacy Policy)</a> 페이지에서 확인하실 수 있습니다.
+        </p>
+      </div>
+    </article>
   </Main>
 
   <Footer />
