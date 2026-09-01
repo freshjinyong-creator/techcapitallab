@@ -312,7 +312,7 @@ const { initialCode = "000660", defaultTab = "chart" } = Astro.props;
 </div>
 
 <script>
-  import { createChart, ColorType, LineStyle, createSeriesMarkers } from "lightweight-charts";
+  import { createChart, ColorType, LineStyle, createSeriesMarkers, CandlestickSeries, HistogramSeries, LineSeries } from "lightweight-charts";
   import {
     calculateSMA,
     calculateBollingerBands,
@@ -406,7 +406,7 @@ const { initialCode = "000660", defaultTab = "chart" } = Astro.props;
       },
     });
 
-    candleSeries = mainChart.addCandlestickSeries({
+    candleSeries = mainChart.addSeries(CandlestickSeries, {
       upColor: colors.upColor,
       downColor: colors.downColor,
       borderUpColor: colors.upColor,
@@ -415,7 +415,7 @@ const { initialCode = "000660", defaultTab = "chart" } = Astro.props;
       wickDownColor: colors.downColor,
     });
 
-    volumeSeries = mainChart.addHistogramSeries({
+    volumeSeries = mainChart.addSeries(HistogramSeries, {
       color: "#26a69a",
       priceFormat: { type: "volume" },
       priceScaleId: "",
@@ -424,14 +424,14 @@ const { initialCode = "000660", defaultTab = "chart" } = Astro.props;
       scaleMargins: { top: 0.8, bottom: 0 },
     });
 
-    maSeries5 = mainChart.addLineSeries({ color: "#e91e63", lineWidth: 1.5, title: "MA5" });
-    maSeries20 = mainChart.addLineSeries({ color: "#ff9800", lineWidth: 1.5, title: "MA20" });
-    maSeries60 = mainChart.addLineSeries({ color: "#4caf50", lineWidth: 1.5, title: "MA60" });
-    maSeries120 = mainChart.addLineSeries({ color: "#9c27b0", lineWidth: 1.5, title: "MA120" });
+    maSeries5 = mainChart.addSeries(LineSeries, { color: "#e91e63", lineWidth: 1.5, title: "MA5" });
+    maSeries20 = mainChart.addSeries(LineSeries, { color: "#ff9800", lineWidth: 1.5, title: "MA20" });
+    maSeries60 = mainChart.addSeries(LineSeries, { color: "#4caf50", lineWidth: 1.5, title: "MA60" });
+    maSeries120 = mainChart.addSeries(LineSeries, { color: "#9c27b0", lineWidth: 1.5, title: "MA120" });
 
-    bbUpperSeries = mainChart.addLineSeries({ color: "#00bcd4", lineWidth: 1, lineStyle: LineStyle.Dashed });
-    bbMiddleSeries = mainChart.addLineSeries({ color: "#00bcd4", lineWidth: 1 });
-    bbLowerSeries = mainChart.addLineSeries({ color: "#00bcd4", lineWidth: 1, lineStyle: LineStyle.Dashed });
+    bbUpperSeries = mainChart.addSeries(LineSeries, { color: "#00bcd4", lineWidth: 1, lineStyle: LineStyle.Dashed });
+    bbMiddleSeries = mainChart.addSeries(LineSeries, { color: "#00bcd4", lineWidth: 1 });
+    bbLowerSeries = mainChart.addSeries(LineSeries, { color: "#00bcd4", lineWidth: 1, lineStyle: LineStyle.Dashed });
 
     subChart = createChart(subContainer, {
       layout: {
@@ -452,10 +452,10 @@ const { initialCode = "000660", defaultTab = "chart" } = Astro.props;
       },
     });
 
-    rsiSeries = subChart.addLineSeries({ color: "#e91e63", lineWidth: 1.5 });
-    macdLineSeries = subChart.addLineSeries({ color: "#2196f3", lineWidth: 1.5 });
-    macdSignalSeries = subChart.addLineSeries({ color: "#ff9800", lineWidth: 1.5 });
-    macdHistSeries = subChart.addHistogramSeries({ color: "#26a69a" });
+    rsiSeries = subChart.addSeries(LineSeries, { color: "#e91e63", lineWidth: 1.5 });
+    macdLineSeries = subChart.addSeries(LineSeries, { color: "#2196f3", lineWidth: 1.5 });
+    macdSignalSeries = subChart.addSeries(LineSeries, { color: "#ff9800", lineWidth: 1.5 });
+    macdHistSeries = subChart.addSeries(HistogramSeries, { color: "#26a69a" });
 
     mainChart.timeScale().subscribeVisibleLogicalRangeChange((range: any) => {
       if (range && subChart) subChart.timeScale().setVisibleLogicalRange(range);
