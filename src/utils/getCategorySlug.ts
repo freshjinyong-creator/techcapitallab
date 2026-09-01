@@ -19,6 +19,11 @@ export const CATEGORY_MAP: Record<
     slug: "report-lab",
     desc: "증권사 산업 및 기업 리포트를 수치와 팩트 중심으로 심층 분석합니다.",
   },
+  "4. 실전 차트 분석": {
+    name: "4. 실전 차트 분석 (Chart Analysis)",
+    slug: "chart-analysis",
+    desc: "기술적 분석과 차트 패턴, 수급 매커니즘을 정량적 데이터로 심층 다룹니다.",
+  },
 };
 
 export const getCategorySlug = (categoryName: string): string => {

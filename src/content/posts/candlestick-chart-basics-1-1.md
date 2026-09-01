@@ -11,7 +11,7 @@ tags:
   - 차트매매타점
   - 세력매집
   - 기술적분석
-category: "1. 경제 기초 지식"
+category: "4. 실전 차트 분석"
 ogImage: "../../assets/images/candlestick-chart-basics-1-1.png"
 description: "주식 차트의 기본인 캔들스틱의 구조(OHLC)를 야구 경기에 비유하여 쉽게 풀어보고, 15년 일봉 데이터로 검증한 바닥권 역망치형 매집 패턴의 승률과 손익비 타점을 정밀 분석합니다."
 ---
@@ -129,11 +129,9 @@ description: "주식 차트의 기본인 캔들스틱의 구조(OHLC)를 야구 
 
 단순히 빨간색과 파란색이라는 결과에 현혹되지 않고, 시가·고가·저가·종가 속에서 매수자와 매도자가 주고받은 힘의 균형을 읽어내는 안목을 기르는 것이 차트 고수로 가는 첫 번째 관문입니다.
 
-**함께 읽으면 좋은 연관 분석 글**
+**함께 읽으면 좋은 차트 분석 연관 글**
 - [10강. 주식 시장 사이클과 섹터 로테이션: 우라가미 구니오 4계절 투자법](/posts/market-cycle-sector-rotation-uragami-four-seasons/)
-- [가치투자 5계명: 안전마진과 독점적 해자로 구축하는 포트폴리오](/posts/five-essential-value-investing-rules/)
-- [코스피 급락의 구조: 마진콜과 패닉셀이 만들어내는 시장 변곡점](/posts/stock-market-crash-mechanism-margin-call-panic-sell/)
-- [코스피 지수의 착시와 시가총액 가중방식 구조 분석](/posts/kospi-index-illusion-market-structure/)
+- [4. 실전 차트 분석 카테고리 전체 글 모아보기](/category/chart-analysis/)
 
 ---
 

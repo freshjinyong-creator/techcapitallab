@@ -9,6 +9,7 @@ export const CATEGORIES = [
   "1. 경제 기초 지식",
   "2. 뉴스 속 경제",
   "3. 증권사 리포트 읽기",
+  "4. 실전 차트 분석",
 ] as const;
 
 export type Category = (typeof CATEGORIES)[number];
