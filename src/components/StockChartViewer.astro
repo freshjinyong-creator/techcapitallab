@@ -515,7 +515,7 @@ const { initialCode = "000660", defaultTab = "chart" } = Astro.props;
     if (loadingEl) loadingEl.classList.remove("hidden");
 
     try {
-      const resp = await fetch(`/data/daily/${code}.json`);
+      const resp = await fetch(`https://pub-88fccd299b1d47fe97d43f35f238d0ce.r2.dev/data/daily/${code}.json`);
       if (!resp.ok) throw new Error("데이터를 찾을 수 없습니다.");
       const data = await resp.json();
       currentStockData = data;
@@ -719,7 +719,7 @@ const { initialCode = "000660", defaultTab = "chart" } = Astro.props;
     loadStock(currentCode, currentName);
 
     // 3. Fetch Stock Master List in background (non-blocking)
-    fetch("/data/stock_list.json")
+    fetch("https://pub-88fccd299b1d47fe97d43f35f238d0ce.r2.dev/data/stock_list.json")
       .then(r => r.json())
       .then(data => {
         stockList = data;

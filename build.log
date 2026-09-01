@@ -1,0 +1,377 @@
+$ astro check && astro build && pagefind --site dist && cp -r dist/pagefind public/
+20:22:30 [content] Syncing content
+20:22:30 [content] Synced content
+20:22:30 [types] Generated 1.30s
+20:22:30 [check] Getting diagnostics for Astro files in /home/freshjinyong/techcapitallab...
+[96msrc/components/StockChartViewer.astro[0m:[93m11[0m:[93m7[0m - [93mwarning[0m[90m ts(6198): [0mAll destructured elements are unused.
+
+[7m11[0m const { initialCode = "000660", defaultTab = "chart" } = Astro.props;
+[7m  [0m [93m      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+[96msrc/layouts/Layout.astro[0m:[93m118[0m:[93m13[0m - [93mwarning[0m[90m astro(4000): [0mThis script will be treated as if it has the `is:inline` directive because it contains an attribute. Therefore, features that require processing (e.g. using TypeScript or npm packages in the script) are unavailable.
+
+See docs for more details: https://docs.astro.build/en/guides/client-side-scripts/#script-processing.
+
+Add the `is:inline` directive explicitly to silence this hint.
+
+[7m118[0m     <script async src="https://www.googletagmanager.com/gtag/js?id=G-29702REPBT"></script>
+[7m   [0m [93m            ~~~~~[0m
+[96msrc/layouts/Layout.astro[0m:[93m112[0m:[93m7[0m - [93mwarning[0m[90m astro(4000): [0mThis script will be treated as if it has the `is:inline` directive because it contains an attribute. Therefore, features that require processing (e.g. using TypeScript or npm packages in the script) are unavailable.
+
+See docs for more details: https://docs.astro.build/en/guides/client-side-scripts/#script-processing.
+
+Add the `is:inline` directive explicitly to silence this hint.
+
+[7m112[0m       async
+[7m   [0m [93m      ~~~~~[0m
+
+[96msrc/pages/posts/[...slug]/index.astro[0m:[93m225[0m:[93m12[0m - [93mwarning[0m[90m ts(6133): [0m'addHeadingLinks' is declared but its value is never read.
+
+[7m225[0m   function addHeadingLinks() {
+[7m   [0m [93m           ~~~~~~~~~~~~~~~[0m
+
+[96msrc/pages/posts/[...slug]/_components/Comments.astro[0m:[93m8[0m:[93m7[0m - [93mwarning[0m[90m ts(6198): [0mAll destructured elements are unused.
+
+[7m  8[0m const {
+[7m   [0m [93m      ~[0m
+[7m  9[0m   id = Astro.url.pathname,
+[7m   [0m [93m~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[7m...[0m 
+[7m 11[0m   url = Astro.url.href,
+[7m   [0m [93m~~~~~~~~~~~~~~~~~~~~~~~[0m
+[7m 12[0m } = Astro.props;
+[7m   [0m [93m~[0m
+
+Result (67 files): 
+- 0 errors
+- 0 warnings
+- 5 hints
+
+20:22:45 [content] Syncing content
+20:22:45 [content] Synced content
+20:22:45 [types] Generated 1.77s
+20:22:45 [build] output: "static"
+20:22:45 [build] mode: "static"
+20:22:45 [build] directory: /home/freshjinyong/techcapitallab/dist/
+20:22:45 [build] Collecting build info...
+20:22:45 [build] ✓ Completed in 1.97s.
+20:22:45 [build] Building static entrypoints...
+20:22:59 [assets] Copying fonts (24 files)...
+20:22:59 [vite] ✓ built in 13.75s
+20:23:09 [vite] ✓ built in 10.19s
+20:23:09 [build] Rearranging server assets...
+
+ generating static routes 
+20:23:10   ├─ /404.html (+40ms) 
+20:23:10   ├─ /about/index.html (+10ms) 
+20:23:10   ├─ /archives/index.html (+39ms) 
+20:23:10   ├─ /category/economy-basics/index.html (+10ms) 
+20:23:10   ├─ /category/economy-basics/2/index.html (+6ms) 
+20:23:10   ├─ /category/news-macro/index.html (+13ms) 
+20:23:10   ├─ /category/news-macro/2/index.html (+6ms) 
+20:23:10   ├─ /category/news-macro/3/index.html (+6ms) 
+20:23:10   ├─ /category/news-macro/4/index.html (+5ms) 
+20:23:10   ├─ /category/report-lab/index.html (+10ms) 
+20:23:10   ├─ /category/report-lab/2/index.html (+3ms) 
+20:23:10   ├─ /category/chart-analysis/index.html (+3ms) 
+20:23:10   ├─ /category/index.html (+6ms) 
+20:23:10   ├─ /chart/index.html (+4ms) 
+20:23:10   ├─ /contact/index.html (+5ms) 
+20:23:10   ├─ /og.png (+7ms) 
+20:23:10   ├─ /posts/index.html (+6ms) 
+20:23:10   ├─ /posts/2/index.html (+7ms) 
+20:23:10   ├─ /posts/3/index.html (+6ms) 
+20:23:10   ├─ /posts/4/index.html (+10ms) 
+20:23:10   ├─ /posts/5/index.html (+5ms) 
+20:23:10   ├─ /posts/6/index.html (+4ms) 
+20:23:10   ├─ /posts/7/index.html (+4ms) 
+20:23:10   ├─ /posts/candlestick-chart-basics-1-1/index.html (+18ms) 
+20:23:10   ├─ /posts/market-cycle-sector-rotation-uragami-four-seasons/index.html (+6ms) 
+20:23:10   ├─ /posts/broker-report-roundup-2026-09-01/index.html (+6ms) 
+20:23:10   ├─ /posts/oil-price-fed-rate-hike-kospi-6800-analysis/index.html (+5ms) 
+20:23:10   ├─ /posts/who-uses-all-these-gpus-korean-ai-dc-monetization/index.html (+4ms) 
+20:23:10   ├─ /posts/jackson-hole-2026-fomc-bigtech-ai-capex/index.html (+7ms) 
+20:23:10   ├─ /posts/stock-market-crash-mechanism-margin-call-panic-sell/index.html (+6ms) 
+20:23:10   ├─ /posts/us-semiconductor-tariff-trump-impact/index.html (+5ms) 
+20:23:10   ├─ /posts/semiconductor-decoupling-nvidia-samsung-sk-hynix/index.html (+6ms) 
+20:23:10   ├─ /posts/us-semiconductor-reshoring-tariff-and-bok-rate-hike/index.html (+4ms) 
+20:23:10   ├─ /posts/nvidia-ai-server-15pct-price-hike-earnings-preview/index.html (+8ms) 
+20:23:10   ├─ /posts/us-bond-yield-k-semiconductor-300trillion/index.html (+6ms) 
+20:23:10   ├─ /posts/ai-datacenter-power-demand-2040-utility-grid/index.html (+4ms) 
+20:23:10   ├─ /posts/bubble-history-dotcom-japan-financial-crisis-analysis/index.html (+5ms) 
+20:23:10   ├─ /posts/sk-hynix-40trillion-buyback-analysis/index.html (+4ms) 
+20:23:10   ├─ /posts/samsung-foundry-15pct-price-hike-pyeongtaek-3floor-fab/index.html (+4ms) 
+20:23:10   ├─ /posts/us-interest-rate-yen-carry-china-supply-chain-kospi/index.html (+7ms) 
+20:23:10   ├─ /posts/kospi-crash-us-bond-yield-ai-report-20260819/index.html (+4ms) 
+20:23:10   ├─ /posts/ai-monetization-anthropic-92t-lg-nvidia-physical-ai/index.html (+4ms) 
+20:23:10   ├─ /posts/korea-rate-hike-semiconductor-growth-paradox/index.html (+4ms) 
+20:23:10   ├─ /posts/korea-household-debt-2000-trillion-mortgage-impact/index.html (+4ms) 
+20:23:10   ├─ /posts/kospi-index-illusion-market-structure/index.html (+4ms) 
+20:23:10   ├─ /posts/broker-report-roundup-2026-08-18/index.html (+4ms) 
+20:23:10   ├─ /posts/samsung-skhynix-semiconductor-concentration-2026/index.html (+8ms) 
+20:23:10   ├─ /posts/five-essential-value-investing-rules/index.html (+7ms) 
+20:23:10   ├─ /posts/hyundai-terrapower-sodium-smr-epc-2026/index.html (+4ms) 
+20:23:10   ├─ /posts/market-psychology-behavioral-economics-traps/index.html (+4ms) 
+20:23:10   ├─ /posts/sk-innovation-terrapower-smr-partnership/index.html (+4ms) 
+20:23:10   ├─ /posts/compound-interest-magic-72-rule-time-value/index.html (+5ms) 
+20:23:10   ├─ /posts/sp500-record-high-ppi-inflation-cooldown-2026/index.html (+8ms) 
+20:23:10   ├─ /posts/investing-vs-gambling-expected-value-edge/index.html (+5ms) 
+20:23:10   ├─ /posts/stock-essence-intrinsic-value-market-price/index.html (+5ms) 
+20:23:10   ├─ /posts/delisting-risk-penny-stocks-market-cap-2026/index.html (+4ms) 
+20:23:10   ├─ /posts/china-semiconductor-catch-up-cxmt-ymtc/index.html (+4ms) 
+20:23:10   ├─ /posts/broker-report-roundup-2026-08-14/index.html (+4ms) 
+20:23:10   ├─ /posts/kospi-23pct-rally-foreign-selloff-2026/index.html (+7ms) 
+20:23:10   ├─ /posts/us-cpi-july-2026-34-fed-rate-cut/index.html (+4ms) 
+20:23:10   ├─ /posts/nvidia-710t-gpu-fund-meta-rental/index.html (+6ms) 
+20:23:10   ├─ /privacy/index.html (+4ms) 
+20:23:10   ├─ /robots.txt (+2ms) 
+20:23:10   ├─ /rss.xml (+48ms) 
+20:23:10   ├─ /search/index.html (+4ms) 
+20:23:10   ├─ /tags/72-의법칙/index.html (+5ms) 
+20:23:10   ├─ /tags/aicapex/index.html (+3ms) 
+20:23:10   ├─ /tags/ai데이터센터/index.html (+3ms) 
+20:23:10   ├─ /tags/ai반도체/index.html (+3ms) 
+20:23:10   ├─ /tags/ai서버/index.html (+5ms) 
+20:23:10   ├─ /tags/ai전력시장/index.html (+3ms) 
+20:23:10   ├─ /tags/ai투자/index.html (+3ms) 
+20:23:10   ├─ /tags/cxmt/index.html (+3ms) 
+20:23:10   ├─ /tags/db손해보험/index.html (+4ms) 
+20:23:10   ├─ /tags/ess/index.html (+3ms) 
+20:23:10   ├─ /tags/ess배터리/index.html (+3ms) 
+20:23:10   ├─ /tags/fomc/index.html (+7ms) 
+20:23:10   ├─ /tags/fomo/index.html (+8ms) 
+20:23:10   ├─ /tags/gpu/index.html (+3ms) 
+20:23:10   ├─ /tags/hbm/index.html (+5ms) 
+20:23:10   ├─ /tags/hbm4/index.html (+5ms) 
+20:23:10   ├─ /tags/hd현대/index.html (+3ms) 
+20:23:10   ├─ /tags/lg전자/index.html (+3ms) 
+20:23:10   ├─ /tags/mlcc/index.html (+7ms) 
+20:23:10   ├─ /tags/naver/index.html (+5ms) 
+20:23:10   ├─ /tags/ppi/index.html (+3ms) 
+20:23:10   ├─ /tags/sfa반도체/index.html (+3ms) 
+20:23:10   ├─ /tags/sk이노베이션/index.html (+4ms) 
+20:23:10   ├─ /tags/sk텔레콤/index.html (+3ms) 
+20:23:10   ├─ /tags/sk하이닉스/index.html (+5ms) 
+20:23:10   ├─ /tags/sk하이닉스/2/index.html (+7ms) 
+20:23:10   ├─ /tags/smr/index.html (+4ms) 
+20:23:10   ├─ /tags/sp500/index.html (+3ms) 
+20:23:10   ├─ /tags/tsmc/index.html (+3ms) 
+20:23:10   ├─ /tags/ymtc/index.html (+3ms) 
+20:23:10   ├─ /tags/가계부채/index.html (+3ms) 
+20:23:10   ├─ /tags/가치투자/index.html (+5ms) 
+20:23:10   ├─ /tags/가치투자/2/index.html (+4ms) 
+20:23:10   ├─ /tags/거시경제/index.html (+6ms) 
+20:23:10   ├─ /tags/경제성장률/index.html (+3ms) 
+20:23:10   ├─ /tags/공매도/index.html (+7ms) 
+20:23:10   ├─ /tags/관리종목/index.html (+4ms) 
+20:23:10   ├─ /tags/국제유가/index.html (+4ms) 
+20:23:10   ├─ /tags/군중심리/index.html (+4ms) 
+20:23:10   ├─ /tags/글로벌금융위기/index.html (+7ms) 
+20:23:10   ├─ /tags/금리인상/index.html (+5ms) 
+20:23:10   ├─ /tags/금리인하/index.html (+4ms) 
+20:23:10   ├─ /tags/금리정책/index.html (+3ms) 
+20:23:10   ├─ /tags/금통위/index.html (+3ms) 
+20:23:10   ├─ /tags/기대값/index.html (+3ms) 
+20:23:10   ├─ /tags/기술적분석/index.html (+3ms) 
+20:23:10   ├─ /tags/기준금리/index.html (+3ms) 
+20:23:10   ├─ /tags/나스닥/index.html (+7ms) 
+20:23:10   ├─ /tags/나트륨원전/index.html (+3ms) 
+20:23:10   ├─ /tags/내재가치/index.html (+3ms) 
+20:23:10   ├─ /tags/네이버/index.html (+4ms) 
+20:23:10   ├─ /tags/뉴욕증시/index.html (+4ms) 
+20:23:10   ├─ /tags/닷컴버블/index.html (+3ms) 
+20:23:10   ├─ /tags/동전주/index.html (+3ms) 
+20:23:10   ├─ /tags/등락비율/index.html (+3ms) 
+20:23:10   ├─ /tags/디커플링/index.html (+4ms) 
+20:23:10   ├─ /tags/롯데관광개발/index.html (+7ms) 
+20:23:10   ├─ /tags/루빈/index.html (+3ms) 
+20:23:10   ├─ /tags/리쇼어링/index.html (+3ms) 
+20:23:11   ├─ /tags/마진콜/index.html (+3ms) 
+20:23:11   ├─ /tags/메타/index.html (+3ms) 
+20:23:11   ├─ /tags/미국cpi/index.html (+3ms) 
+20:23:11   ├─ /tags/미국관세/index.html (+3ms) 
+20:23:11   ├─ /tags/미국국채금리/index.html (+9ms) 
+20:23:11   ├─ /tags/미국금리/index.html (+4ms) 
+20:23:11   ├─ /tags/반대매매/index.html (+3ms) 
+20:23:11   ├─ /tags/반도체/index.html (+5ms) 
+20:23:11   ├─ /tags/반도체/2/index.html (+3ms) 
+20:23:11   ├─ /tags/반도체관세/index.html (+5ms) 
+20:23:11   ├─ /tags/반도체업황/index.html (+3ms) 
+20:23:11   ├─ /tags/반도체주/index.html (+7ms) 
+20:23:11   ├─ /tags/반도체호황/index.html (+3ms) 
+20:23:11   ├─ /tags/방산/index.html (+3ms) 
+20:23:11   ├─ /tags/배당재투자/index.html (+3ms) 
+20:23:11   ├─ /tags/버블의역사/index.html (+3ms) 
+20:23:11   ├─ /tags/버핏지수/index.html (+2ms) 
+20:23:11   ├─ /tags/복리의마법/index.html (+3ms) 
+20:23:11   ├─ /tags/부동산전망/index.html (+3ms) 
+20:23:11   ├─ /tags/비에이치아이/index.html (+5ms) 
+20:23:11   ├─ /tags/빅테크/index.html (+5ms) 
+20:23:11   ├─ /tags/빌게이츠/index.html (+3ms) 
+20:23:11   ├─ /tags/삼성sds/index.html (+3ms) 
+20:23:11   ├─ /tags/삼성전자/index.html (+4ms) 
+20:23:11   ├─ /tags/삼성전자/2/index.html (+4ms) 
+20:23:11   ├─ /tags/삼성화재/index.html (+2ms) 
+20:23:11   ├─ /tags/삼양식품/index.html (+3ms) 
+20:23:11   ├─ /tags/상아프론테크/index.html (+3ms) 
+20:23:11   ├─ /tags/상장폐지/index.html (+6ms) 
+20:23:11   ├─ /tags/세력매집/index.html (+3ms) 
+20:23:11   ├─ /tags/섹터로테이션/index.html (+3ms) 
+20:23:11   ├─ /tags/소듐냉각고속로/index.html (+2ms) 
+20:23:11   ├─ /tags/손실회피/index.html (+3ms) 
+20:23:11   ├─ /tags/수급붕괴/index.html (+3ms) 
+20:23:11   ├─ /tags/수량복리/index.html (+3ms) 
+20:23:11   ├─ /tags/스트레스dsr/index.html (+3ms) 
+20:23:11   ├─ /tags/시가고가저가종가/index.html (+3ms) 
+20:23:11   ├─ /tags/시가총액가중방식/index.html (+14ms) 
+20:23:11   ├─ /tags/시가총액미달/index.html (+4ms) 
+20:23:11   ├─ /tags/시간의가치/index.html (+3ms) 
+20:23:11   ├─ /tags/시장가격/index.html (+3ms) 
+20:23:11   ├─ /tags/시장구조/index.html (+3ms) 
+20:23:11   ├─ /tags/시장사이클/index.html (+3ms) 
+20:23:11   ├─ /tags/시장의심리학/index.html (+4ms) 
+20:23:11   ├─ /tags/시황분석/index.html (+6ms) 
+20:23:11   ├─ /tags/실적발표/index.html (+3ms) 
+20:23:11   ├─ /tags/앤트로픽/index.html (+3ms) 
+20:23:11   ├─ /tags/엔비디아/index.html (+4ms) 
+20:23:11   ├─ /tags/엔캐리트레이드/index.html (+3ms) 
+20:23:11   ├─ /tags/연준/index.html (+3ms) 
+20:23:11   ├─ /tags/연준금리/index.html (+3ms) 
+20:23:11   ├─ /tags/완제품관세/index.html (+3ms) 
+20:23:11   ├─ /tags/외국인순매도/index.html (+8ms) 
+20:23:11   ├─ /tags/우라가미구니오/index.html (+3ms) 
+20:23:11   ├─ /tags/우주항공/index.html (+3ms) 
+20:23:11   ├─ /tags/워런버핏/index.html (+5ms) 
+20:23:11   ├─ /tags/워렌버핏/index.html (+7ms) 
+20:23:11   ├─ /tags/원자력/index.html (+13ms) 
+20:23:11   ├─ /tags/인공지능/index.html (+5ms) 
+20:23:11   ├─ /tags/인텔리안테크/index.html (+5ms) 
+20:23:11   ├─ /tags/인플레이션/index.html (+8ms) 
+20:23:11   ├─ /tags/일본버블/index.html (+5ms) 
+20:23:11   ├─ /tags/잉여현금흐름/index.html (+6ms) 
+20:23:11   ├─ /tags/자사주소각/index.html (+4ms) 
+20:23:11   ├─ /tags/잭슨홀/index.html (+4ms) 
+20:23:11   ├─ /tags/전기요금/index.html (+3ms) 
+20:23:11   ├─ /tags/전력망/index.html (+4ms) 
+20:23:11   ├─ /tags/전력수요/index.html (+3ms) 
+20:23:11   ├─ /tags/주식의본질/index.html (+3ms) 
+20:23:11   ├─ /tags/주식차트/index.html (+6ms) 
+20:23:11   ├─ /tags/주식투자전략/index.html (+3ms) 
+20:23:11   ├─ /tags/주주환원/index.html (+3ms) 
+20:23:11   ├─ /tags/주택담보대출/index.html (+3ms) 
+20:23:11   ├─ /tags/중국공급망/index.html (+4ms) 
+20:23:11   ├─ /tags/중국반도체/index.html (+3ms) 
+20:23:11   ├─ /tags/증권사리포트/index.html (+4ms) 
+20:23:11   ├─ /tags/증권사리포트/2/index.html (+3ms) 
+20:23:11   ├─ /tags/차트매매타점/index.html (+6ms) 
+20:23:11   ├─ /tags/찰리멍거/index.html (+7ms) 
+20:23:11   ├─ /tags/캔들분석/index.html (+3ms) 
+20:23:11   ├─ /tags/코리아디스카운트/index.html (+5ms) 
+20:23:11   ├─ /tags/코스피/index.html (+4ms) 
+20:23:11   ├─ /tags/코스피/2/index.html (+4ms) 
+20:23:11   ├─ /tags/테라파워/index.html (+4ms) 
+20:23:11   ├─ /tags/테스/index.html (+6ms) 
+20:23:11   ├─ /tags/테크투자/index.html (+3ms) 
+20:23:11   ├─ /tags/통상정책/index.html (+4ms) 
+20:23:11   ├─ /tags/투자와도박/index.html (+3ms) 
+20:23:11   ├─ /tags/투자원칙/index.html (+3ms) 
+20:23:11   ├─ /tags/트럼프/index.html (+3ms) 
+20:23:11   ├─ /tags/파운드리/index.html (+3ms) 
+20:23:11   ├─ /tags/패닉셀/index.html (+3ms) 
+20:23:11   ├─ /tags/평택캠퍼스/index.html (+6ms) 
+20:23:11   ├─ /tags/폭락메커니즘/index.html (+3ms) 
+20:23:11   ├─ /tags/피지컬ai/index.html (+9ms) 
+20:23:11   ├─ /tags/피터린치/index.html (+3ms) 
+20:23:11   ├─ /tags/한국경제/index.html (+3ms) 
+20:23:11   ├─ /tags/한국은행/index.html (+3ms) 
+20:23:11   ├─ /tags/한국토지신탁/index.html (+3ms) 
+20:23:11   ├─ /tags/한화에어로스페이스/index.html (+7ms) 
+20:23:11   ├─ /tags/행동경제학/index.html (+3ms) 
+20:23:11   ├─ /tags/현대건설/index.html (+3ms) 
+20:23:11   ├─ /tags/현대차/index.html (+3ms) 
+20:23:11   ├─ /tags/확증편향/index.html (+3ms) 
+20:23:11   ├─ /tags/환율/index.html (+3ms) 
+20:23:11   ├─ /tags/index.html (+19ms) 
+20:23:11   ├─ /index.html (+11ms) 
+20:23:11 ✓ Completed in 1.51s.
+
+ generating optimized images 
+20:23:11   ▶ /_astro/candlestick-structure-diagram.B_iqrbsY_2mtKp5.webp (reused cache entry) (+4ms) (1/40)
+20:23:11   ▶ /_astro/candlestick-upper-shadow-trap.C8aX4eNf_1JkOVM.webp (reused cache entry) (+7ms) (2/40)
+20:23:11   ▶ /_astro/candlestick-chart-basics-1-1.C0dQ9-Qx_K9kon.webp (reused cache entry) (+7ms) (3/40)
+20:23:11   ▶ /_astro/market-cycle-sector-rotation-uragami-four-seasons.C7NGaT0k_2h3z1A.webp (reused cache entry) (+7ms) (4/40)
+20:23:11   ▶ /_astro/oil-price-fed-rate-hike-kospi-6800-analysis.DlcWJb3k_1GKxNY.webp (reused cache entry) (+2ms) (5/40)
+20:23:11   ▶ /_astro/broker-report-roundup-2026-09-01.CETSnUxe_1Rqj4E.webp (reused cache entry) (+3ms) (6/40)
+20:23:11   ▶ /_astro/jackson-hole-2026-fomc-bigtech-ai-capex.M_yzRPhv_11y5YO.webp (reused cache entry) (+2ms) (7/40)
+20:23:11   ▶ /_astro/korea-ai-datacenter-gpu-demand-monetization.DnTR3gOq_Z1OPuf8.webp (reused cache entry) (+3ms) (8/40)
+20:23:11   ▶ /_astro/stock-market-crash-mechanism-margin-call-panic-sell.C6WRCX-h_2jj9Bl.webp (reused cache entry) (+2ms) (9/40)
+20:23:11   ▶ /_astro/us-semiconductor-tariff-trump-impact.DecXfVVD_2ojpKg.webp (reused cache entry) (+2ms) (10/40)
+20:23:11   ▶ /_astro/og-semiconductor-decoupling-2026-08-28.BK7NY2QF_1hyosF.webp (reused cache entry) (+3ms) (11/40)
+20:23:11   ▶ /_astro/us-bond-yield-k-semiconductor-300trillion.CI9n7Rfk_CHjfW.webp (reused cache entry) (+3ms) (12/40)
+20:23:11   ▶ /_astro/nvidia-ai-server-15pct-price-hike.gXTzmyP3_1BYUJG.webp (reused cache entry) (+4ms) (13/40)
+20:23:11   ▶ /_astro/us-semiconductor-reshoring-tariff-and-bok-rate-hike.DPyi3cej_ZFSAVJ.webp (reused cache entry) (+5ms) (14/40)
+20:23:11   ▶ /_astro/ai-datacenter-power-demand-2040.DPcLMgVY_1bWhnI.webp (reused cache entry) (+3ms) (15/40)
+20:23:11   ▶ /_astro/sk-hynix-40-trillion-treasury-stock.ssifPzCZ_Z2q4pFu.webp (reused cache entry) (+2ms) (16/40)
+20:23:11   ▶ /_astro/us-rate-kospi.B2-LZ_3E_Z27W2V1.svg (reused cache entry) (+2ms) (17/40)
+20:23:11   ▶ /_astro/samsung-foundry-pyeongtaek-fab.BmdQepgw_k6wK6.webp (reused cache entry) (+2ms) (18/40)
+20:23:11   ▶ /_astro/bubble-history-dotcom-japan-financial-crisis.DdjCzCvu_2kHpsD.webp (reused cache entry) (+4ms) (19/40)
+20:23:11   ▶ /_astro/kospi-sidecar-ai-crash.BbyoIBOj_Z27W2V1.svg (reused cache entry) (+3ms) (20/40)
+20:23:11   ▶ /_astro/korea-household-debt.D9P-CxTb_Z27W2V1.svg (reused cache entry) (+2ms) (21/40)
+20:23:11   ▶ /_astro/korea-rate-hike-paradox.Bx3vmDDc_Z27W2V1.svg (reused cache entry) (+3ms) (22/40)
+20:23:11   ▶ /_astro/ai-monetization.B-HFpHar_Z27W2V1.svg (reused cache entry) (+3ms) (23/40)
+20:23:11   ▶ /_astro/broker-report-0818.C_P1p-4K_Z27W2V1.svg (reused cache entry) (+2ms) (24/40)
+20:23:11   ▶ /_astro/kospi-index-illusion.DHxa1Ouf_Z27W2V1.svg (reused cache entry) (+3ms) (25/40)
+20:23:11   ▶ /_astro/semiconductor-concentration.wDERb998_Z27W2V1.svg (reused cache entry) (+3ms) (26/40)
+20:23:11   ▶ /_astro/value-investing-rules.6cl7lR8i_Z27W2V1.svg (reused cache entry) (+3ms) (27/40)
+20:23:11   ▶ /_astro/hyundai-terrapower-smr.CZtRvA7w_Z27W2V1.svg (reused cache entry) (+2ms) (28/40)
+20:23:11   ▶ /_astro/market-psychology.guyd7Kmq_Z27W2V1.svg (reused cache entry) (+2ms) (29/40)
+20:23:11   ▶ /_astro/sk-terrapower-smr.DSNH0U8d_Z27W2V1.svg (reused cache entry) (+2ms) (30/40)
+20:23:11   ▶ /_astro/compound-interest.BjzOb9y__Z27W2V1.svg (reused cache entry) (+2ms) (31/40)
+20:23:11   ▶ /_astro/sp500-record-high-ppi.BnheFnZj_Z27W2V1.svg (reused cache entry) (+1ms) (32/40)
+20:23:11   ▶ /_astro/stock-essence-value-price.B0KUWbzp_Z27W2V1.svg (reused cache entry) (+1ms) (33/40)
+20:23:11   ▶ /_astro/delisting-risk.DG6CbJMv_Z27W2V1.svg (reused cache entry) (+1ms) (34/40)
+20:23:11   ▶ /_astro/investing-vs-gambling.Jx_W2Rxu_Z27W2V1.svg (reused cache entry) (+2ms) (35/40)
+20:23:11   ▶ /_astro/china-semiconductor.DZ799pY4_Z27W2V1.svg (reused cache entry) (+2ms) (36/40)
+20:23:11   ▶ /_astro/kospi-rally-foreign-selloff.-wqEZ6CT_Z27W2V1.svg (reused cache entry) (+1ms) (37/40)
+20:23:11   ▶ /_astro/broker-report-0814.DWiSjgez_Z27W2V1.svg (reused cache entry) (+2ms) (38/40)
+20:23:11   ▶ /_astro/us-cpi-july-2026.DMOGDscq_Z27W2V1.svg (reused cache entry) (+1ms) (39/40)
+20:23:11   ▶ /_astro/nvidia-gpu-fund.BZ3UHE4I_Z27W2V1.svg (reused cache entry) (+1ms) (40/40)
+20:23:11 ✓ Completed in 34ms.
+
+20:23:11 [build] ✓ Completed in 24.58s.
+20:23:11 [@astrojs/sitemap] `sitemap-index.xml` created at `dist`
+20:23:11 [build] 228 page(s) built in 26.80s
+20:23:11 [build] Complete!
+
+Running Pagefind v1.5.2 (Extended)
+Running from: "/home/freshjinyong/techcapitallab"
+Source:       "dist"
+Output:       "dist/pagefind"
+
+[Walking source directory]
+Found 229 files matching **/*.{html}
+
+[Parsing files]
+Found a data-pagefind-body element on the site.
+↳ Ignoring pages without this tag.
+1 page found without an <html> element. 
+Pages without an outer <html> element will not be processed by default. 
+If adding this element is not possible, use the root selector config to target a different root element.
+  * "/googled6c529e4ba11860a.html" has no <html> element
+
+[Reading languages]
+Discovered 1 language: ko
+
+[Building search indexes]
+Total: 
+  Indexed 1 language
+  Indexed 38 pages
+  Indexed 16178 words
+  Indexed 0 filters
+  Indexed 0 sorts
+Note: Pagefind doesn't support stemming for the language ko. 
+Search will still work, but will not match across root words.
+Note: Pagefind doesn't support stemming for the language ko. 
+Search will still work, but will not match across root words.
+
+Finished in 0.290 seconds
