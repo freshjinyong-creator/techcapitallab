@@ -16,7 +16,7 @@ ogImage: "../../assets/images/stock-market-crash-mechanism-margin-call-panic-sel
 draft: false
 ---
 
-> **[가치투자 마스터 클래스 제9강]** 폭락의 메커니즘 — 공매도, 마진콜, 패닉셀의 수급 연쇄 붕괴 과정
+> <strong>가치투자 마스터 클래스 제9강</strong> 폭락의 메커니즘 — 공매도, 마진콜, 패닉셀의 수급 연쇄 붕괴 과정
 
 > **작성 기준일:** 2026-08-29  
 > **TL;DR (3줄 요약)**

@@ -16,7 +16,7 @@ ogImage: "../../assets/images/bubble-history-dotcom-japan-financial-crisis.jpg"
 draft: false
 ---
 
-> **[가치투자 마스터 클래스 제8강]** 버블의 역사 — 닷컴 버블, 일본 버블 경제, 2008 금융위기 연쇄 분석
+> <strong>가치투자 마스터 클래스 제8강</strong> 버블의 역사 — 닷컴 버블, 일본 버블 경제, 2008 금융위기 연쇄 분석
 
 > **작성 기준일:** 2026-08-20  
 > **TL;DR (3줄 요약)**
