@@ -11,7 +11,7 @@ tags:
   - 우라가미구니오
   - 가치투자
   - 코스피
-category: "4. 실전 차트 분석"
+category: "1. 경제 기초 지식"
 ogImage: "../../assets/images/market-cycle-sector-rotation-uragami-four-seasons.png"
 description: "하워드 막스의 시계추 원리와 우라가미 구니오의 증시 4계절(금융·실적·역금융·역실적장세)을 바탕으로 한국 증시의 순환 주기와 섹터별 자금 이동 공식을 분석합니다."
 ---
@@ -135,9 +135,11 @@ description: "하워드 막스의 시계추 원리와 우라가미 구니오의 
 
 시장이 탐욕에 취해 여름의 축제를 즐길 때는 조용히 차익을 실현하며 다가올 가을과 겨울에 대비하고, 시장이 공포에 질려 겨울의 눈보라 속에 주식을 내던질 때는 묵묵히 봄의 새싹을 틔울 1등 기업의 지분을 모아나가는 것, 이것이 사이클을 지배하는 진정한 투자자의 길입니다.
 
-**함께 읽으면 좋은 차트 분석 연관 글**
-- [1-1강. 캔들(Candlestick)의 일월성신, 시가·고가·저가·종가 속 세력 심리와 매매 타점](/posts/candlestick-chart-basics-1-1/)
-- [4. 실전 차트 분석 카테고리 전체 글 모아보기](/category/chart-analysis/)
+**함께 읽으면 좋은 연관 분석 글**
+- [다섯 거장의 투자 원칙: 안전마진과 독점적 해자로 구축하는 포트폴리오](/posts/five-essential-value-investing-rules/)
+- [코스피 급락의 구조: 마진콜과 패닉셀이 만들어내는 시장 변곡점](/posts/stock-market-crash-mechanism-margin-call-panic-sell/)
+- [버블의 역사와 붕괴 메커니즘: 닷컴 버블부터 금융위기까지](/posts/bubble-history-dotcom-japan-financial-crisis-analysis/)
+- [미국 금리 인상과 엔캐리 청산이 코스피에 미치는 메커니즘](/posts/us-interest-rate-yen-carry-china-supply-chain-kospi/)
 
 ---
 
