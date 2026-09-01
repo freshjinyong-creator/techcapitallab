@@ -193,6 +193,12 @@ const { initialCode = "000660", defaultTab = "chart" } = Astro.props;
             <option value="BOLLINGER_REVERSAL">볼린저 밴드 하단 반등 매매</option>
             <option value="BREAKOUT_HIGH">20일 신고가 돌파 매매</option>
             <option value="SURGE_PULLBACK">10%+ 급등 후 눌림목 반등</option>
+            <option value="VOLUME_SURGE">거래량 폭증(300%+) 장대양봉 돌파</option>
+            <option value="MA_ALIGN_BULL">이평선 정배열 전환 (5>20>60일선)</option>
+            <option value="MACD_GOLDEN_CROSS">MACD 시그널 골든크로스</option>
+            <option value="VOLATILITY_BREAKOUT">래리 윌리엄스 변동성 돌파 (k=0.5)</option>
+            <option value="DISPARITY_OVERSOLD">20일선 이격도 과매도(-10%) 반등</option>
+            <option value="HIGH_52W_BREAKOUT">52주(250일) 신고가 돌파 매매</option>
           </select>
         </div>
 
@@ -387,6 +393,7 @@ const { initialCode = "000660", defaultTab = "chart" } = Astro.props;
       layout: {
         background: { type: ColorType.Solid, color: "transparent" },
         textColor: colors.text,
+        attributionLogo: false,
       },
       grid: {
         vertLines: { color: colors.grid },
@@ -437,6 +444,7 @@ const { initialCode = "000660", defaultTab = "chart" } = Astro.props;
       layout: {
         background: { type: ColorType.Solid, color: "transparent" },
         textColor: colors.text,
+        attributionLogo: false,
       },
       grid: {
         vertLines: { color: colors.grid },
@@ -614,18 +622,23 @@ const { initialCode = "000660", defaultTab = "chart" } = Astro.props;
 
     if (select === "rsi") {
       if (subTitle) subTitle.innerText = "RSI (14)";
+      rsiSeries?.applyOptions({ visible: true });
+      macdLineSeries?.applyOptions({ visible: false });
+      macdSignalSeries?.applyOptions({ visible: false });
+      macdHistSeries?.applyOptions({ visible: false });
       rsiSeries?.setData(calculateRSI(currentStockData, 14));
-      macdLineSeries?.setData([]);
-      macdSignalSeries?.setData([]);
-      macdHistSeries?.setData([]);
     } else if (select === "macd") {
       if (subTitle) subTitle.innerText = "MACD (12, 26, 9)";
+      rsiSeries?.applyOptions({ visible: false });
+      macdLineSeries?.applyOptions({ visible: true });
+      macdSignalSeries?.applyOptions({ visible: true });
+      macdHistSeries?.applyOptions({ visible: true });
       const macd = calculateMACD(currentStockData, 12, 26, 9);
       macdLineSeries?.setData(macd.macd);
       macdSignalSeries?.setData(macd.signal);
       macdHistSeries?.setData(macd.histogram);
-      rsiSeries?.setData([]);
     }
+    subChart?.priceScale("right").applyOptions({ autoScale: true });
     subChart?.timeScale().fitContent();
   }
 

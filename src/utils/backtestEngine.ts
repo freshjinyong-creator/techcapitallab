@@ -1,8 +1,9 @@
 import type { CandleData } from "./technicalIndicators";
 import {
   calculateSMA,
-  calculateRSI,
   calculateBollingerBands,
+  calculateRSI,
+  calculateMACD,
 } from "./technicalIndicators";
 
 export type StrategyType =
@@ -10,19 +11,25 @@ export type StrategyType =
   | "RSI_OVERSOLD"
   | "BOLLINGER_REVERSAL"
   | "BREAKOUT_HIGH"
-  | "SURGE_PULLBACK";
+  | "SURGE_PULLBACK"
+  | "VOLUME_SURGE"
+  | "MA_ALIGN_BULL"
+  | "MACD_GOLDEN_CROSS"
+  | "VOLATILITY_BREAKOUT"
+  | "DISPARITY_OVERSOLD"
+  | "HIGH_52W_BREAKOUT";
 
 export interface BacktestParams {
   strategy: StrategyType;
-  stopLossPct?: number;
-  takeProfitPct?: number;
-  maxHoldDays?: number;
-  feePct?: number;
-  maFast?: number;
-  maSlow?: number;
+  takeProfitPct?: number; // e.g. 10 for 10%
+  stopLossPct?: number; // e.g. 5 for 5%
+  maxHoldDays?: number; // e.g. 20 days
+  feeRatePct?: number; // default 0.2%
   rsiPeriod?: number;
   rsiBuy?: number;
   rsiSell?: number;
+  maFast?: number;
+  maSlow?: number;
   bbPeriod?: number;
   breakoutDays?: number;
 }
@@ -64,40 +71,43 @@ export function runBacktest(
   data: CandleData[],
   params: BacktestParams
 ): BacktestResult {
-  const emptyResult: BacktestResult = {
-    strategyName: params.strategy,
-    totalReturnPct: 0,
-    buyAndHoldReturnPct: 0,
-    winRatePct: 0,
-    winCount: 0,
-    lossCount: 0,
-    totalTrades: 0,
-    profitFactor: 0,
-    avgReturnPct: 0,
-    maxDrawdownPct: 0,
-    trades: [],
-    markers: [],
-  };
+  if (!data || data.length < 20) {
+    return {
+      strategyName: params.strategy,
+      totalReturnPct: 0,
+      buyAndHoldReturnPct: 0,
+      winRatePct: 0,
+      winCount: 0,
+      lossCount: 0,
+      totalTrades: 0,
+      profitFactor: 0,
+      avgReturnPct: 0,
+      maxDrawdownPct: 0,
+      trades: [],
+      markers: [],
+    };
+  }
 
-  if (!data || data.length < 30) return emptyResult;
-
-  const feeRate = (params.feePct ?? 0.2) / 100;
-  const stopLoss = params.stopLossPct ? params.stopLossPct / 100 : null;
+  const feeRate = (params.feeRatePct ?? 0.2) / 100;
   const takeProfit = params.takeProfitPct ? params.takeProfitPct / 100 : null;
+  const stopLoss = params.stopLossPct ? params.stopLossPct / 100 : null;
   const maxHoldDays = params.maxHoldDays ?? null;
 
-  const maFastPeriod = params.maFast ?? 5;
-  const maSlowPeriod = params.maSlow ?? 20;
-  const maFast = calculateSMA(data, maFastPeriod);
-  const maSlow = calculateSMA(data, maSlowPeriod);
+  const ma5 = calculateSMA(data, 5);
+  const ma20 = calculateSMA(data, 20);
+  const ma60 = calculateSMA(data, 60);
   const rsi = calculateRSI(data, params.rsiPeriod ?? 14);
   const bb = calculateBollingerBands(data, params.bbPeriod ?? 20, 2);
+  const macd = calculateMACD(data, 12, 26, 9);
 
-  const maFastMap = new Map(maFast.map(p => [p.time, p.value]));
-  const maSlowMap = new Map(maSlow.map(p => [p.time, p.value]));
+  const ma5Map = new Map(ma5.map(p => [p.time, p.value]));
+  const ma20Map = new Map(ma20.map(p => [p.time, p.value]));
+  const ma60Map = new Map(ma60.map(p => [p.time, p.value]));
   const rsiMap = new Map(rsi.map(p => [p.time, p.value]));
   const bbLowerMap = new Map(bb.lower.map(p => [p.time, p.value]));
   const bbUpperMap = new Map(bb.upper.map(p => [p.time, p.value]));
+  const macdMap = new Map(macd.macd.map(p => [p.time, p.value]));
+  const macdSignalMap = new Map(macd.signal.map(p => [p.time, p.value]));
 
   const trades: Trade[] = [];
   const markers: ChartMarker[] = [];
@@ -137,18 +147,11 @@ export function runBacktest(
         exitReason = "MAX_DAYS";
       } else {
         if (params.strategy === "MA_CROSS") {
-          const prevFast = maFastMap.get(prevBar.time);
-          const prevSlow = maSlowMap.get(prevBar.time);
-          const currFast = maFastMap.get(currBar.time);
-          const currSlow = maSlowMap.get(currBar.time);
-          if (
-            prevFast !== undefined &&
-            prevSlow !== undefined &&
-            currFast !== undefined &&
-            currSlow !== undefined &&
-            prevFast >= prevSlow &&
-            currFast < currSlow
-          ) {
+          const prev5 = ma5Map.get(prevBar.time);
+          const prev20 = ma20Map.get(prevBar.time);
+          const curr5 = ma5Map.get(currBar.time);
+          const curr20 = ma20Map.get(currBar.time);
+          if (prev5 && prev20 && curr5 && curr20 && prev5 >= prev20 && curr5 < curr20) {
             shouldExit = true;
             exitReason = "SIGNAL";
           }
@@ -164,19 +167,35 @@ export function runBacktest(
             shouldExit = true;
             exitReason = "SIGNAL";
           }
-        } else if (params.strategy === "BREAKOUT_HIGH") {
-          if (i >= breakoutPeriod) {
-            const lowRange = data
-              .slice(i - breakoutPeriod, i)
-              .map(c => c.low);
-            const minLow = Math.min(...lowRange);
+        } else if (params.strategy === "BREAKOUT_HIGH" || params.strategy === "HIGH_52W_BREAKOUT") {
+          const days = params.strategy === "HIGH_52W_BREAKOUT" ? 20 : breakoutPeriod;
+          if (i >= days) {
+            const minLow = Math.min(...data.slice(i - days, i).map(c => c.low));
             if (currBar.close < minLow) {
               shouldExit = true;
               exitReason = "SIGNAL";
             }
           }
-        } else if (params.strategy === "SURGE_PULLBACK") {
-          if (holdDays >= 5) {
+        } else if (params.strategy === "MACD_GOLDEN_CROSS") {
+          const prevM = macdMap.get(prevBar.time);
+          const prevS = macdSignalMap.get(prevBar.time);
+          const currM = macdMap.get(currBar.time);
+          const currS = macdSignalMap.get(currBar.time);
+          if (prevM !== undefined && prevS !== undefined && currM !== undefined && currS !== undefined) {
+            if (prevM >= prevS && currM < currS) {
+              shouldExit = true;
+              exitReason = "SIGNAL";
+            }
+          }
+        } else if (params.strategy === "MA_ALIGN_BULL") {
+          const curr5 = ma5Map.get(currBar.time);
+          const curr20 = ma20Map.get(currBar.time);
+          if (curr5 && curr20 && curr5 < curr20) {
+            shouldExit = true;
+            exitReason = "SIGNAL";
+          }
+        } else if (params.strategy === "SURGE_PULLBACK" || params.strategy === "VOLUME_SURGE" || params.strategy === "VOLATILITY_BREAKOUT" || params.strategy === "DISPARITY_OVERSOLD") {
+          if (holdDays >= (maxHoldDays ?? 10)) {
             shouldExit = true;
             exitReason = "SIGNAL";
           }
@@ -214,57 +233,90 @@ export function runBacktest(
       let shouldEnter = false;
 
       if (params.strategy === "MA_CROSS") {
-        const prevFast = maFastMap.get(prevBar.time);
-        const prevSlow = maSlowMap.get(prevBar.time);
-        const currFast = maFastMap.get(currBar.time);
-        const currSlow = maSlowMap.get(currBar.time);
-        if (
-          prevFast !== undefined &&
-          prevSlow !== undefined &&
-          currFast !== undefined &&
-          currSlow !== undefined &&
-          prevFast <= prevSlow &&
-          currFast > currSlow
-        ) {
+        const prev5 = ma5Map.get(prevBar.time);
+        const prev20 = ma20Map.get(prevBar.time);
+        const curr5 = ma5Map.get(currBar.time);
+        const curr20 = ma20Map.get(currBar.time);
+        if (prev5 && prev20 && curr5 && curr20 && prev5 <= prev20 && curr5 > curr20) {
           shouldEnter = true;
         }
       } else if (params.strategy === "RSI_OVERSOLD") {
         const prevRsi = rsiMap.get(prevBar.time);
         const currRsi = rsiMap.get(currBar.time);
-        if (
-          prevRsi !== undefined &&
-          currRsi !== undefined &&
-          prevRsi < rsiBuyThreshold &&
-          currRsi >= rsiBuyThreshold
-        ) {
+        if (prevRsi !== undefined && currRsi !== undefined && prevRsi < rsiBuyThreshold && currRsi >= rsiBuyThreshold) {
           shouldEnter = true;
         }
       } else if (params.strategy === "BOLLINGER_REVERSAL") {
         const lower = bbLowerMap.get(prevBar.time);
-        if (
-          lower !== undefined &&
-          prevBar.close <= lower &&
-          currBar.close > lower
-        ) {
+        if (lower !== undefined && prevBar.close <= lower && currBar.close > lower) {
           shouldEnter = true;
         }
       } else if (params.strategy === "BREAKOUT_HIGH") {
         if (i >= breakoutPeriod) {
-          const highRange = data
-            .slice(i - breakoutPeriod, i)
-            .map(c => c.high);
-          const maxHigh = Math.max(...highRange);
+          const maxHigh = Math.max(...data.slice(i - breakoutPeriod, i).map(c => c.high));
           if (currBar.close > maxHigh) {
             shouldEnter = true;
           }
         }
       } else if (params.strategy === "SURGE_PULLBACK") {
         if (i >= 4) {
-          const recentSurge = data
-            .slice(i - 3, i)
-            .some(c => (c.close - c.open) / c.open >= 0.1);
-          const currFast = maFastMap.get(currBar.time);
+          const recentSurge = data.slice(i - 3, i).some(c => (c.close - c.open) / c.open >= 0.1);
+          const currFast = ma5Map.get(currBar.time);
           if (recentSurge && currFast && currBar.close >= currFast * 0.98) {
+            shouldEnter = true;
+          }
+        }
+      } else if (params.strategy === "VOLUME_SURGE") {
+        if (i >= 20) {
+          const avgVol = data.slice(i - 20, i).reduce((sum, c) => sum + c.volume, 0) / 20;
+          const isSurge = currBar.volume >= avgVol * 3.0;
+          const isBull = (currBar.close - currBar.open) / currBar.open >= 0.05;
+          if (isSurge && isBull) {
+            shouldEnter = true;
+          }
+        }
+      } else if (params.strategy === "MA_ALIGN_BULL") {
+        const prev5 = ma5Map.get(prevBar.time);
+        const prev20 = ma20Map.get(prevBar.time);
+        const prev60 = ma60Map.get(prevBar.time);
+        const curr5 = ma5Map.get(currBar.time);
+        const curr20 = ma20Map.get(currBar.time);
+        const curr60 = ma60Map.get(currBar.time);
+        if (curr5 && curr20 && curr60 && prev5 && prev20 && prev60) {
+          const wasAligned = prev5 > prev20 && prev20 > prev60;
+          const isAligned = curr5 > curr20 && curr20 > curr60;
+          if (!wasAligned && isAligned) {
+            shouldEnter = true;
+          }
+        }
+      } else if (params.strategy === "MACD_GOLDEN_CROSS") {
+        const prevM = macdMap.get(prevBar.time);
+        const prevS = macdSignalMap.get(prevBar.time);
+        const currM = macdMap.get(currBar.time);
+        const currS = macdSignalMap.get(currBar.time);
+        if (prevM !== undefined && prevS !== undefined && currM !== undefined && currS !== undefined) {
+          if (prevM <= prevS && currM > currS && currM < 0) {
+            shouldEnter = true;
+          }
+        }
+      } else if (params.strategy === "VOLATILITY_BREAKOUT") {
+        const range = prevBar.high - prevBar.low;
+        const target = currBar.open + range * 0.5;
+        if (currBar.high >= target && currBar.close >= target) {
+          shouldEnter = true;
+        }
+      } else if (params.strategy === "DISPARITY_OVERSOLD") {
+        const ma20Val = ma20Map.get(currBar.time);
+        if (ma20Val) {
+          const disparity = (currBar.close / ma20Val) * 100;
+          if (disparity <= 90 && currBar.close > currBar.open) {
+            shouldEnter = true;
+          }
+        }
+      } else if (params.strategy === "HIGH_52W_BREAKOUT") {
+        if (i >= 250) {
+          const max52w = Math.max(...data.slice(i - 250, i).map(c => c.high));
+          if (currBar.close > max52w) {
             shouldEnter = true;
           }
         }
