@@ -19,7 +19,7 @@ const { initialCode = "000660", defaultTab = "chart" } = Astro.props;
         <input
           type="text"
           id="stock-search-input"
-          placeholder="종목명 또는 6자리 코드 검색 (예: SK하이닉스, 005930)"
+          placeholder="종목명 또는 6자리 코드 검색 (예: 삼성전자, 000660)"
           class="w-full rounded-xl border border-border bg-muted/40 px-4 py-2.5 pl-10 text-sm font-medium text-foreground placeholder:text-muted-foreground focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent"
         />
         <svg
@@ -43,11 +43,11 @@ const { initialCode = "000660", defaultTab = "chart" } = Astro.props;
     <!-- Quick Stock Pills -->
     <div class="flex flex-wrap items-center gap-1.5 text-xs">
       <span class="text-muted-foreground mr-1">인기 종목:</span>
-      <button class="quick-stock-btn rounded-lg bg-muted/60 px-2.5 py-1 font-medium hover:bg-accent/20 hover:text-accent transition-colors" data-code="000660">SK하이닉스</button>
-      <button class="quick-stock-btn rounded-lg bg-muted/60 px-2.5 py-1 font-medium hover:bg-accent/20 hover:text-accent transition-colors" data-code="005930">삼성전자</button>
-      <button class="quick-stock-btn rounded-lg bg-muted/60 px-2.5 py-1 font-medium hover:bg-accent/20 hover:text-accent transition-colors" data-code="035420">NAVER</button>
-      <button class="quick-stock-btn rounded-lg bg-muted/60 px-2.5 py-1 font-medium hover:bg-accent/20 hover:text-accent transition-colors" data-code="035720">카카오</button>
-      <button class="quick-stock-btn rounded-lg bg-muted/60 px-2.5 py-1 font-medium hover:bg-accent/20 hover:text-accent transition-colors" data-code="005380">현대차</button>
+      <button class="quick-stock-btn rounded-lg bg-muted/60 px-2.5 py-1 font-medium hover:bg-accent/20 hover:text-accent transition-colors" data-code="000660" data-name="SK하이닉스">SK하이닉스</button>
+      <button class="quick-stock-btn rounded-lg bg-muted/60 px-2.5 py-1 font-medium hover:bg-accent/20 hover:text-accent transition-colors" data-code="005930" data-name="삼성전자">삼성전자</button>
+      <button class="quick-stock-btn rounded-lg bg-muted/60 px-2.5 py-1 font-medium hover:bg-accent/20 hover:text-accent transition-colors" data-code="035420" data-name="NAVER">NAVER</button>
+      <button class="quick-stock-btn rounded-lg bg-muted/60 px-2.5 py-1 font-medium hover:bg-accent/20 hover:text-accent transition-colors" data-code="035720" data-name="카카오">카카오</button>
+      <button class="quick-stock-btn rounded-lg bg-muted/60 px-2.5 py-1 font-medium hover:bg-accent/20 hover:text-accent transition-colors" data-code="005380" data-name="현대차">현대차</button>
     </div>
   </div>
 
@@ -153,9 +153,10 @@ const { initialCode = "000660", defaultTab = "chart" } = Astro.props;
     </div>
 
     <!-- Main Chart Canvas -->
-    <div id="tv-chart-container" class="relative h-[420px] w-full overflow-hidden rounded-xl border border-border/80 bg-background">
-      <div id="chart-loading" class="absolute inset-0 flex items-center justify-center bg-background/80 backdrop-blur-xs z-10">
-        <div class="flex items-center gap-2 text-sm text-muted-foreground">
+    <div class="relative">
+      <div id="tv-chart-container" class="relative h-[420px] w-full overflow-hidden rounded-xl border border-border/80 bg-background"></div>
+      <div id="chart-loading" class="absolute inset-0 flex items-center justify-center bg-background/80 backdrop-blur-xs z-20 transition-opacity pointer-events-none hidden">
+        <div class="flex items-center gap-2 text-sm text-muted-foreground font-medium bg-background px-4 py-2 rounded-xl border border-border shadow-sm">
           <svg class="size-5 animate-spin text-accent" viewBox="0 0 24 24" fill="none">
             <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
             <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
@@ -311,7 +312,7 @@ const { initialCode = "000660", defaultTab = "chart" } = Astro.props;
 </div>
 
 <script>
-  import { createChart, ColorType, LineStyle } from "lightweight-charts";
+  import { createChart, ColorType, LineStyle, createSeriesMarkers } from "lightweight-charts";
   import {
     calculateSMA,
     calculateBollingerBands,
@@ -323,12 +324,14 @@ const { initialCode = "000660", defaultTab = "chart" } = Astro.props;
   let stockList: Array<{ code: string; name: string; bars: number; lastClose: number }> = [];
   let currentStockData: any[] = [];
   let currentCode = "000660";
+  let currentName = "SK하이닉스";
 
   let mainChart: any = null;
   let subChart: any = null;
 
   let candleSeries: any = null;
   let volumeSeries: any = null;
+  let markersPrimitive: any = null;
 
   let maSeries5: any = null;
   let maSeries20: any = null;
@@ -344,7 +347,6 @@ const { initialCode = "000660", defaultTab = "chart" } = Astro.props;
   let macdSignalSeries: any = null;
   let macdHistSeries: any = null;
 
-  // Check dark mode
   const isDarkMode = () =>
     document.documentElement.classList.contains("dark") ||
     document.documentElement.getAttribute("data-theme") === "dark";
@@ -361,13 +363,22 @@ const { initialCode = "000660", defaultTab = "chart" } = Astro.props;
     };
   }
 
-  // Initialize Charts
   function initCharts() {
     const mainContainer = document.getElementById("tv-chart-container");
     const subContainer = document.getElementById("tv-subchart-container");
     if (!mainContainer || !subContainer) return;
 
-    mainContainer.innerHTML = '<div id="chart-loading" class="absolute inset-0 flex items-center justify-center bg-background/80 backdrop-blur-xs z-10"><div class="flex items-center gap-2 text-sm text-muted-foreground"><svg class="size-5 animate-spin text-accent" viewBox="0 0 24 24" fill="none"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path></svg>일봉 차트 로딩 중...</div></div>';
+    // Clean any prior instances
+    if (mainChart) {
+      try { mainChart.remove(); } catch(e) {}
+      mainChart = null;
+    }
+    if (subChart) {
+      try { subChart.remove(); } catch(e) {}
+      subChart = null;
+    }
+
+    mainContainer.innerHTML = "";
     subContainer.innerHTML = '<div id="subchart-title" class="absolute left-3 top-2 z-10 text-[11px] font-bold font-mono text-muted-foreground">RSI (14)</div>';
 
     const colors = getThemeColors();
@@ -395,7 +406,6 @@ const { initialCode = "000660", defaultTab = "chart" } = Astro.props;
       },
     });
 
-    // Candlestick series
     candleSeries = mainChart.addCandlestickSeries({
       upColor: colors.upColor,
       downColor: colors.downColor,
@@ -405,7 +415,6 @@ const { initialCode = "000660", defaultTab = "chart" } = Astro.props;
       wickDownColor: colors.downColor,
     });
 
-    // Volume series
     volumeSeries = mainChart.addHistogramSeries({
       color: "#26a69a",
       priceFormat: { type: "volume" },
@@ -415,18 +424,15 @@ const { initialCode = "000660", defaultTab = "chart" } = Astro.props;
       scaleMargins: { top: 0.8, bottom: 0 },
     });
 
-    // Moving Averages
     maSeries5 = mainChart.addLineSeries({ color: "#e91e63", lineWidth: 1.5, title: "MA5" });
     maSeries20 = mainChart.addLineSeries({ color: "#ff9800", lineWidth: 1.5, title: "MA20" });
     maSeries60 = mainChart.addLineSeries({ color: "#4caf50", lineWidth: 1.5, title: "MA60" });
     maSeries120 = mainChart.addLineSeries({ color: "#9c27b0", lineWidth: 1.5, title: "MA120" });
 
-    // Bollinger Bands
     bbUpperSeries = mainChart.addLineSeries({ color: "#00bcd4", lineWidth: 1, lineStyle: LineStyle.Dashed });
     bbMiddleSeries = mainChart.addLineSeries({ color: "#00bcd4", lineWidth: 1 });
     bbLowerSeries = mainChart.addLineSeries({ color: "#00bcd4", lineWidth: 1, lineStyle: LineStyle.Dashed });
 
-    // Sub Chart (RSI / MACD)
     subChart = createChart(subContainer, {
       layout: {
         background: { type: ColorType.Solid, color: "transparent" },
@@ -451,12 +457,10 @@ const { initialCode = "000660", defaultTab = "chart" } = Astro.props;
     macdSignalSeries = subChart.addLineSeries({ color: "#ff9800", lineWidth: 1.5 });
     macdHistSeries = subChart.addHistogramSeries({ color: "#26a69a" });
 
-    // Sync TimeScales
     mainChart.timeScale().subscribeVisibleLogicalRangeChange((range: any) => {
       if (range && subChart) subChart.timeScale().setVisibleLogicalRange(range);
     });
 
-    // Crosshair tooltip tracking
     mainChart.subscribeCrosshairMove((param: any) => {
       if (!param || !param.time || !param.seriesData.get(candleSeries)) {
         updateLegendDefault();
@@ -481,7 +485,6 @@ const { initialCode = "000660", defaultTab = "chart" } = Astro.props;
       if (volEl) volEl.innerText = v?.value?.toLocaleString() ?? "-";
     });
 
-    // Resize Observer
     const resizeObserver = new ResizeObserver(() => {
       if (mainContainer && mainChart) mainChart.applyOptions({ width: mainContainer.clientWidth });
       if (subContainer && subChart) subChart.applyOptions({ width: subContainer.clientWidth });
@@ -507,8 +510,7 @@ const { initialCode = "000660", defaultTab = "chart" } = Astro.props;
     if (volEl) volEl.innerText = last.volume.toLocaleString();
   }
 
-  // Load Stock Data
-  async function loadStock(code: string) {
+  async function loadStock(code: string, knownName?: string) {
     const loadingEl = document.getElementById("chart-loading");
     if (loadingEl) loadingEl.classList.remove("hidden");
 
@@ -519,15 +521,17 @@ const { initialCode = "000660", defaultTab = "chart" } = Astro.props;
       currentStockData = data;
       currentCode = code;
 
-      // Update Stock Header Info
       const stockInfo = stockList.find(s => s.code === code);
+      const displayName = knownName || stockInfo?.name || code;
+      currentName = displayName;
+
       const stockNameEl = document.getElementById("current-stock-name");
       const stockCodeEl = document.getElementById("current-stock-code");
       const stockBarsEl = document.getElementById("current-stock-bars");
       const stockPriceEl = document.getElementById("current-stock-price");
       const stockChangeEl = document.getElementById("current-stock-change");
 
-      if (stockNameEl) stockNameEl.innerText = stockInfo?.name || code;
+      if (stockNameEl) stockNameEl.innerText = displayName;
       if (stockCodeEl) stockCodeEl.innerText = code;
       if (stockBarsEl) stockBarsEl.innerText = `${data.length}일 일봉`;
 
@@ -545,7 +549,6 @@ const { initialCode = "000660", defaultTab = "chart" } = Astro.props;
         }
       }
 
-      // Update Chart Series
       if (candleSeries) candleSeries.setData(data);
 
       const volData = data.map((d: any, i: number) => {
@@ -558,7 +561,6 @@ const { initialCode = "000660", defaultTab = "chart" } = Astro.props;
       });
       if (volumeSeries) volumeSeries.setData(volData);
 
-      // Moving Averages
       updateIndicators();
       updateSubChart();
 
@@ -566,7 +568,6 @@ const { initialCode = "000660", defaultTab = "chart" } = Astro.props;
       updateLegendDefault();
     } catch (e) {
       console.error(e);
-      alert("종목 데이터를 불러오는데 실패했습니다.");
     } finally {
       if (loadingEl) loadingEl.classList.add("hidden");
     }
@@ -628,7 +629,6 @@ const { initialCode = "000660", defaultTab = "chart" } = Astro.props;
     subChart?.timeScale().fitContent();
   }
 
-  // Backtest Execution
   function executeBacktest() {
     if (!currentStockData || currentStockData.length === 0) return;
 
@@ -644,7 +644,6 @@ const { initialCode = "000660", defaultTab = "chart" } = Astro.props;
       maxHoldDays: maxDays > 0 ? maxDays : undefined,
     });
 
-    // Update KPI Cards
     const kpiReturn = document.getElementById("kpi-return");
     const kpiBnh = document.getElementById("kpi-bnh");
     const kpiWinrate = document.getElementById("kpi-winrate");
@@ -662,7 +661,6 @@ const { initialCode = "000660", defaultTab = "chart" } = Astro.props;
     if (kpiMdd) kpiMdd.innerText = `-${result.maxDrawdownPct.toFixed(2)}%`;
     if (kpiTrades) kpiTrades.innerText = `${result.totalTrades}회`;
 
-    // Render Trade Log Table
     const tbody = document.getElementById("trade-log-tbody");
     const countEl = document.getElementById("trade-log-count");
     if (countEl) countEl.innerText = `총 ${result.trades.length}건의 거래`;
@@ -701,27 +699,34 @@ const { initialCode = "000660", defaultTab = "chart" } = Astro.props;
 
     // Set Chart Markers
     if (candleSeries && result.markers) {
-      candleSeries.setMarkers(result.markers);
+      if (typeof (candleSeries as any).setMarkers === "function") {
+        (candleSeries as any).setMarkers(result.markers);
+      } else if (typeof createSeriesMarkers === "function") {
+        if (markersPrimitive) {
+          try { markersPrimitive.setMarkers(result.markers); } catch(e) {}
+        } else {
+          markersPrimitive = createSeriesMarkers(candleSeries, result.markers);
+        }
+      }
     }
   }
 
-  // Event Listeners Setup
-  async function setup() {
-    // 1. Fetch Stock Master List
-    try {
-      const resp = await fetch("/data/stock_list.json");
-      stockList = await resp.json();
-    } catch (e) {
-      console.error("Failed to load stock list", e);
-    }
-
-    // 2. Initialize Charts
+  function setup() {
+    // 1. Initialize Chart immediately
     initCharts();
 
-    // 3. Load Initial Stock
-    loadStock(currentCode);
+    // 2. Load Default Initial Stock immediately in parallel
+    loadStock(currentCode, currentName);
 
-    // 4. Setup Search Input Auto-complete
+    // 3. Fetch Stock Master List in background (non-blocking)
+    fetch("/data/stock_list.json")
+      .then(r => r.json())
+      .then(data => {
+        stockList = data;
+      })
+      .catch(e => console.error("Stock list fetch error:", e));
+
+    // 4. Search Dropdown logic
     const searchInput = document.getElementById("stock-search-input") as HTMLInputElement;
     const searchDropdown = document.getElementById("stock-search-dropdown");
 
@@ -743,7 +748,7 @@ const { initialCode = "000660", defaultTab = "chart" } = Astro.props;
           searchDropdown.innerHTML = filtered
             .map(
               s => `
-            <button class="search-item flex w-full items-center justify-between px-4 py-2 text-left text-xs hover:bg-muted transition-colors" data-code="${s.code}">
+            <button class="search-item flex w-full items-center justify-between px-4 py-2 text-left text-xs hover:bg-muted transition-colors" data-code="${s.code}" data-name="${s.name}">
               <span class="font-medium text-foreground">${s.name}</span>
               <span class="font-mono text-muted-foreground">${s.code}</span>
             </button>`
@@ -753,17 +758,15 @@ const { initialCode = "000660", defaultTab = "chart" } = Astro.props;
         searchDropdown.classList.remove("hidden");
       });
 
-      // Handle dropdown click
       searchDropdown.addEventListener("click", e => {
         const btn = (e.target as HTMLElement).closest(".search-item") as HTMLElement;
         if (btn && btn.dataset.code) {
-          loadStock(btn.dataset.code);
+          loadStock(btn.dataset.code, btn.dataset.name);
           searchInput.value = "";
           searchDropdown.classList.add("hidden");
         }
       });
 
-      // Close dropdown on outside click
       document.addEventListener("click", e => {
         if (!searchInput.contains(e.target as Node) && !searchDropdown.contains(e.target as Node)) {
           searchDropdown.classList.add("hidden");
@@ -771,15 +774,16 @@ const { initialCode = "000660", defaultTab = "chart" } = Astro.props;
       });
     }
 
-    // Quick stock pills
+    // Quick stock buttons
     document.querySelectorAll(".quick-stock-btn").forEach(btn => {
       btn.addEventListener("click", () => {
         const code = (btn as HTMLElement).dataset.code;
-        if (code) loadStock(code);
+        const name = (btn as HTMLElement).dataset.name;
+        if (code) loadStock(code, name);
       });
     });
 
-    // Tab switcher
+    // Tab buttons
     const tabChart = document.getElementById("tab-btn-chart");
     const tabBacktest = document.getElementById("tab-btn-backtest");
     const sectionChart = document.getElementById("section-chart");
@@ -803,7 +807,6 @@ const { initialCode = "000660", defaultTab = "chart" } = Astro.props;
       executeBacktest();
     });
 
-    // Checkbox and select listeners
     ["toggle-ma-5", "toggle-ma-20", "toggle-ma-60", "toggle-ma-120", "toggle-bb"].forEach(id => {
       document.getElementById(id)?.addEventListener("change", updateIndicators);
     });
@@ -820,7 +823,11 @@ const { initialCode = "000660", defaultTab = "chart" } = Astro.props;
     });
   }
 
-  // Run on mount
-  setup();
+  // Initial mount
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", setup);
+  } else {
+    setup();
+  }
   document.addEventListener("astro:after-swap", setup);
 </script>
