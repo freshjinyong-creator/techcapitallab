@@ -45,8 +45,8 @@ const { initialCode = "000660", defaultTab = "chart" } = Astro.props;
       <span class="text-muted-foreground mr-1">인기 종목:</span>
       <button class="quick-stock-btn rounded-lg bg-muted/60 px-2.5 py-1 font-medium hover:bg-accent/20 hover:text-accent transition-colors" data-code="000660" data-name="SK하이닉스">SK하이닉스</button>
       <button class="quick-stock-btn rounded-lg bg-muted/60 px-2.5 py-1 font-medium hover:bg-accent/20 hover:text-accent transition-colors" data-code="005930" data-name="삼성전자">삼성전자</button>
-      <button class="quick-stock-btn rounded-lg bg-muted/60 px-2.5 py-1 font-medium hover:bg-accent/20 hover:text-accent transition-colors" data-code="035420" data-name="NAVER">NAVER</button>
-      <button class="quick-stock-btn rounded-lg bg-muted/60 px-2.5 py-1 font-medium hover:bg-accent/20 hover:text-accent transition-colors" data-code="035720" data-name="카카오">카카오</button>
+      <button class="quick-stock-btn rounded-lg bg-muted/60 px-2.5 py-1 font-medium hover:bg-accent/20 hover:text-accent transition-colors" data-code="012450" data-name="한화에어로스페이스">한화에어로스페이스</button>
+      <button class="quick-stock-btn rounded-lg bg-muted/60 px-2.5 py-1 font-medium hover:bg-accent/20 hover:text-accent transition-colors" data-code="086520" data-name="에코프로">에코프로</button>
       <button class="quick-stock-btn rounded-lg bg-muted/60 px-2.5 py-1 font-medium hover:bg-accent/20 hover:text-accent transition-colors" data-code="005380" data-name="현대차">현대차</button>
     </div>
   </div>
@@ -56,18 +56,18 @@ const { initialCode = "000660", defaultTab = "chart" } = Astro.props;
     <div class="flex items-baseline gap-2.5">
       <h2 id="current-stock-name" class="text-xl font-bold text-foreground sm:text-2xl">SK하이닉스</h2>
       <span id="current-stock-code" class="text-sm font-mono text-muted-foreground">000660</span>
-      <span id="current-stock-bars" class="rounded-md bg-muted px-2 py-0.5 text-xs text-muted-foreground font-mono">243일 일봉</span>
+      <span id="current-stock-bars" class="rounded-md bg-muted px-2 py-0.5 text-xs text-muted-foreground font-mono">-</span>
     </div>
 
     <div class="flex items-baseline gap-3">
-      <div id="current-stock-price" class="text-xl font-bold font-mono text-foreground sm:text-2xl">- 원</div>
-      <div id="current-stock-change" class="text-sm font-semibold font-mono">-</div>
+      <div id="current-stock-price" class="text-2xl font-extrabold font-mono text-foreground sm:text-3xl">- 원</div>
+      <div id="current-stock-change" class="text-sm font-semibold font-mono text-muted-foreground">-</div>
     </div>
   </div>
 
-  <!-- Mode Switcher Tabs -->
+  <!-- Tabs Navigation -->
   <div class="mb-4 flex items-center justify-between border-b border-border">
-    <div class="flex gap-2">
+    <div class="flex items-center gap-2">
       <button
         id="tab-btn-chart"
         class="tab-btn active-tab flex items-center gap-1.5 border-b-2 border-accent px-4 py-2.5 text-sm font-bold text-accent transition-colors"
@@ -75,11 +75,11 @@ const { initialCode = "000660", defaultTab = "chart" } = Astro.props;
         <svg class="size-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z" />
         </svg>
-        인터랙티브 차트
+        기본 차트 보기
       </button>
       <button
         id="tab-btn-backtest"
-        class="tab-btn border-b-2 border-transparent px-4 py-2.5 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+        class="tab-btn flex items-center gap-1.5 border-b-2 border-transparent px-4 py-2.5 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
       >
         <svg class="size-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
@@ -90,7 +90,7 @@ const { initialCode = "000660", defaultTab = "chart" } = Astro.props;
 
     <!-- Chart Quick Controls -->
     <div id="chart-controls" class="flex flex-wrap items-center gap-1.5 text-xs">
-      <button id="btn-fit-chart" class="rounded-lg bg-muted/70 px-2.5 py-1 font-medium hover:bg-muted transition-colors">
+      <button id="btn-fit-chart" class="rounded-lg bg-muted/70 px-2.5 py-1 font-medium hover:bg-muted transition-colors cursor-pointer">
         전체 보기
       </button>
     </div>
@@ -141,6 +141,52 @@ const { initialCode = "000660", defaultTab = "chart" } = Astro.props;
       </div>
     </div>
 
+    <!-- Lecture Pattern Finder Toolbar -->
+    <div class="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-accent/30 bg-accent/5 p-3 text-xs">
+      <div class="flex items-center gap-2">
+        <span class="flex size-7 shrink-0 items-center justify-center rounded-lg bg-accent text-white font-bold text-sm shadow-xs">🎓</span>
+        <div>
+          <div class="font-bold text-foreground text-sm sm:text-xs">강의 실전 패턴 탐색기 (1-1강 & 1-2강)</div>
+          <div class="text-[11px] text-muted-foreground hidden sm:block">블로그 강의에서 다룬 실전 캔들 기법이 터진 역사적 타점들을 차트에서 즉시 탐색 및 이동합니다.</div>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2 w-full sm:w-auto">
+        <select id="select-lecture-pattern" class="w-full sm:w-auto rounded-xl border border-accent/40 bg-background px-3 py-1.5 text-xs font-bold text-foreground focus:border-accent focus:outline-none shadow-xs">
+          <option value="NONE">-- 🎓 강의 실전 패턴 탐색 선택 (해제) --</option>
+          <optgroup label="[1-1강] 단일 캔들 기초 & 바닥 매집">
+            <option value="LECTURE_INVERTED_HAMMER">🔨 [1-1강] 바닥권 역망치 매집봉 (거래량 폭증 + 위꼬리)</option>
+            <option value="LECTURE_HAMMER">🪓 [1-1강] 바닥권 망치형 반등 (아래꼬리 2배+)</option>
+          </optgroup>
+          <optgroup label="[1-2강] 복합 패턴 & 20일선 눌림목">
+            <option value="LECTURE_BULLISH_ENGULFING">🟢 [1-2강] 20일선 눌림목 상승장악형 (Bullish Engulfing)</option>
+            <option value="LECTURE_MORNING_STAR">⭐ [1-2강] 바닥권 샛별형 3봉 반전 (Morning Star)</option>
+            <option value="LECTURE_THREE_SOLDIERS">📈 [1-2강] 적삼병 연속 양봉 추세 (Three White Soldiers)</option>
+            <option value="LECTURE_PIERCING_LINE">⚡ [1-2강] 관통형 50%+ 되돌림 반등 (Piercing Line)</option>
+            <option value="LECTURE_BEARISH_ENGULFING">⚠️ [1-2강] [경고] 고점 하락장악형 (Bearish Engulfing)</option>
+          </optgroup>
+        </select>
+      </div>
+    </div>
+
+    <!-- Pattern Occurrences Navigator Panel -->
+    <div id="lecture-pattern-navigator" class="hidden rounded-xl border border-border bg-muted/20 p-3 text-xs">
+      <div class="flex flex-wrap items-center justify-between gap-2 border-b border-border/50 pb-2 mb-2">
+        <div class="flex items-center gap-2">
+          <span id="pat-badge" class="px-2 py-0.5 rounded-md font-bold bg-accent/15 text-accent text-xs">패턴명</span>
+          <span class="text-muted-foreground">15년 데이터 내 발견: <b id="pat-count" class="text-foreground">0</b>건</span>
+        </div>
+        <div class="flex items-center gap-1.5">
+          <button id="btn-pat-prev" class="px-2.5 py-1 rounded-lg border border-border bg-background hover:bg-muted font-medium transition-colors cursor-pointer">◀ 이전 시점</button>
+          <span id="pat-current-idx" class="font-mono text-muted-foreground px-1">0 / 0</span>
+          <button id="btn-pat-next" class="px-2.5 py-1 rounded-lg border border-border bg-background hover:bg-muted font-medium transition-colors cursor-pointer">다음 시점 ▶</button>
+        </div>
+      </div>
+
+      <!-- Occurrence tags -->
+      <div id="pat-list-container" class="flex gap-2 overflow-x-auto py-1 scrollbar-thin"></div>
+    </div>
+
     <!-- Live Legend / Tooltip Info -->
     <div id="chart-legend" class="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs font-mono text-muted-foreground min-h-[22px]">
       <span>일자: <b id="leg-date" class="text-foreground">-</b></span>
@@ -188,17 +234,28 @@ const { initialCode = "000660", defaultTab = "chart" } = Astro.props;
         <div class="flex flex-col gap-1.5">
           <label class="text-xs font-semibold text-muted-foreground">매매 전략 선택</label>
           <select id="bt-strategy" class="rounded-xl border border-border bg-background px-3 py-2 text-sm font-medium text-foreground focus:border-accent focus:outline-none">
-            <option value="MA_CROSS">이평선 골든크로스 (5일/20일)</option>
-            <option value="RSI_OVERSOLD">RSI 과매도 반등 (30 이하 매수)</option>
-            <option value="BOLLINGER_REVERSAL">볼린저 밴드 하단 반등 매매</option>
-            <option value="BREAKOUT_HIGH">20일 신고가 돌파 매매</option>
-            <option value="SURGE_PULLBACK">10%+ 급등 후 눌림목 반등</option>
-            <option value="VOLUME_SURGE">거래량 폭증(300%+) 장대양봉 돌파</option>
-            <option value="MA_ALIGN_BULL">이평선 정배열 전환 (5>20>60일선)</option>
-            <option value="MACD_GOLDEN_CROSS">MACD 시그널 골든크로스</option>
-            <option value="VOLATILITY_BREAKOUT">래리 윌리엄스 변동성 돌파 (k=0.5)</option>
-            <option value="DISPARITY_OVERSOLD">20일선 이격도 과매도(-10%) 반등</option>
-            <option value="HIGH_52W_BREAKOUT">52주(250일) 신고가 돌파 매매</option>
+            <optgroup label="🎓 [강의 1-1강 & 1-2강] 실전 캔들 기법">
+              <option value="LECTURE_INVERTED_HAMMER">🔨 [1-1강] 바닥권 역망치 매집봉 (거래량 폭증+위꼬리)</option>
+              <option value="LECTURE_HAMMER">🪓 [1-1강] 바닥권 망치형 반등 (아래꼬리 2배+)</option>
+              <option value="LECTURE_BULLISH_ENGULFING" selected>🟢 [1-2강] 20일선 눌림목 상승장악형 (Bullish Engulfing)</option>
+              <option value="LECTURE_MORNING_STAR">⭐ [1-2강] 바닥권 샛별형 3봉 반전 (Morning Star)</option>
+              <option value="LECTURE_THREE_SOLDIERS">📈 [1-2강] 적삼병 연속 양봉 추세 (Three White Soldiers)</option>
+              <option value="LECTURE_PIERCING_LINE">⚡ [1-2강] 관통형 50%+ 되돌림 반등 (Piercing Line)</option>
+              <option value="LECTURE_BEARISH_ENGULFING">⚠️ [1-2강] [경고] 고점 하락장악형 (Bearish Engulfing)</option>
+            </optgroup>
+            <optgroup label="📊 [클래식] 퀀트 모멘텀 전략">
+              <option value="MA_CROSS">이평선 골든크로스 (5일/20일)</option>
+              <option value="RSI_OVERSOLD">RSI 과매도 반등 (30 이하 매수)</option>
+              <option value="BOLLINGER_REVERSAL">볼린저 밴드 하단 반등 매매</option>
+              <option value="BREAKOUT_HIGH">20일 신고가 돌파 매매</option>
+              <option value="SURGE_PULLBACK">10%+ 급등 후 눌림목 반등</option>
+              <option value="VOLUME_SURGE">거래량 폭증(300%+) 장대양봉 돌파</option>
+              <option value="MA_ALIGN_BULL">이평선 정배열 전환 (5>20>60일선)</option>
+              <option value="MACD_GOLDEN_CROSS">MACD 시그널 골든크로스</option>
+              <option value="VOLATILITY_BREAKOUT">래리 윌리엄스 변동성 돌파 (k=0.5)</option>
+              <option value="DISPARITY_OVERSOLD">20일선 이격도 과매도(-10%) 반등</option>
+              <option value="HIGH_52W_BREAKOUT">52주(250일) 신고가 돌파 매매</option>
+            </optgroup>
           </select>
         </div>
 
@@ -231,7 +288,7 @@ const { initialCode = "000660", defaultTab = "chart" } = Astro.props;
 
         <button
           id="btn-run-backtest"
-          class="flex items-center justify-center gap-2 rounded-xl bg-accent px-6 py-2.5 text-sm font-bold text-white shadow-md hover:opacity-90 transition-opacity"
+          class="flex items-center justify-center gap-2 rounded-xl bg-accent px-6 py-2.5 text-sm font-bold text-white shadow-md hover:opacity-90 transition-opacity cursor-pointer"
         >
           <svg class="size-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
@@ -242,76 +299,62 @@ const { initialCode = "000660", defaultTab = "chart" } = Astro.props;
       </div>
     </div>
 
-    <!-- Backtest Results KPI Dashboard -->
-    <div id="bt-result-dashboard" class="flex flex-col gap-4">
-      <div class="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
-        <!-- KPI 1: Total Return -->
-        <div class="flex flex-col rounded-xl border border-border bg-muted/10 p-3.5">
-          <span class="text-xs text-muted-foreground">전략 누적 수익률</span>
-          <span id="kpi-return" class="text-lg font-bold font-mono mt-1 text-foreground">-</span>
-        </div>
-
-        <!-- KPI 2: Buy & Hold Return -->
-        <div class="flex flex-col rounded-xl border border-border bg-muted/10 p-3.5">
-          <span class="text-xs text-muted-foreground">단순 보유 수익률</span>
-          <span id="kpi-bnh" class="text-lg font-bold font-mono mt-1 text-muted-foreground">-</span>
-        </div>
-
-        <!-- KPI 3: Win Rate -->
-        <div class="flex flex-col rounded-xl border border-border bg-muted/10 p-3.5">
-          <span class="text-xs text-muted-foreground">승률 (Win Rate)</span>
-          <span id="kpi-winrate" class="text-lg font-bold font-mono mt-1 text-foreground">-</span>
-        </div>
-
-        <!-- KPI 4: Profit Factor -->
-        <div class="flex flex-col rounded-xl border border-border bg-muted/10 p-3.5">
-          <span class="text-xs text-muted-foreground">손익비 (PF)</span>
-          <span id="kpi-pf" class="text-lg font-bold font-mono mt-1 text-foreground">-</span>
-        </div>
-
-        <!-- KPI 5: Max Drawdown -->
-        <div class="flex flex-col rounded-xl border border-border bg-muted/10 p-3.5">
-          <span class="text-xs text-muted-foreground">최대 낙폭 (MDD)</span>
-          <span id="kpi-mdd" class="text-lg font-bold font-mono mt-1 text-blue-500">-</span>
-        </div>
-
-        <!-- KPI 6: Total Trades -->
-        <div class="flex flex-col rounded-xl border border-border bg-muted/10 p-3.5">
-          <span class="text-xs text-muted-foreground">총 거래 횟수</span>
-          <span id="kpi-trades" class="text-lg font-bold font-mono mt-1 text-foreground">-</span>
-        </div>
+    <!-- KPI Summary Grid -->
+    <div class="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
+      <div class="rounded-xl border border-border bg-background p-3.5 shadow-xs">
+        <span class="text-xs text-muted-foreground font-medium">총 누적 수익률</span>
+        <div id="kpi-return" class="text-lg font-bold font-mono mt-1 text-foreground">-</div>
       </div>
+      <div class="rounded-xl border border-border bg-background p-3.5 shadow-xs">
+        <span class="text-xs text-muted-foreground font-medium">단순 보유 수익률</span>
+        <div id="kpi-bnh" class="text-lg font-bold font-mono mt-1 text-foreground">-</div>
+      </div>
+      <div class="rounded-xl border border-border bg-background p-3.5 shadow-xs">
+        <span class="text-xs text-muted-foreground font-medium">승률 (Win Rate)</span>
+        <div id="kpi-winrate" class="text-lg font-bold font-mono mt-1 text-foreground">-</div>
+      </div>
+      <div class="rounded-xl border border-border bg-background p-3.5 shadow-xs">
+        <span class="text-xs text-muted-foreground font-medium">손익비 (Profit Factor)</span>
+        <div id="kpi-pf" class="text-lg font-bold font-mono mt-1 text-foreground">-</div>
+      </div>
+      <div class="rounded-xl border border-border bg-background p-3.5 shadow-xs">
+        <span class="text-xs text-muted-foreground font-medium">최대 낙폭 (MDD)</span>
+        <div id="kpi-mdd" class="text-lg font-bold font-mono mt-1 text-foreground">-</div>
+      </div>
+      <div class="rounded-xl border border-border bg-background p-3.5 shadow-xs">
+        <span class="text-xs text-muted-foreground font-medium">총 거래 횟수</span>
+        <div id="kpi-trades" class="text-lg font-bold font-mono mt-1 text-foreground">-</div>
+      </div>
+    </div>
 
-      <!-- Trade History Table -->
-      <div class="overflow-hidden rounded-xl border border-border">
-        <div class="flex items-center justify-between bg-muted/40 px-4 py-3 border-b border-border">
-          <h4 class="text-sm font-bold text-foreground">📋 매매 세부 내역 (Trade Log)</h4>
-          <span id="trade-log-count" class="text-xs text-muted-foreground">0건의 매매 기록</span>
-        </div>
-
-        <div class="max-h-72 overflow-y-auto">
-          <table class="w-full text-left text-xs">
-            <thead class="bg-muted/20 text-muted-foreground sticky top-0 border-b border-border font-medium">
-              <tr>
-                <th class="py-2.5 px-3">#</th>
-                <th class="py-2.5 px-3">진입일</th>
-                <th class="py-2.5 px-3">진입가</th>
-                <th class="py-2.5 px-3">청산일</th>
-                <th class="py-2.5 px-3">청산가</th>
-                <th class="py-2.5 px-3">보유일</th>
-                <th class="py-2.5 px-3">수익률</th>
-                <th class="py-2.5 px-3">청산사유</th>
-              </tr>
-            </thead>
-            <tbody id="trade-log-tbody" class="divide-y divide-border/60 font-mono">
-              <tr>
-                <td colspan="8" class="py-6 text-center text-muted-foreground font-sans">
-                  '전략 백테스트 실행' 버튼을 클릭하여 시뮬레이션을 시작하세요.
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+    <!-- Trade History Log Table -->
+    <div class="rounded-xl border border-border bg-background shadow-xs overflow-hidden">
+      <div class="border-b border-border/80 px-4 py-3 bg-muted/20 flex items-center justify-between">
+        <h4 class="text-sm font-bold text-foreground">매매 거래 내역 (최근 순)</h4>
+        <span id="trade-log-count" class="text-xs text-muted-foreground font-mono">0건의 거래</span>
+      </div>
+      <div class="max-h-80 overflow-y-auto overflow-x-auto">
+        <table class="w-full text-left text-xs font-mono">
+          <thead class="sticky top-0 bg-muted/80 text-muted-foreground backdrop-blur-xs">
+            <tr class="border-b border-border">
+              <th class="py-2.5 px-3">No</th>
+              <th class="py-2.5 px-3">진입일</th>
+              <th class="py-2.5 px-3">진입가</th>
+              <th class="py-2.5 px-3">청산일</th>
+              <th class="py-2.5 px-3">청산가</th>
+              <th class="py-2.5 px-3">보유일</th>
+              <th class="py-2.5 px-3">수익률</th>
+              <th class="py-2.5 px-3">청산 사유</th>
+            </tr>
+          </thead>
+          <tbody id="trade-log-tbody" class="divide-y divide-border/60 font-medium">
+            <tr>
+              <td colspan="8" class="py-6 text-center text-muted-foreground font-sans">
+                '전략 백테스트 실행' 버튼을 클릭하여 시뮬레이션을 시작하세요.
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
   </div>
@@ -325,7 +368,12 @@ const { initialCode = "000660", defaultTab = "chart" } = Astro.props;
     calculateRSI,
     calculateMACD,
   } from "@/utils/technicalIndicators";
-  import { runBacktest, type StrategyType } from "@/utils/backtestEngine";
+  import {
+    runBacktest,
+    detectLecturePatternPoints,
+    type StrategyType,
+    type LecturePatternPoint,
+  } from "@/utils/backtestEngine";
 
   let stockList: Array<{ code: string; name: string; bars: number; lastClose: number }> = [];
   let currentStockData: any[] = [];
@@ -353,6 +401,10 @@ const { initialCode = "000660", defaultTab = "chart" } = Astro.props;
   let macdSignalSeries: any = null;
   let macdHistSeries: any = null;
 
+  // Lecture Pattern state
+  let currentLecturePoints: LecturePatternPoint[] = [];
+  let currentPatternIndex: number = 0;
+
   const isDarkMode = () =>
     document.documentElement.classList.contains("dark") ||
     document.documentElement.getAttribute("data-theme") === "dark";
@@ -374,7 +426,6 @@ const { initialCode = "000660", defaultTab = "chart" } = Astro.props;
     const subContainer = document.getElementById("tv-subchart-container");
     if (!mainContainer || !subContainer) return;
 
-    // Clean any prior instances
     if (mainChart) {
       try { mainChart.remove(); } catch(e) {}
       mainChart = null;
@@ -405,11 +456,11 @@ const { initialCode = "000660", defaultTab = "chart" } = Astro.props;
       },
       rightPriceScale: {
         borderColor: colors.border,
-        scaleMargins: { top: 0.1, bottom: 0.2 },
+        scaleMargins: { top: 0.1, bottom: 0.25 },
       },
       crosshair: {
-        vertLine: { labelBackgroundColor: "#5c6ac4" },
-        horzLine: { labelBackgroundColor: "#5c6ac4" },
+        vertLine: { labelBackgroundColor: "#6366f1" },
+        horzLine: { labelBackgroundColor: "#6366f1" },
       },
     });
 
@@ -423,7 +474,6 @@ const { initialCode = "000660", defaultTab = "chart" } = Astro.props;
     });
 
     volumeSeries = mainChart.addSeries(HistogramSeries, {
-      color: "#26a69a",
       priceFormat: { type: "volume" },
       priceScaleId: "",
     });
@@ -432,7 +482,7 @@ const { initialCode = "000660", defaultTab = "chart" } = Astro.props;
     });
 
     maSeries5 = mainChart.addSeries(LineSeries, { color: "#e91e63", lineWidth: 1.5, title: "MA5" });
-    maSeries20 = mainChart.addSeries(LineSeries, { color: "#ff9800", lineWidth: 1.5, title: "MA20" });
+    maSeries20 = mainChart.addSeries(LineSeries, { color: "#ff9800", lineWidth: 1.8, title: "MA20" });
     maSeries60 = mainChart.addSeries(LineSeries, { color: "#4caf50", lineWidth: 1.5, title: "MA60" });
     maSeries120 = mainChart.addSeries(LineSeries, { color: "#9c27b0", lineWidth: 1.5, title: "MA120" });
 
@@ -574,6 +624,14 @@ const { initialCode = "000660", defaultTab = "chart" } = Astro.props;
 
       mainChart?.timeScale().fitContent();
       updateLegendDefault();
+
+      // Check lecture pattern selection
+      const patSelect = (document.getElementById("select-lecture-pattern") as HTMLSelectElement)?.value;
+      if (patSelect && patSelect !== "NONE") {
+        applyLecturePattern(patSelect);
+      } else {
+        clearLecturePattern();
+      }
     } catch (e) {
       console.error(e);
     } finally {
@@ -640,6 +698,125 @@ const { initialCode = "000660", defaultTab = "chart" } = Astro.props;
     }
     subChart?.priceScale("right").applyOptions({ autoScale: true });
     subChart?.timeScale().fitContent();
+  }
+
+  // --- Lecture Pattern Finder logic ---
+  function clearLecturePattern() {
+    currentLecturePoints = [];
+    currentPatternIndex = 0;
+    const navPanel = document.getElementById("lecture-pattern-navigator");
+    if (navPanel) navPanel.classList.add("hidden");
+
+    if (candleSeries) {
+      if (typeof (candleSeries as any).setMarkers === "function") {
+        (candleSeries as any).setMarkers([]);
+      } else if (markersPrimitive) {
+        try { markersPrimitive.setMarkers([]); } catch(e) {}
+      }
+    }
+  }
+
+  function applyLecturePattern(patternKey: string) {
+    if (!currentStockData || currentStockData.length === 0 || patternKey === "NONE") {
+      clearLecturePattern();
+      return;
+    }
+
+    currentLecturePoints = detectLecturePatternPoints(currentStockData, patternKey as StrategyType);
+    const navPanel = document.getElementById("lecture-pattern-navigator");
+    const patBadge = document.getElementById("pat-badge");
+    const patCount = document.getElementById("pat-count");
+    const patListContainer = document.getElementById("pat-list-container");
+
+    if (navPanel) navPanel.classList.remove("hidden");
+
+    const titleMap: Record<string, string> = {
+      LECTURE_INVERTED_HAMMER: "🔨 [1-1강] 역망치 매집봉",
+      LECTURE_HAMMER: "🪓 [1-1강] 바닥 망치형",
+      LECTURE_BULLISH_ENGULFING: "🟢 [1-2강] 20일선 상승장악형",
+      LECTURE_MORNING_STAR: "⭐ [1-2강] 샛별형 3봉 반전",
+      LECTURE_THREE_SOLDIERS: "📈 [1-2강] 적삼병 연속 양봉",
+      LECTURE_PIERCING_LINE: "⚡ [1-2강] 관통형 반등",
+      LECTURE_BEARISH_ENGULFING: "⚠️ [1-2강] 고점 하락장악형",
+    };
+
+    if (patBadge) patBadge.innerText = titleMap[patternKey] || patternKey;
+    if (patCount) patCount.innerText = `${currentLecturePoints.length}`;
+
+    // Set markers on candle series
+    const markers = currentLecturePoints.map(p => p.marker);
+    if (candleSeries) {
+      if (typeof (candleSeries as any).setMarkers === "function") {
+        (candleSeries as any).setMarkers(markers);
+      } else if (typeof createSeriesMarkers === "function") {
+        if (markersPrimitive) {
+          try { markersPrimitive.setMarkers(markers); } catch(e) {}
+        } else {
+          markersPrimitive = createSeriesMarkers(candleSeries, markers);
+        }
+      }
+    }
+
+    // Render occurrence badges
+    if (patListContainer) {
+      if (currentLecturePoints.length === 0) {
+        patListContainer.innerHTML = '<span class="text-xs text-muted-foreground py-1">현재 종목의 15년 데이터에서 해당 패턴 조건을 만족하는 시점이 없습니다.</span>';
+      } else {
+        patListContainer.innerHTML = currentLecturePoints
+          .map((p, idx) => `
+            <button
+              class="pat-chip shrink-0 flex items-center gap-1.5 px-2.5 py-1 rounded-lg border border-border bg-background hover:border-accent hover:bg-accent/10 font-mono text-xs text-foreground transition-all cursor-pointer ${idx === currentLecturePoints.length - 1 ? 'border-accent ring-1 ring-accent/30 bg-accent/10 font-bold' : ''}"
+              data-idx="${idx}"
+            >
+              <span>${p.time}</span>
+              <span class="text-[10px] text-muted-foreground">${p.price.toLocaleString()}원</span>
+              <span class="text-[10px] px-1 rounded bg-muted text-muted-foreground font-sans">Vol ${p.volumeRatio}x</span>
+            </button>
+          `)
+          .join("");
+
+        patListContainer.querySelectorAll(".pat-chip").forEach(chip => {
+          chip.addEventListener("click", () => {
+            const idx = parseInt((chip as HTMLElement).dataset.idx || "0");
+            jumpToPatternIndex(idx);
+          });
+        });
+      }
+    }
+
+    if (currentLecturePoints.length > 0) {
+      jumpToPatternIndex(currentLecturePoints.length - 1);
+    }
+  }
+
+  function jumpToPatternIndex(idx: number) {
+    if (!currentLecturePoints || currentLecturePoints.length === 0) return;
+    if (idx < 0) idx = 0;
+    if (idx >= currentLecturePoints.length) idx = currentLecturePoints.length - 1;
+    currentPatternIndex = idx;
+
+    const currentIdxEl = document.getElementById("pat-current-idx");
+    if (currentIdxEl) currentIdxEl.innerText = `${idx + 1} / ${currentLecturePoints.length}`;
+
+    // Update active style on chips
+    const chips = document.querySelectorAll(".pat-chip");
+    chips.forEach((c, i) => {
+      if (i === idx) {
+        c.className = "pat-chip shrink-0 flex items-center gap-1.5 px-2.5 py-1 rounded-lg border border-accent ring-1 ring-accent/30 bg-accent/15 font-mono text-xs text-foreground font-bold transition-all cursor-pointer";
+        (c as HTMLElement).scrollIntoView({ behavior: "smooth", inline: "nearest", block: "nearest" });
+      } else {
+        c.className = "pat-chip shrink-0 flex items-center gap-1.5 px-2.5 py-1 rounded-lg border border-border bg-background hover:border-accent hover:bg-accent/10 font-mono text-xs text-foreground transition-all cursor-pointer";
+      }
+    });
+
+    const pt = currentLecturePoints[idx];
+    const startIdx = Math.max(0, pt.index - 14);
+    const endIdx = Math.min(currentStockData.length - 1, pt.index + 20);
+
+    mainChart?.timeScale().setVisibleRange({
+      from: currentStockData[startIdx].time,
+      to: currentStockData[endIdx].time,
+    });
   }
 
   function executeBacktest() {
@@ -725,13 +902,9 @@ const { initialCode = "000660", defaultTab = "chart" } = Astro.props;
   }
 
   function setup() {
-    // 1. Initialize Chart immediately
     initCharts();
-
-    // 2. Load Default Initial Stock immediately in parallel
     loadStock(currentCode, currentName);
 
-    // 3. Fetch Stock Master List in background (non-blocking)
     fetch("https://pub-88fccd299b1d47fe97d43f35f238d0ce.r2.dev/data/stock_list.json")
       .then(r => r.json())
       .then(data => {
@@ -739,7 +912,6 @@ const { initialCode = "000660", defaultTab = "chart" } = Astro.props;
       })
       .catch(e => console.error("Stock list fetch error:", e));
 
-    // 4. Search Dropdown logic
     const searchInput = document.getElementById("stock-search-input") as HTMLInputElement;
     const searchDropdown = document.getElementById("stock-search-dropdown");
 
@@ -787,7 +959,6 @@ const { initialCode = "000660", defaultTab = "chart" } = Astro.props;
       });
     }
 
-    // Quick stock buttons
     document.querySelectorAll(".quick-stock-btn").forEach(btn => {
       btn.addEventListener("click", () => {
         const code = (btn as HTMLElement).dataset.code;
@@ -796,7 +967,6 @@ const { initialCode = "000660", defaultTab = "chart" } = Astro.props;
       });
     });
 
-    // Tab buttons
     const tabChart = document.getElementById("tab-btn-chart");
     const tabBacktest = document.getElementById("tab-btn-backtest");
     const sectionChart = document.getElementById("section-chart");
@@ -809,6 +979,12 @@ const { initialCode = "000660", defaultTab = "chart" } = Astro.props;
       sectionChart?.classList.remove("hidden");
       sectionBacktest?.classList.add("hidden");
       mainChart?.timeScale().fitContent();
+
+      // If lecture pattern is active, restore its markers
+      const patSelect = (document.getElementById("select-lecture-pattern") as HTMLSelectElement)?.value;
+      if (patSelect && patSelect !== "NONE") {
+        applyLecturePattern(patSelect);
+      }
     });
 
     tabBacktest?.addEventListener("click", () => {
@@ -826,6 +1002,25 @@ const { initialCode = "000660", defaultTab = "chart" } = Astro.props;
 
     document.getElementById("select-sub-indicator")?.addEventListener("change", updateSubChart);
 
+    // Lecture Pattern change listener
+    document.getElementById("select-lecture-pattern")?.addEventListener("change", e => {
+      const val = (e.target as HTMLSelectElement).value;
+      applyLecturePattern(val);
+    });
+
+    // Pattern navigator buttons
+    document.getElementById("btn-pat-prev")?.addEventListener("click", () => {
+      if (currentLecturePoints.length > 0 && currentPatternIndex > 0) {
+        jumpToPatternIndex(currentPatternIndex - 1);
+      }
+    });
+
+    document.getElementById("btn-pat-next")?.addEventListener("click", () => {
+      if (currentLecturePoints.length > 0 && currentPatternIndex < currentLecturePoints.length - 1) {
+        jumpToPatternIndex(currentPatternIndex + 1);
+      }
+    });
+
     document.getElementById("btn-fit-chart")?.addEventListener("click", () => {
       mainChart?.timeScale().fitContent();
       subChart?.timeScale().fitContent();
@@ -836,7 +1031,6 @@ const { initialCode = "000660", defaultTab = "chart" } = Astro.props;
     });
   }
 
-  // Initial mount
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", setup);
   } else {
