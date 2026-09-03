@@ -1,7 +1,7 @@
 ---
 title: "한전의 25조 전기요금 선납 제안: 반도체 전력망 확충과 기업 재무 리스크 진단"
-pubDatetime: 2026-09-04T08:00:00Z
-modDatetime: 2026-09-04T08:00:00Z
+pubDatetime: 2026-09-03T23:10:00Z
+modDatetime: 2026-09-03T23:10:00Z
 featured: true
 draft: false
 tags: [한국전력, 삼성전자, SK하이닉스, 반도체클러스터, 전력망, 재무분석]
