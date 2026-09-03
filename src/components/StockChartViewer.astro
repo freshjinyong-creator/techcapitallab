@@ -154,17 +154,9 @@ const { initialCode = "000660", defaultTab = "chart" } = Astro.props;
       <div class="flex items-center gap-2 w-full sm:w-auto">
         <select id="select-lecture-pattern" class="w-full sm:w-auto rounded-xl border border-accent/40 bg-background px-3 py-1.5 text-xs font-bold text-foreground focus:border-accent focus:outline-none shadow-xs">
           <option value="NONE">-- 🎓 강의 실전 패턴 탐색 선택 (해제) --</option>
-          <optgroup label="[1-1강] 단일 캔들 기초 & 바닥 매집">
-            <option value="LECTURE_INVERTED_HAMMER">🔨 [1-1강] 바닥권 역망치 매집봉 (거래량 폭증 + 위꼬리)</option>
-            <option value="LECTURE_HAMMER">🪓 [1-1강] 바닥권 망치형 반등 (아래꼬리 2배+)</option>
-          </optgroup>
-          <optgroup label="[1-2강] 복합 패턴 & 20일선 눌림목">
-            <option value="LECTURE_BULLISH_ENGULFING">🟢 [1-2강] 20일선 눌림목 상승장악형 (Bullish Engulfing)</option>
-            <option value="LECTURE_MORNING_STAR">⭐ [1-2강] 바닥권 샛별형 3봉 반전 (Morning Star)</option>
-            <option value="LECTURE_THREE_SOLDIERS">📈 [1-2강] 적삼병 연속 양봉 추세 (Three White Soldiers)</option>
-            <option value="LECTURE_PIERCING_LINE">⚡ [1-2강] 관통형 50%+ 되돌림 반등 (Piercing Line)</option>
-            <option value="LECTURE_BEARISH_ENGULFING">⚠️ [1-2강] [경고] 고점 하락장악형 (Bearish Engulfing)</option>
-          </optgroup>
+          <option value="LECTURE_INVERTED_HAMMER">🔨 [1-1강 실전] 바닥권 역망치 매집봉 (거래량 폭증 + 위꼬리)</option>
+          <option value="LECTURE_BULLISH_ENGULFING">🟢 [1-2강 실전] 20일선 눌림목 상승장악형 (Bullish Engulfing)</option>
+          <option value="LECTURE_BEARISH_ENGULFING">⚠️ [1-2강 경고] 고점 하락장악형 (설거지 장대음봉 탈출)</option>
         </select>
       </div>
     </div>
@@ -234,14 +226,10 @@ const { initialCode = "000660", defaultTab = "chart" } = Astro.props;
         <div class="flex flex-col gap-1.5">
           <label class="text-xs font-semibold text-muted-foreground">매매 전략 선택</label>
           <select id="bt-strategy" class="rounded-xl border border-border bg-background px-3 py-2 text-sm font-medium text-foreground focus:border-accent focus:outline-none">
-            <optgroup label="🎓 [강의 1-1강 & 1-2강] 실전 캔들 기법">
-              <option value="LECTURE_INVERTED_HAMMER">🔨 [1-1강] 바닥권 역망치 매집봉 (거래량 폭증+위꼬리)</option>
-              <option value="LECTURE_HAMMER">🪓 [1-1강] 바닥권 망치형 반등 (아래꼬리 2배+)</option>
-              <option value="LECTURE_BULLISH_ENGULFING" selected>🟢 [1-2강] 20일선 눌림목 상승장악형 (Bullish Engulfing)</option>
-              <option value="LECTURE_MORNING_STAR">⭐ [1-2강] 바닥권 샛별형 3봉 반전 (Morning Star)</option>
-              <option value="LECTURE_THREE_SOLDIERS">📈 [1-2강] 적삼병 연속 양봉 추세 (Three White Soldiers)</option>
-              <option value="LECTURE_PIERCING_LINE">⚡ [1-2강] 관통형 50%+ 되돌림 반등 (Piercing Line)</option>
-              <option value="LECTURE_BEARISH_ENGULFING">⚠️ [1-2강] [경고] 고점 하락장악형 (Bearish Engulfing)</option>
+            <optgroup label="🎓 [강의 실전 기법] 1-1강 & 1-2강">
+              <option value="LECTURE_INVERTED_HAMMER">🔨 [1-1강 실전] 바닥권 역망치 매집봉 (거래량 폭증+위꼬리)</option>
+              <option value="LECTURE_BULLISH_ENGULFING" selected>🟢 [1-2강 실전] 20일선 눌림목 상승장악형 (Bullish Engulfing)</option>
+              <option value="LECTURE_BEARISH_ENGULFING">⚠️ [1-2강 경고] 고점 하락장악형 (설거지 장대음봉 탈출)</option>
             </optgroup>
             <optgroup label="📊 [클래식] 퀀트 모멘텀 전략">
               <option value="MA_CROSS">이평선 골든크로스 (5일/20일)</option>
@@ -731,13 +719,9 @@ const { initialCode = "000660", defaultTab = "chart" } = Astro.props;
     if (navPanel) navPanel.classList.remove("hidden");
 
     const titleMap: Record<string, string> = {
-      LECTURE_INVERTED_HAMMER: "🔨 [1-1강] 역망치 매집봉",
-      LECTURE_HAMMER: "🪓 [1-1강] 바닥 망치형",
-      LECTURE_BULLISH_ENGULFING: "🟢 [1-2강] 20일선 상승장악형",
-      LECTURE_MORNING_STAR: "⭐ [1-2강] 샛별형 3봉 반전",
-      LECTURE_THREE_SOLDIERS: "📈 [1-2강] 적삼병 연속 양봉",
-      LECTURE_PIERCING_LINE: "⚡ [1-2강] 관통형 반등",
-      LECTURE_BEARISH_ENGULFING: "⚠️ [1-2강] 고점 하락장악형",
+      LECTURE_INVERTED_HAMMER: "🔨 [1-1강 실전] 역망치 매집봉",
+      LECTURE_BULLISH_ENGULFING: "🟢 [1-2강 실전] 20일선 상승장악형",
+      LECTURE_BEARISH_ENGULFING: "⚠️ [1-2강 경고] 고점 하락장악형",
     };
 
     if (patBadge) patBadge.innerText = titleMap[patternKey] || patternKey;
