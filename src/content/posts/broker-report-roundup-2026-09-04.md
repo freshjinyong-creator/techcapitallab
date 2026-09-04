@@ -46,7 +46,7 @@ ogImage: "../../assets/images/broker-report-roundup-2026-09-04.png"
 
 ---
 
-## 3. 주요 종목별 심층 투자 분석 및 출처 표기
+## 3. 주요 종목별 심층 투자 분석
 
 ### 1. 롯데이노베이트 (286940) - 데이터센터 DBO 사업 수주로 체질 개선
 - <strong>출처 증권사</strong>: <strong>한화투자증권</strong> (2026년 9월 4일 자 리포트)
