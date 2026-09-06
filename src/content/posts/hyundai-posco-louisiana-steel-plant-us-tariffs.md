@@ -1,6 +1,7 @@
 ---
 title: "트럼프 철강 관세 50%인데 현대차는 어떻게 대응할까? 현대제철·포스코 미국 8조 전기로 제철소 합작의 전략적 의미"
 pubDatetime: 2026-09-06T22:30:00.000Z
+ogImage: "../../assets/images/hyundai-posco-louisiana-steel-plant-us-tariffs.png"
 description: "미국 외국산 철강 50% 관세 장벽에 맞서 현대제철과 포스코가 루이지애나에 8조 원 규모 전기로 제철소를 세웁니다. 지분 구조와 공급망 내재화, 투자 관점의 핵심 변수를 짚어봅니다."
 category: "2. 뉴스 속 경제"
 tags:
