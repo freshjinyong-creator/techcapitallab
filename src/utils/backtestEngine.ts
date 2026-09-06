@@ -18,10 +18,11 @@ export type StrategyType =
   | "VOLATILITY_BREAKOUT"
   | "DISPARITY_OVERSOLD"
   | "HIGH_52W_BREAKOUT"
-  // Lecture Verified Patterns (1-1강 & 1-2강)
+  // Lecture Verified Patterns (1-1강 ~ 1-3강)
   | "LECTURE_INVERTED_HAMMER"
   | "LECTURE_BULLISH_ENGULFING"
-  | "LECTURE_BEARISH_ENGULFING";
+  | "LECTURE_BEARISH_ENGULFING"
+  | "LECTURE_VOLUME_BREAKOUT";
 
 export interface BacktestParams {
   strategy: StrategyType;
@@ -205,6 +206,51 @@ export function detectLecturePatternPoints(
             text: "⚠️ [하락장악형]",
           },
         });
+      }
+    }
+    // 1-3강 실전 기법: 거래량 기준봉 + 거래절벽 눌림목 (장대양봉 + 거래량 폭발 후 2~7일 내 거래절벽 & 중심선 지지)
+    else if (pattern === "LECTURE_VOLUME_BREAKOUT") {
+      for (let lookback = 1; lookback <= 7; lookback++) {
+        const bIdx = i - lookback;
+        if (bIdx < 20) break;
+        const bBar = data[bIdx];
+
+        // 1단계: 기준봉 조건 (장대양봉 + 거래량 20일 MA 대비 2.5배 이상)
+        const bChange = (bBar.close - bBar.open) / bBar.open;
+        const bVolMA = data.slice(bIdx - 20, bIdx).reduce((s, c) => s + c.volume, 0) / 20;
+        const isBreakoutCandle = bChange >= 0.08 && bVolMA > 0 && bBar.volume >= bVolMA * 2.5;
+
+        if (isBreakoutCandle) {
+          const bMid = (bBar.open + bBar.close) / 2;
+          const volRatioToBreakout = currBar.volume / bBar.volume;
+
+          // 2단계 & 3단계: 거래절벽(거래량 35% 이하) + 시가 위 지지 + 중심선(50%) 근처 터치
+          const isVolumeCliff = volRatioToBreakout <= 0.35;
+          const holdsAboveOpen = currBar.low >= bBar.open * 0.98;
+          const reachesMidpointArea = currBar.low <= bMid * 1.05 && currBar.close >= bBar.open;
+          const notBrokenOutYet = currBar.close <= bBar.high * 1.02;
+
+          if (isVolumeCliff && holdsAboveOpen && reachesMidpointArea && notBrokenOutYet) {
+            points.push({
+              time: date,
+              index: i,
+              price: currBar.close,
+              patternKey: pattern,
+              title: "거래량 기준봉 + 거래절벽 눌림목 (1-3강)",
+              badgeText: "🎯 거래절벽 눌림목",
+              description: `기준봉(${bBar.time.slice(0, 10)}) 대비 거래량 ${Math.round(volRatioToBreakout * 100)}% 급감(거래절벽) + 중심선 지지`,
+              volumeRatio: Math.round(volRatioToBreakout * 100) / 100,
+              marker: {
+                time: date,
+                position: "belowBar",
+                color: "#8b5cf6",
+                shape: "arrowUp",
+                text: "🎯 [거래절벽 눌림목]",
+              },
+            });
+            break;
+          }
+        }
       }
     }
   }
@@ -512,6 +558,29 @@ export function runBacktest(
         const isEngulf = currBar.open >= prevBar.close * 0.995 && currBar.close <= prevBar.open * 1.005;
         if (isPrevBull && isCurrBear && isEngulf) {
           shouldEnter = true;
+        }
+      } else if (params.strategy === "LECTURE_VOLUME_BREAKOUT") {
+        for (let lookback = 1; lookback <= 7; lookback++) {
+          const bIdx = i - lookback;
+          if (bIdx < 20) break;
+          const bBar = data[bIdx];
+          const bChange = (bBar.close - bBar.open) / bBar.open;
+          const bVolMA = data.slice(bIdx - 20, bIdx).reduce((s, c) => s + c.volume, 0) / 20;
+          const isBreakoutCandle = bChange >= 0.08 && bVolMA > 0 && bBar.volume >= bVolMA * 2.5;
+
+          if (isBreakoutCandle) {
+            const bMid = (bBar.open + bBar.close) / 2;
+            const volRatioToBreakout = currBar.volume / bBar.volume;
+            const isVolumeCliff = volRatioToBreakout <= 0.35;
+            const holdsAboveOpen = currBar.low >= bBar.open * 0.98;
+            const reachesMidpointArea = currBar.low <= bMid * 1.05 && currBar.close >= bBar.open;
+            const notBrokenOutYet = currBar.close <= bBar.high * 1.02;
+
+            if (isVolumeCliff && holdsAboveOpen && reachesMidpointArea && notBrokenOutYet) {
+              shouldEnter = true;
+              break;
+            }
+          }
         }
       }
 
