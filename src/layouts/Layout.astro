@@ -92,6 +92,16 @@ const rssHref = getRelativeLocaleUrl(
     <!-- Filled at runtime by theme.ts to match the current background colour -->
     <meta name="theme-color" content="" />
 
+    <!-- Schema.org JSON-LD (WebSite) -->
+    <script type="application/ld+json" is:inline set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "테크캐피탈랩",
+      "alternateName": ["TechCapitalLab", "테크캐피탈 랩"],
+      "url": "https://techcapitallab.com/",
+      "description": "테크캐피탈랩(TechCapitalLab) - 데이터와 리포트를 바탕으로 금융 및 투자 가치를 재해석하는 전문 블로그"
+    })} />
+
     <!-- Extra head content injected by child layouts (e.g. JSON-LD, article meta) -->
     <slot name="head" />
 
