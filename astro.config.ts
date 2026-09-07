@@ -21,6 +21,17 @@ import config from "./astro-paper.config";
 
 export default defineConfig({
   site: config.site.url,
+  redirects: {
+    "/news-macro": "/category/news-macro/",
+    "/economy-basics": "/category/economy-basics/",
+    "/report-lab": "/category/report-lab/",
+    "/chart-analysis": "/category/chart-analysis/",
+    "/rss.xml/": "/rss.xml",
+    "/fed-rate-cut-2026-global-liquidity": "/posts/us-interest-rate-yen-carry-china-supply-chain-kospi/",
+    "/bigtech-fcf-shareholder-return": "/posts/nvidia-ai-server-15pct-price-hike-earnings-preview/",
+    "/ai-semiconductor-hbm-roadmap": "/posts/semiconductor-decoupling-nvidia-samsung-sk-hynix/",
+    "/posts/sk-inn...ship": "/posts/sk-innovation-terrapower-smr-partnership/",
+  },
   integrations: [
     mdx(),
     sitemap({

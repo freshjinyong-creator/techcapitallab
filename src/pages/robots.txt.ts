@@ -3,11 +3,13 @@ import type { APIRoute } from "astro";
 const getRobotsTxt = (sitemapURL: URL) => `
 User-agent: *
 Allow: /
+Disallow: /cdn-cgi/
 Disallow: /tags/
 Disallow: /tags/*
 Disallow: /search
 Disallow: /search/
 Disallow: /rss.xml
+Disallow: /rss.xml/
 
 Sitemap: ${sitemapURL.href}
 `;
