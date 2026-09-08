@@ -50,12 +50,12 @@ description: "하워드 막스의 시계추 원리와 우라가미 구니오의 
 
 ## 2. 우라가미 구니오의 증시 4계절 사이클
 
-일본의 전설적인 투자 전략가 우라가미 구니오는 <strong>금리</strong>와 <strong>기업 실적</strong>이라는 두 가지 거대한 축의 상호작용을 통해 주식시장의 4가지 국면을 계절로 명쾌하게 정리했습니다.
+일본의 전설적인 투자 전략가 우라가미 구니오는 <strong>금리와</strong> <strong>기업 실적이</strong>라는 두 가지 거대한 축의 상호작용을 통해 주식시장의 4가지 국면을 계절로 명쾌하게 정리했습니다.
 
 | 계절 | 시장 국면 | 금리 환경 | 기업 실적 | 주가 흐름 | 핵심 주도 섹터 |
 | :--- | :--- | :--- | :--- | :--- | :--- |
 | <strong>봄 (Spring)</strong> | <strong>금융장세</strong> | <strong>금리 인하 (유동성 공급)</strong> | 불황 지속 (실적 바닥) | <strong>주가 선제적 급등</strong> | 금리민감주, 금융, 증권, 건설, 공공인프라 |
-| <strong>여름 (Summer)</strong> | <strong>실적장세</strong> | <strong>금리 인상 시작</strong> | <strong>실적 폭발적 증</strong>가 | <strong>주가 대세 상승</strong> | 소재, 산업재, 반도체, 대형 수출 제조업 |
+| <strong>여름 (Summer)</strong> | <strong>실적장세</strong> | <strong>금리 인상 시작</strong> | <strong>실적 폭발적 증가</strong> | <strong>주가 대세 상승</strong> | 소재, 산업재, 반도체, 대형 수출 제조업 |
 | <strong>가을 (Autumn)</strong> | <strong>역금융장세</strong> | <strong>금리 급등 (긴축 정점)</strong> | 실적 호조 지속 (피크) | <strong>주가 천장 치고 하락</strong> | 고PER 성장주 폭락, 현금 및 단기채권 피신 |
 | <strong>겨울 (Winter)</strong> | <strong>역실적장세</strong> | <strong>금리 인하 검토/시작</strong> | <strong>실적 급감 (적자 전락)</strong> | <strong>주가 바닥권 투매</strong> | 필수소비재, 제약/바이오, 유틸리티 방어주 |
 

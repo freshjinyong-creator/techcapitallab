@@ -22,7 +22,7 @@ description: "워렌 버핏, 찰리 멍거, 피터 린치, 박영옥, 이세옥 
 
 주식 시장은 수많은 감정과 욕망, 그리고 공포가 충돌하는 광기의 현장입니다. 대폭락장이 찾아오거나 특정 테마주가 급등할 때 대부분의 개인 투자자들은 원칙을 잃고 고점에 매수하고 저점에 손절하는 실수를 반복합니다.
 
-변동성이 심하고 지배구조 리스크가 존재하는 한국 증시에서 살아남기 위해서는 단순한 차트 매매를 넘어 검증된 거장들의 원칙이 필요합니다. 앞서 우리가 살펴본 [주식의 본질과 내재가치](/posts/stock-essence-intrinsic-value-market-price/), [투자와 도박을 가르는 기대값의 수학](/posts/investing-vs-gambling-expected-value-edge/), [72의 법칙과 수량 복리](/posts/compound-interest-magic-72-rule-time-value/), 그리고 [시장의 심리학과 행동경제학 함정](/posts/market-psychology-behavioral-economics-traps/)에 이어, 1주차 투자 마인드셋을 완성하는 <strong>가치투자 5계명</strong>을 수립하고 실전 평정표를 제시합니다.
+변동성이 심하고 지배구조 리스크가 존재하는 한국 증시에서 살아남기 위해서는 단순한 차트 매매를 넘어 검증된 거장들의 원칙이 필요합니다. 앞서 우리가 살펴본 [주식의 본질과 내재가치](/posts/stock-essence-intrinsic-value-market-price/), [투자와 도박을 가르는 기대값의 수학](/posts/investing-vs-gambling-expected-value-edge/), [72의 법칙과 수량 복리](/posts/compound-interest-magic-72-rule-time-value/), 그리고 [시장의 심리학과 행동경제학 함정](/posts/market-psychology-behavioral-economics-traps/)에 이어, 1주차 투자 마인드셋을 완성하는 <strong>가치투자 5계명을</strong> 수립하고 실전 평정표를 제시합니다.
 
 ---
 
