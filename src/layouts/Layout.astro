@@ -136,6 +136,21 @@ const rssHref = getRelativeLocaleUrl(
       gtag('config', 'G-29702REPBT');
     </script>
 
+    <!-- Busuanzi Page View Counter (ClientRouter compatible) -->
+    <script is:inline>
+      function initBusuanzi() {
+        const old = document.getElementById("busuanzi-script");
+        if (old) old.remove();
+        const s = document.createElement("script");
+        s.id = "busuanzi-script";
+        s.src = "//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js";
+        s.async = true;
+        s.referrerPolicy = "no-referrer-when-downgrade";
+        document.head.appendChild(s);
+      }
+      document.addEventListener("astro:page-load", initBusuanzi);
+    </script>
+
     <!--
       Inline FOUC-prevention script: sets data-theme on <html> before
       the browser paints. Runs synchronously, no defer/async.
