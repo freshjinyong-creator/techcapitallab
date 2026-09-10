@@ -136,14 +136,49 @@ const rssHref = getRelativeLocaleUrl(
       gtag('config', 'G-29702REPBT');
     </script>
 
-    <!-- Busuanzi Page View Counter (ClientRouter compatible) -->
+    <!-- Busuanzi Page View Counter with 24-hour Deduplication Cooldown -->
     <script is:inline>
       function initBusuanzi() {
+        const path = window.location.pathname;
+        if (!path.startsWith("/posts/") || path === "/posts/" || path === "/posts") {
+          return;
+        }
+
+        const storageKey = "tcl_view_" + path;
+        const countKey = "tcl_count_" + path;
+        const lastViewed = localStorage.getItem(storageKey);
+        const now = Date.now();
+        const ONE_DAY_MS = 24 * 60 * 60 * 1000;
+
+        const countEl = document.getElementById("busuanzi_value_page_pv");
+        const containerEl = document.getElementById("busuanzi_container_page_pv");
+
+        // Check if viewed within 24 hours
+        if (lastViewed && (now - parseInt(lastViewed, 10)) < ONE_DAY_MS) {
+          const cachedCount = localStorage.getItem(countKey);
+          if (cachedCount && countEl) {
+            countEl.innerText = Number(cachedCount).toLocaleString();
+            if (containerEl) containerEl.style.display = "flex";
+            return;
+          }
+        }
+
+        // New visit or 24h expired: Request live counter increment
         const old = document.getElementById("busuanzi-script");
         if (old) old.remove();
+
+        window.BusuanziCallback = function (data) {
+          if (data && data.page_pv) {
+            localStorage.setItem(storageKey, String(now));
+            localStorage.setItem(countKey, String(data.page_pv));
+            if (countEl) countEl.innerText = Number(data.page_pv).toLocaleString();
+            if (containerEl) containerEl.style.display = "flex";
+          }
+        };
+
         const s = document.createElement("script");
         s.id = "busuanzi-script";
-        s.src = "//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js";
+        s.src = "//busuanzi.ibruce.info/busuanzi?jsonpCallback=BusuanziCallback";
         s.async = true;
         s.referrerPolicy = "no-referrer-when-downgrade";
         document.head.appendChild(s);
