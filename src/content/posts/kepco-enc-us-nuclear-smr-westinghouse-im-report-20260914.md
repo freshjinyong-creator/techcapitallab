@@ -1,5 +1,5 @@
 ---
-title: "한전기술 주가 체코 원전·미국 SMR로 리레이팅될까? iM증권 리포트로 본 팀코리아 052690 수주 모멘텀"
+title: "한전기술 주가 체코 원전·미국 SMR로 리레이팅될까? iM증권 리포트로 본 팀코리아 수주 모멘텀"
 pubDatetime: 2026-09-14T00:00:00Z
 description: "iM증권 이상헌 연구원의 한전기술(052690) 리포트 분석. 한미 원전 협력, 웨스팅하우스 공동 진출, 체코 원전 본계약 낙수효과 및 북미 SMR 엔지니어링 수주 모멘텀과 밸류에이션 리레이팅 가능성을 실증 데이터로 파헤칩니다."
 ogImage: "../../assets/images/kepco-enc-us-nuclear-smr-westinghouse-im-report-20260914-og.png"
