@@ -1,7 +1,7 @@
 ---
 title: "지엔씨에너지 목표가 7만원 상향: 미국 제네락 아마존 8조 수주에 국내 AI 데이터센터 비상발전기 숏티지 수혜 분석"
-pubDatetime: 2026-09-18T09:45:00Z
-modDatetime: 2026-09-18T09:45:00Z
+pubDatetime: 2026-09-18T00:30:00Z
+modDatetime: 2026-09-18T00:30:00Z
 featured: false
 draft: false
 tags: [지엔씨에너지, 비상발전기, AI데이터센터, 제네락, 증권사리포트, IBK투자증권]
