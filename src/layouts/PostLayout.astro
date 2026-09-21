@@ -20,7 +20,12 @@ const structuredData = {
   "@context": "https://schema.org",
   "@type": "BlogPosting",
   headline: title ?? site.title,
+  description: description ?? site.description,
   image: ogImage,
+  mainEntityOfPage: {
+    "@type": "WebPage",
+    "@id": canonicalURL ?? Astro.url.href,
+  },
   ...(pubDatetime && { datePublished: pubDatetime.toISOString() }),
   ...(modDatetime && { dateModified: modDatetime.toISOString() }),
   author: [
@@ -30,6 +35,15 @@ const structuredData = {
       ...(site.profile && { url: site.profile }),
     },
   ],
+  publisher: {
+    "@type": "Organization",
+    name: site.title,
+    url: site.url,
+    logo: {
+      "@type": "ImageObject",
+      url: new URL("apple-touch-icon.png", site.url).href,
+    },
+  },
 };
 ---
 
