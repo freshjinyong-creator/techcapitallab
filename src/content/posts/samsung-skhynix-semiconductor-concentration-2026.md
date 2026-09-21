@@ -10,6 +10,9 @@ ogImage: "../../assets/images/semiconductor-concentration.svg"
 description: "삼성전자와 SK하이닉스의 내년 역대급 실적 전망을 분석하고, 한국 경제의 심각한 반도체 쏠림 현상이 가져올 명암과 투자자 대응 전략을 정밀 진단합니다."
 ---
 
+> <strong>핵심 직답 (Direct Answer)</strong><br>
+> ---
+
 > <strong>작성 기준일:</strong> 2026-08-17
 > <strong>TL;DR (3줄 요약)</strong>
 > - 삼성전자와 SK하이닉스가 AI 반도체 및 메모리 업황 회복에 힘입어 내년에 역대 최대 수준의 합산 영업이익을 경신할 것이라는 장밋빛 전망이 쏟아지고 있습니다.

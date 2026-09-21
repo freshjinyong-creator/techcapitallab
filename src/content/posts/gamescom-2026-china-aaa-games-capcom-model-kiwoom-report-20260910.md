@@ -19,6 +19,9 @@ ogImage: "../../assets/images/gamescom-2026-china-aaa-games-capcom-model-kiwoom-
 description: "키움증권 게임 산업 인뎁스 리포트를 바탕으로 게임스컴 2026에서 확인된 중국 게임사의 AAA급 공습, P2W 한계와 캡콤(Capcom)의 멀티 IP PER 리레이팅 모델, 국내 주요 3사(시프트업·크래프톤·엔씨소프트)의 생존 전략을 심층 분석합니다."
 ---
 
+> <strong>핵심 직답 (Direct Answer)</strong><br>
+> ---
+
 > <strong>TL;DR (3줄 핵심 요약)</strong>
 > 1. <strong>중국 게임사의 패러다임 전환:</strong> 게임스컴 2026에서 호요버스, 넷이즈, 게임사이언스 등 중국 개발사들은 기존 확률형 가챠(P2W)에서 완전히 탈피해 콘솔·PC 기반 글로벌 멀티 플랫폼 AAA급 대작으로 유저의 체류 시간(Time Spent)을 선점하고 있습니다.
 > 2. <strong>글로벌 벤치마크 캡콤(Capcom) 모델:</strong> 몬스터 헌터, 바이오하자드 등 누적 1,000만 장 이상 판매되는 메이저 IP를 3개 이상 확보해 3년 주기로 교차 출시하며 밸류에이션을 PER 15배에서 25-30배로 장기 리레이팅시킨 성공 공식이 국내 게임사의 필수 생존 전략으로 부각되었습니다.

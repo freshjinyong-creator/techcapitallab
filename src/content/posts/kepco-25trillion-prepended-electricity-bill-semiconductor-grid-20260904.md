@@ -10,6 +10,9 @@ description: "한전이 삼성전자와 SK하이닉스에 25조 원 규모의 5�
 ogImage: "../../assets/images/kepco-25trillion-prepended-electricity-bill-semiconductor-grid-20260904.png"
 ---
 
+> <strong>핵심 직답 (Direct Answer)</strong><br>
+> 한전이 삼성전자와 SK하이닉스에 25조 원 규모의 5년치 전기요금 선납을 제안했습니다. 210조 원 누적 부채와 용인 반도체 클러스터 전력망 투자 재원 마련의 정량적 배경 및 기회비용을 분석합니다.
+
 > <strong>TL;DR 3줄 요약</strong>
 > - <strong>한전의 전격 제안</strong>: 누적 부채 210조 원에 시달리는 한국전력이 삼성전자(20조 원)와 SK하이닉스(5조 원)에 5년 치 전기요금인 총 25조 원의 선납을 공식 제안했습니다.
 > - <strong>추진 목적</strong>: 용인 반도체 국가첨단산업단지 조성에 필요한 10GW 이상의 대규모 전력망 구축 자금을 시급히 조달하기 위한 목적입니다.

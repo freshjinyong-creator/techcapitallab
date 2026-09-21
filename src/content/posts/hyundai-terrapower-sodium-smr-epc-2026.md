@@ -16,6 +16,9 @@ ogImage: "../../assets/images/hyundai-terrapower-smr.svg"
 description: 빌 게이츠의 테라파워가 추진하는 4세대 나트륨 SMR 최대 8기의 EPC를 현대건설이 총괄한다. HD현대·테라파워·현대건설 3각 동맹이 미국 SMR 시장을 공략하는 구도와 의미를 분석한다.
 ---
 
+> <strong>핵심 직답 (Direct Answer)</strong><br>
+> ---
+
 > <strong>작성 기준일:</strong> 2026-08-16
 > <strong>TL;DR (3줄 요약)</strong>
 > - 빌 게이츠가 설립한 테라파워의 차세대 <strong>나트륨(Sodium) 4세대 SMR 최대 8기의 EPC(설계·조달·시공)를 현대건설이 총괄</strong>하게 됐다.

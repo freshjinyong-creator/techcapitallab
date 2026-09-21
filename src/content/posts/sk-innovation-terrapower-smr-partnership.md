@@ -16,6 +16,9 @@ ogImage: "../../assets/images/sk-terrapower-smr.svg"
 description: SK이노베이션이 빌 게이츠의 테라파워와 차세대 나트륨 기반 SMR 사업 합의서를 체결했다. AI 데이터센터 전력난을 해결할 차세대 원전 기술의 핵심을 분석한다.
 ---
 
+> <strong>핵심 직답 (Direct Answer)</strong><br>
+> ---
+
 > <strong>작성 기준일:</strong> 2026-08-15
 > <strong>TL;DR (3줄 요약)</strong>
 > - SK이노베이션이 빌 게이츠의 차세대 SMR 기업 '테라파워'와 글로벌 사업 추진을 위한 합의서를 체결했다.

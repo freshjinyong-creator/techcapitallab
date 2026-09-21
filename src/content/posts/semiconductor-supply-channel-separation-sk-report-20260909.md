@@ -19,6 +19,9 @@ ogImage: "../../assets/images/semiconductor-supply-channel-separation-sk-report-
 description: "SK증권이 분석한 반도체 섹터의 새로운 수급 구조. 전통적인 '현물 가격' 논리에서 벗어나 역외 선물/ETF의 '수급 채널'과 국내 시초가 갭으로 전이되는 2채널 메커니즘을 심층 분석합니다. 반도체 대형주 대량 매매를 위한 최적의 창구 선정 전략과 정량적 데이터를 확인하세요."
 ---
 
+> <strong>핵심 직답 (Direct Answer)</strong><br>
+> ---
+
 > <strong>TL;DR (3줄 요약)</strong>
 > - SK증권은 최근 반도체 섹터의 주가 흐름을 단순 '현물 가격 지표'로 해석할 수 없으며, <strong>국내 수급(Flow)과 역외 시장(Price)이 분리된 2채널 구조</strong>로 이해해야 한다고 진단했습니다.
 > - 국내 증시에서 나타나는 장중 변동성의 핵심은 외국인 매매 물량이 아니라, <strong>야간 무기한 선물/해외 ETF에서 먼저 형성된 가격이 시초가 갭으로 전이되는 리드-래그(Lead-Lag) 구조</strong>입니다.

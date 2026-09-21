@@ -16,6 +16,9 @@ ogImage: "../../assets/images/backtest-cagr-mdd-winrate-risk-reward-guide.png"
 description: "한국 주식 15년 수정주가 데이터를 기반으로 백테스터 성과 지표(CAGR, MDD, 승률, 손익비)를 정량 계산하고 감정을 배제한 나만의 기계적 매매 시스템을 구축하는 종합 가이드입니다."
 ---
 
+> <strong>핵심 직답 (Direct Answer)</strong><br>
+> ---
+
 > <strong>TL;DR (3줄 요약)</strong>
 > - 주식시장에서 지속 가능한 수익을 내기 위해서는 감정이나 직관이 아닌 15년치 수정주가 데이터 백테스팅으로 검증된 기계적 매매 시스템이 필요합니다.
 > - 백테스터 성과를 평가하는 4대 정량 지표는 연평균 복리 수익률(CAGR), 최대 낙폭(MDD), 승률(Win Rate), 그리고 손익비(Risk-Reward Ratio)입니다.

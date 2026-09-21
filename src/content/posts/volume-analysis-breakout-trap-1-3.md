@@ -16,6 +16,9 @@ ogImage: "../../assets/images/volume-analysis-breakout-trap-1-3.png"
 description: "가격은 속여도 거래량은 속이지 못합니다. 거래량 동반 양봉/음봉의 물리적 원리와 거래절벽, 거래량 터진 위꼬리의 매집 vs 설거지 구별법, 거래량 기반 기준봉 눌림목 매매 시스템을 완벽 해부합니다."
 ---
 
+> <strong>핵심 직답 (Direct Answer)</strong><br>
+> <strong>TL;DR (3줄 요약)</strong>
+
 <strong>TL;DR (3줄 요약)</strong>
 * 캔들의 모양과 가격은 주포(세력)가 소액 자금으로 왜곡할 수 있지만, 수백억에서 수천억 원의 실질 자금이 이동한 <strong>거래량과 거래대금은 절대 조작할 수 없습니다</strong>.
 * 대량 거래량이 동반된 위꼬리 캔들은 무조건적인 물량 털기가 아닙니다. 장기 바닥권에서는 개미들의 악성 매물대를 수거하는 <strong>매집봉이지만</strong>, 3배 이상 폭등한 고점에서는 세력의 <strong>설거지봉입니다</strong>.

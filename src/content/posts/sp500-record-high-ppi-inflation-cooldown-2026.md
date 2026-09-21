@@ -15,6 +15,9 @@ ogImage: "../../assets/images/sp500-record-high-ppi.svg"
 description: 7월 CPI에 이어 PPI까지 안정세를 보이며 S&P 500이 역대 최고치로 마감했다. 인플레이션 공포 소멸과 연준 금리 인하 전망을 분석한다.
 ---
 
+> <strong>핵심 직답 (Direct Answer)</strong><br>
+> ---
+
 > <strong>작성 기준일:</strong> 2026-08-15
 > <strong>TL;DR (3줄 요약)</strong>
 > - 미국 7월 소비자물가(CPI)에 이어 <strong>생산자물가(PPI) 역시 사실상 변동이 없는 안정세를</strong> 기록하며 인플레이션 공포를 완전히 지워냈다.

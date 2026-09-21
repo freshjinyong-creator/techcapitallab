@@ -10,6 +10,9 @@ ogImage: "../../assets/images/broker-report-0818.svg"
 description: "2026년 8월 18일 증권사 핵심 리포트를 종합 분석하여 MLCC 품귀 현상, 저궤도 위성 통신, K-Food 및 에너지 인프라 유망 섹터와 주요 6개 종목 목표주가를 정리합니다."
 ---
 
+> <strong>핵심 직답 (Direct Answer)</strong><br>
+> ---
+
 > <strong>작성 기준일:</strong> 2026-08-18
 > <strong>TL;DR (3줄 요약)</strong>
 > - 코스피가 반도체 대형주 회복과 첨단 산업 공급망 재편에 힘입어 7,000선 안착을 시도하는 가운데 실적 차별화 장세가 뚜렷해지고 있습니다.

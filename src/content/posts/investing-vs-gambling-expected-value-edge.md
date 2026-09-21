@@ -15,6 +15,9 @@ ogImage: "../../assets/images/investing-vs-gambling.svg"
 description: 주식이 투자가 아닌 도박처럼 느껴지는 이유와 투자·도박을 가르는 절대 기준. 카지노 주인의 사고로 기대값(E)을 계산하는 가치투자 입문 가이드.
 ---
 
+> <strong>핵심 직답 (Direct Answer)</strong><br>
+> ---
+
 > <strong>작성 기준일:</strong> 2026-08-15
 > <strong>TL;DR (3줄 요약)</strong>
 > - 투자와 도박을 가르는 건 돈을 거느냐의 문제가 아니라, <strong>통제 불가능한 운에 맡겼는가, 수학적 우위(Edge)에 걸었는가</strong>의 차이다.

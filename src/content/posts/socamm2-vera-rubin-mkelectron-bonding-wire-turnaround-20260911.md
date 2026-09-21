@@ -19,6 +19,9 @@ description: "엔비디아 차세대 아키텍처 Vera Rubin의 SoCAMM2 채택�
 ogImage: "../../assets/images/socamm2-vera-rubin-mkelectron-bonding-wire-turnaround-20260911-og.png"
 ---
 
+> <strong>핵심 직답 (Direct Answer)</strong><br>
+> 엔비디아 차세대 아키텍처 Vera Rubin의 SoCAMM2 채택과 중국 CXMT 증설로 본딩와이어 수요가 급증하고 있습니다. 글로벌 점유율 1위 엠케이전자 2026년 실적 턴어라운드와 기술적 수혜 구조를 정밀 분석합니다.
+
 > <strong>TL;DR (3줄 요약)</strong>
 > - 엔비디아 차세대 AI 플랫폼 <strong>베라 루빈(Vera Rubin)</strong>의 CPU 시스템 메모리로 저전력·고대역폭 모듈인 <strong>SoCAMM2</strong>가 전격 채택되면서 LPDDR5X 고적층 패키징용 본딩와이어 수요가 구조적으로 폭증하고 있습니다.
 > - 여기에 중국 메모리 양대 산맥인 <strong>CXMT와 YMTC의 대규모 생산능력 증설</strong>이 겹치며, 범용 DRAM과 NAND 패키징을 위한 골드와이어(Gold Wire) 공급처가 전방위로 확대되는 중입니다.

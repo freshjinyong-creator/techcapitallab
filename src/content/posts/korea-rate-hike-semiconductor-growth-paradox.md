@@ -10,6 +10,9 @@ ogImage: "../../assets/images/korea-rate-hike-paradox.svg"
 description: "한국 경제가 2분기 GDP 3.7% 성장으로 3%대 성장을 눈앞에 두면서 한국은행의 기준금리 연속 인상론이 부상하고 있습니다. 반도체 호황이 통화 긴축의 명분이 되는 역설의 실체와 8월 금통위 전망, 투자자 대응 전략을 분석합니다."
 ---
 
+> <strong>핵심 직답 (Direct Answer)</strong><br>
+> ---
+
 > <strong>작성 기준일:</strong> 2026-08-18
 > <strong>TL;DR (3줄 요약)</strong>
 > - 한국 2분기 GDP가 전년 대비 3.7%로 깜짝 성장하면서 연간 3%대 성장이 사실상 확정되고, 한국은행의 기준금리 인상 명분이 강해졌습니다.

@@ -16,6 +16,9 @@ ogImage: "../../assets/images/income-statement-operating-profit-margin-analysis.
 description: "손익계산서의 5단계 폭포수 구조를 통해 매출액, 영업이익, 당기순이익의 실질적 차이를 이해하고, 한국 상장사의 일회성 착시 이익을 필터링하는 3대 마진 분석법을 설명합니다."
 ---
 
+> <strong>핵심 직답 (Direct Answer)</strong><br>
+> ---
+
 > <strong>TL;DR (3줄 요약)</strong>
 > - 손익계산서는 특정 기간 동안 기업이 벌어들인 총매출에서 원가, 판관비, 세금을 순차적으로 차감하여 최종 이익을 도출하는 동영상 성적표입니다.
 > - 기업의 순수한 본업 경쟁력은 <strong>영업이익(Operating Income)에</strong> 나타나며, 부동산 처분이나 환율 평가 등 일회성 잡이익이 섞인 당기순이익의 착시를 반드시 분리해야 합니다.

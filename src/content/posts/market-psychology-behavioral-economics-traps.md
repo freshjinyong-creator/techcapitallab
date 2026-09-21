@@ -17,6 +17,9 @@ ogImage: "../../assets/images/market-psychology.svg"
 description: 주가가 오를 때 사고 내릴 때 파는 이유는 행동경제학으로 설명된다. 손실회피·확증편향·군중심리 3대 함정과 심리 제어 도구(VKOSPI, 신용융자 잔고)를 통해 시장의 공포와 탐욕을 극복하는 법을 정리한다.
 ---
 
+> <strong>핵심 직답 (Direct Answer)</strong><br>
+> ---
+
 > <strong>작성 기준일:</strong> 2026-08-16
 > <strong>TL;DR (3줄 요약)</strong>
 > - 시장은 결코 합리적 균형점에 머물지 않고, 극단적 탐욕과 극단적 공포 사이를 오가는 거대한 시계추처럼 움직인다.

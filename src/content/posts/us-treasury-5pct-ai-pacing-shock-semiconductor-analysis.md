@@ -10,6 +10,9 @@ description: "미국 10년물 국채금리가 장중 5.0%를 돌파하고 AI 속
 ogImage: "../../assets/images/us-treasury-5pct-ai-pacing-shock-semiconductor-analysis-og.png"
 ---
 
+> <strong>핵심 직답 (Direct Answer)</strong><br>
+> 미국 10년물 국채금리가 장중 5.0%를 돌파하고 AI 속도조절론이 대두되며 글로벌 반도체 및 테크주가 급락했습니다. 금리 충격과 AI Capex의 실질적 전망 분석.
+
 > <strong>TL;DR 3줄 요약</strong>
 > 1. 미국 10년물 국채금리가 장중 5.0%를 돌파하고 9월 FOMC 기준금리 인상 우려가 커지며 성장주 전반의 밸류에이션 압박이 심화되었습니다.
 > 2. 엔트로픽 등 주요 AI 기업의 속도조절 발언이 겹치면서 필라델피아 반도체 지수가 5.9% 급락하고 국내외 메모리 반도체 주가가 크게 흔들렸습니다.

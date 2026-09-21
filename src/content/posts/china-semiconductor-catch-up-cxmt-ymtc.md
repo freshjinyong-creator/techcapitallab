@@ -16,6 +16,9 @@ ogImage: "../../assets/images/china-semiconductor.svg"
 description: CXMT·YMTC가 키옥시아를 제치고 삼성전자·SK하이닉스 턱밑까지 추격했다. 중국 메모리 점유율 확대가 한국 반도체에 미치는 장기 위협과 투자 시사점을 분석한다.
 ---
 
+> <strong>핵심 직답 (Direct Answer)</strong><br>
+> ---
+
 > <strong>작성 기준일:</strong> 2026-08-14
 > <strong>TL;DR (3줄 요약)</strong>
 > - 중국 메모리 업체 <strong>CXMT</strong>(창신메모리)와 <strong>YMTC</strong>(양쯔메모리)가 일본 키옥시아를 제치고, <strong>삼성전자·SK하이닉스 턱밑까지 추격</strong>했다는 분석이 나왔다.

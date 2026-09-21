@@ -10,6 +10,9 @@ ogImage: "../../assets/images/korea-household-debt.svg"
 description: "대한민국 가계부채가 사상 처음으로 2,000조 원을 공식 돌파했습니다. 주담대 폭증의 원인과 5대 은행의 대출 조이기, 스트레스 DSR 2단계 시행이 부동산과 거시경제에 미칠 파급효과를 정밀 분석합니다."
 ---
 
+> <strong>핵심 직답 (Direct Answer)</strong><br>
+> ---
+
 > <strong>작성 기준일:</strong> 2026-08-18
 > <strong>TL;DR (3줄 요약)</strong>
 > - 한국은행 2분기 가계신용 발표 결과, 수도권 아파트 주택담보대출 급증에 힘입어 전체 가계부채가 사상 처음으로 2,000조 원을 넘어섰습니다.

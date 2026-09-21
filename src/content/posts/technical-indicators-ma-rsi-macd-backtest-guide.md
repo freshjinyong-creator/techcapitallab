@@ -16,6 +16,9 @@ ogImage: "../../assets/images/technical-indicators-ma-rsi-macd-backtest-guide.pn
 description: "이동평균선 정배열 눌림목, RSI 과매도 다이버전스, MACD 0선 돌파 등 핵심 보조지표의 매커니즘과 속임수(False Signal) 탈출 전략을 정밀하게 다룹니다."
 ---
 
+> <strong>핵심 직답 (Direct Answer)</strong><br>
+> ---
+
 > <strong>TL;DR (3줄 요약)</strong>
 > - 보조지표는 주가를 예측하는 예언가가 아니라, 주가의 움직임과 수급 변화를 정량적으로 지연·추종하는 보조 확인 도구입니다.
 > - 이동평균선(추세) + RSI(모멘텀/과열) + MACD(속도 변화)의 3대 보조지표 조합을 결합할 때 보조지표 단독 사용 시 발생하는 속임수(False Signal)를 현저히 줄일 수 있습니다.

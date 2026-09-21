@@ -10,6 +10,9 @@ description: "2026년 8월 잭슨홀 심포지엄의 연준 파월 의장 발언
 ogImage: "../../assets/images/jackson-hole-2026-fomc-bigtech-ai-capex.png"
 ---
 
+> <strong>핵심 직답 (Direct Answer)</strong><br>
+> 2026년 8월 잭슨홀 심포지엄의 연준 파월 의장 발언 분석 및 9월 FOMC 금리 경로 전망, 빅테크 2,500억 달러 AI CAPEX의 주가 파급력 심층 보고서.
+
 > <strong>TL;DR 요약</strong>
 > * 2026년 8월 잭슨홀 심포지엄은 시장이 기대하던 공격적인 통화완화 신호 대신 '데이터 의존적 신중론'을 재확인하며 9월 FOMC 25bp 인하 가능성에 무게를 실었습니다.
 > * 연간 2,500억 달러에 달하는 빅테크(M7)의 AI CAPEX 투자는 이제 '단순 확장'에서 '실질적 수익성(ROI)' 검증 단계로 진입하여 밸류에이션 부담을 가중시키고 있습니다.

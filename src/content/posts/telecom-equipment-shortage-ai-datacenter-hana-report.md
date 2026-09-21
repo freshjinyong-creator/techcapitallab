@@ -15,6 +15,9 @@ tags:
 ogImage: "../../assets/images/telecom-equipment-shortage-ai-datacenter-hana-report-og.png"
 ---
 
+> <strong>핵심 직답 (Direct Answer)</strong><br>
+> 미국의 800MHz 대규모 주파수 경매와 엔비디아 AI-RAN 도입, 대중국 제재로 촉발된 2027년 통신장비 공급 대란과 RFHIC, KMW, 오이솔루션 등 핵심 수혜주를 하나증권 리포트를 통해 심층 분석합니다.
+
 > <strong>TL;DR (3줄 요약)</strong>
 > - <strong>미국 발 800MHz 사상 최대 주파수 경매</strong>: 미국 FCC가 2027년 4월 어퍼 C밴드(Upper C-band, 160MHz) 경매를 확정하고 2029년까지 총 800MHz에 달하는 광대역 주파수 할당을 예고하면서 글로벌 통신사들의 초대형 인프라 사이클이 재개됩니다.
 > - <strong>엔비디아의 AI-RAN 진출과 대중국 제재의 나비효과</strong>: 데이터센터 다음 먹거리로 GPU 기반 AI 기지국(AI-RAN)이 급부상하는 반면, 지난 20년간의 구조조정과 미국의 중국산 통신 부품 퇴출로 인해 공급망에 심각한 쇼티지(Shortage)가 불가피합니다.

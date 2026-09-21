@@ -10,6 +10,9 @@ description: "LG AI연구원의 엑사원 디스커버리가 42만 개 후보 �
 ogImage: "../../assets/images/lg-exaone-hair-loss-ai-discovery-og.png"
 ---
 
+> <strong>핵심 직답 (Direct Answer)</strong><br>
+> LG AI연구원의 엑사원 디스커버리가 42만 개 후보 물질을 단 하루 만에 분석해 탈모 신소재 람시딜과 비스테로이드 여성형 탈모 성분을 발굴했습니다. DKK1 및 ERα 메커니즘 분석.
+
 > <strong>TL;DR 3줄 요약</strong>
 > 1. LG AI연구원의 과학 특화 AI 모델 엑사원 디스커버리가 42만 개 이상의 화합물 후보를 정밀 계산하여 탈모 관리 신소재 람시딜을 발굴했습니다.
 > 2. 기존 연구원들이 문헌 검토와 세포 실험을 거쳐 22개월 이상 소요되던 탐색 기간을 가상 시뮬레이션을 통해 단 하루로 줄였습니다.

@@ -10,6 +10,9 @@ ogImage: "../../assets/images/ai-datacenter-power-demand-2040.jpg"
 description: "하나증권 8월 21일 유틸리티 및 ESS 리포트 분석. 2040년 대한민국 전력소비량 전망치가 최대 885TWh로 대폭 상향된 배경과 AI 데이터센터, 반도체 클러스터, 지역별 도매가격제(LMP) 영향 및 전력망 관련주 투자 체크포인트를 정리합니다."
 ---
 
+> <strong>핵심 직답 (Direct Answer)</strong><br>
+> ---
+
 > <strong>작성 기준일:</strong> 2026년 8월 21일  
 > <strong>자료 출처:</strong> 하나증권 유틸리티 Weekly & 6월 ESS Data in detail (2026.08.21 발행), 기후에너지부 및 산업통상자원부 발표 자료
 

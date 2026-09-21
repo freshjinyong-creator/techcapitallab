@@ -15,6 +15,9 @@ ogImage: "../../assets/images/us-cpi-july-2026.svg"
 description: 미국 7월 CPI가 전월비 +0.1%, 연율 3.4%로 둔화됐다. 연준 9월 금리 인하 가능성과 금·모기지·반도체주에 미치는 영향을 분석한다.
 ---
 
+> <strong>핵심 직답 (Direct Answer)</strong><br>
+> ---
+
 > <strong>작성 기준일:</strong> 2026-08-13
 > <strong>TL;DR (3줄 요약)</strong>
 > - 미국 7월 CPI가 전월비 +0.1%, 전년 대비 3.4% 상승에 그쳐 <strong>시장 예상치에 부합하면서 인플레이션 둔화 흐름을 이어갔다.</strong>

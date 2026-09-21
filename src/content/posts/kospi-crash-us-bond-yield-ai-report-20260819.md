@@ -10,6 +10,9 @@ ogImage: "../../assets/images/kospi-sidecar-ai-crash.svg"
 description: "2026년 8월 19일 미국 장기금리 폭등과 중동 불안으로 코스피 사이드카가 발동된 가운데, 증권사 최신 리포트와 AI GPU 렌탈 시장 데이터를 바탕으로 시장의 실체와 수혜 종목을 분석합니다."
 ---
 
+> <strong>핵심 직답 (Direct Answer)</strong><br>
+> ---
+
 > <strong>작성 기준일:</strong> 2026-08-19
 
 > <strong>TL;DR (3줄 요약)</strong>

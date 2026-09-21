@@ -18,6 +18,9 @@ ogImage: "../../assets/images/psk-holdings-3q26-preview-cowos-hbm-hana-report-20
 description: "하나증권이 목표주가를 220,000원으로 상향한 피에스케이홀딩스(031980)의 3Q26 실적 퀀텀점프(영업익 +154% QoQ), TSMC·ASE CoWoS 증설, 리플로우·디스컴 장비 독점력과 2027년 실적 전망을 심층 분석합니다."
 ---
 
+> <strong>핵심 직답 (Direct Answer)</strong><br>
+> ---
+
 > <strong>TL;DR (3줄 핵심 요약)</strong>
 > 1. <strong>3Q26 실적 반등:</strong> 전분기 이연되었던 CoWoS향 장비 매출 인식이 본격화되면서 3분기 매출액 825억 원(QoQ +74%), 영업이익 350억 원(QoQ +154%, 영업이익률 42%)의 가파른 실적 턴어라운드가 확인되었습니다.
 > 2. <strong>전방 증설 슈퍼사이클:</strong> 엔비디아 FY2028 매출 70% 이상 증가 및 브로드컴 XPU 2배 성장에 발맞추어, TSMC의 2026-2027년 Capex 상향과 ASE·앰코(Amkor)의 CoWoS 어드밴스드 패키징 CAPA 2배 증설 수혜가 집중되고 있습니다.

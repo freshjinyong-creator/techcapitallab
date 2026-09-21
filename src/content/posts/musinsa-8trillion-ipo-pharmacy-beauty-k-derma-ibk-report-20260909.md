@@ -20,6 +20,9 @@ ogImage: "../../assets/images/musinsa-8trillion-ipo-pharmacy-beauty-k-derma-ibk-
 description: "IBK투자증권이 분석한 무신사 코스피 상장 예비심사 청구(기업가치 8조-10조 원)와 9월 11일 오픈하는 400평 규모 '무신사 뷰티 홍대' 파머시 뷰티 전략. 올리브영 독점 구도 균열과 5조 원 규모 K-더마 코스메틱 밸류체인 수혜주를 정밀 분석합니다."
 ---
 
+> <strong>핵심 직답 (Direct Answer)</strong><br>
+> ---
+
 > <strong>TL;DR (3줄 요약)</strong>
 > - <strong>무신사(Musinsa)가 9월 7일 코스피 상장 예비심사 신청서</strong>를 전격 제출하며 <strong>기업가치 8조-10조 원</strong> 규모의 초대형 유니콘 IPO 레이스에 공식 돌입했습니다.
 > - 무신사는 9월 11일 온누리약국과 손잡고 서울 홍대에 400평 규모의 첫 단독 플래그십 <strong>'무신사 뷰티 홍대'</strong>를 오픈, 약국과 뷰티가 결합된 <strong>'파머시 뷰티(Pharmacy Beauty)'</strong>로 올리브영의 오프라인 독점 구도에 정면 도전장을 던졌습니다.

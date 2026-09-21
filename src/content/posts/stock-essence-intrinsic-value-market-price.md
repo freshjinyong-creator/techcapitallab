@@ -16,6 +16,9 @@ ogImage: "../../assets/images/stock-essence-value-price.svg"
 description: 주식이란 무엇인가? 1602년 동인도회사에서 시작된 주식의 본질과 내재가치·시장가격의 차이, 버핏의 Mr. Market 비유로 배우는 가치투자 입문.
 ---
 
+> <strong>핵심 직답 (Direct Answer)</strong><br>
+> ---
+
 > <strong>작성 기준일:</strong> 2026-08-14
 > <strong>TL;DR (3줄 요약)</strong>
 > - 주식(株式)은 '기업의 뿌리에 대한 소유권 문서'로, 1602년 네덜란드 동인도회사에서 '위험과 이익을 나누는' 장치로 탄생했다.

@@ -10,6 +10,9 @@ ogImage: "../../assets/images/value-investing-rules.svg"
 description: "워렌 버핏, 찰리 멍거, 피터 린치, 박영옥, 이세옥 등 5대 거장의 투자 철학을 융합한 가치투자 5계명을 소개하고, 한국 증시와 삼성전자 분석에 적용하는 정량 평정표를 제공합니다."
 ---
 
+> <strong>핵심 직답 (Direct Answer)</strong><br>
+> ---
+
 > <strong>작성 기준일:</strong> 2026-08-17
 > <strong>TL;DR (3줄 요약)</strong>
 > - 가치투자의 전설인 워렌 버핏, 찰리 멍거, 피터 린치, 박영옥, 이세옥 5대 거장의 핵심 원칙을 하나의 입체적 시스템으로 융합했습니다.

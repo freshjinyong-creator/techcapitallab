@@ -18,6 +18,9 @@ ogImage: "../../assets/images/gnc-energy-ai-datacenter-generator-ibk-report-2026
 description: "IBK투자증권이 지엔씨에너지(119850)에 대해 투자의견 Buy와 목표주가 70,000원을 신규 제시했습니다. 국내 8.4GW AI 데이터센터 증설과 4.2조 비상발전기 시장 70% 독점, 가스터빈 고마진 믹스 개선 및 2028년 영업이익 1,000억 원 돌파 로드맵을 정밀 분석합니다."
 ---
 
+> <strong>핵심 직답 (Direct Answer)</strong><br>
+> ---
+
 > <strong>TL;DR (3줄 요약)</strong>
 > - IBK투자증권은 지엔씨에너지(119850)에 대해 <strong>목표주가 70,000원</strong> 및 투자의견 <strong>Buy</strong>로 신규 커버리지를 개시했습니다.
 > - 국내 대기업(GS, NAVER, SK)이 2029년까지 추진하는 <strong>8.4GW 규모 AI 데이터센터 프로젝트</strong>에서 비상발전기 시장 4.2조 원 중 <strong>약 2.9조 원(점유율 70%)</strong>의 수주 파이프라인을 확보했습니다.

@@ -18,6 +18,9 @@ ogImage: "../../assets/images/doosan-fuel-cell-us-ai-datacenter-pafc-sk-report-2
 description: "SK증권이 두산퓨얼셀(336260)에 대해 목표주가를 74,000원으로 대폭 상향했습니다. 미국 자회사 하이엑시엄향 5,014억 원 규모 PAFC 연료전지 공급계약의 실체, 미국 AI 데이터센터 인허가 규제의 정치적 본질과 2027년 흑자전환 로드맵을 심층 분석합니다."
 ---
 
+> <strong>핵심 직답 (Direct Answer)</strong><br>
+> ---
+
 > <strong>TL;DR (3줄 요약)</strong>
 > - SK증권은 두산퓨얼셀(336260)에 대해 <strong>목표주가를 기존 42,000원에서 74,000원(+76.2% 상향)</strong>으로 대폭 올리고 투자의견 <strong>Buy</strong>를 유지했습니다.
 > - 미국 자회사 하이엑시엄(HyAxiom)과 <strong>5,014억 원 규모의 PAFC(인산형 연료전지) 시스템 공급계약</strong>을 체결하며 미국 AI 데이터센터 전력망에 직결 납품하는 통로를 뚫었습니다.

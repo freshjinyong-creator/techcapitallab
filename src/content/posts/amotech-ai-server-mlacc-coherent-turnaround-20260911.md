@@ -19,6 +19,9 @@ description: "스마트폰과 전장 부품에 머물던 아모텍이 AI 서버 
 ogImage: "../../assets/images/amotech-ai-server-mlacc-coherent-turnaround-20260911-og.png"
 ---
 
+> <strong>핵심 직답 (Direct Answer)</strong><br>
+> 스마트폰과 전장 부품에 머물던 아모텍이 AI 서버 및 광네트워크용 고부가 MLCC 공급사로 체질을 개선하고 있습니다. 2027년 영업이익 350억 원(+274% YoY) 턴어라운드와 글로벌 공급망 구조를 분석합니다.
+
 > <strong>TL;DR (3줄 요약)</strong>
 > - 기존 전장 및 모바일용 ESD/EMI 칩 전문 기업인 <strong>아모텍(052710)</strong>이 AI 데이터센터 서버 및 광네트워크용 고부가 <strong>MLCC(적층세라믹콘덴서)</strong> 전문 공급사로 사업 체질을 대전환하고 있습니다.
 > - 2026년 2분기 24% 수준이었던 MLCC 내 AI 비중은 <strong>3분기 40%, 4분기 50%</strong>로 가파르게 상승 중이며, 하반기 MLCC 매출 300억 원 중 AI향 매출이 120억 원에 달할 전망입니다.

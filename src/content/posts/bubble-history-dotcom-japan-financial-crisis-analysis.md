@@ -16,6 +16,9 @@ ogImage: "../../assets/images/bubble-history-dotcom-japan-financial-crisis.jpg"
 draft: false
 ---
 
+> <strong>핵심 직답 (Direct Answer)</strong><br>
+> 1980년대 일본 버블 경제, 2000년대 닷컴 버블, 2008년 글로벌 금융위기의 발생 원인과 붕괴 메커니즘을 심층 분석하고, 버핏 지수·FCF 밴드·민스키 5단계·금기어 필터 등 4대 진단 레이더로 위기를 기회로 바꾸는 실전 가치투자 생존법을 정리합니다.
+
 > <strong>가치투자 마스터 클래스 제8강</strong> 버블의 역사 — 닷컴 버블, 일본 버블 경제, 2008 금융위기 연쇄 분석
 
 > <strong>작성 기준일:</strong> 2026-08-20  

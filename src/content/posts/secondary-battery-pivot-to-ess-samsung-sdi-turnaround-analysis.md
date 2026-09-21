@@ -10,6 +10,9 @@ description: "전기차 캐즘 속에서 2차전지의 주도권이 ESS(에너�
 ogImage: "../../assets/images/secondary-battery-pivot-to-ess-samsung-sdi-turnaround-analysis-og.png"
 ---
 
+> <strong>핵심 직답 (Direct Answer)</strong><br>
+> 전기차 캐즘 속에서 2차전지의 주도권이 ESS(에너지저장장치)로 이동하고 있습니다. 삼성SDI의 흑자전환과 AI 데이터센터 전력망 수혜의 실체 분석.
+
 > <strong>TL;DR 3줄 요약</strong>
 > 1. 전기차(EV) 수요 둔화(캐즘)가 장기화되는 가운데, 2차전지 산업의 실질적인 반등 축이 인공지능(AI) 데이터센터와 전력망용 ESS로 전면 이동했습니다.
 > 2. 삼성SDI는 ESS 사업 비중 확대를 통해 2분기 영업이익 흑자 전환에 성공하며, 전체 영업이익의 약 50%를 ESS 부문에서 창출하는 체질 개선을 입증했습니다.

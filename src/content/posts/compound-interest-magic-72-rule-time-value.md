@@ -16,6 +16,9 @@ ogImage: "../../assets/images/compound-interest.svg"
 description: 복리와 단리의 기하학적 차이, 72의 법칙 암산법, 배당 재투자로 만드는 수량 복리의 원리. 시간이 지날수록 가속도가 붙는 복리 효과를 쉽게 설명한다.
 ---
 
+> <strong>핵심 직답 (Direct Answer)</strong><br>
+> ---
+
 > <strong>작성 기준일:</strong> 2026-08-15
 > <strong>TL;DR (3줄 요약)</strong>
 > - 단리가 매번 처음 잡은 눈만큼만 더해지는 것이라면, 복리는 굴러갈 때마다 눈덩이 표면 전체에 눈이 들러붙는 기하학적 성장이다.

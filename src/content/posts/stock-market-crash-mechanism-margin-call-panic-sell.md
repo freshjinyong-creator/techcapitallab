@@ -16,6 +16,9 @@ ogImage: "../../assets/images/stock-market-crash-mechanism-margin-call-panic-sel
 draft: false
 ---
 
+> <strong>핵심 직답 (Direct Answer)</strong><br>
+> 주식 시장 폭락의 본질인 강제 청산(마진콜·반대매매)과 수급 연쇄 붕괴 과정을 심층 분석하고, 한국 증시의 특수성 및 폭락장을 기회로 바꾸는 4대 수급 레이더와 생존 프로토콜을 제시합니다.
+
 > <strong>가치투자 마스터 클래스 제9강</strong> 폭락의 메커니즘 — 공매도, 마진콜, 패닉셀의 수급 연쇄 붕괴 과정
 
 > <strong>작성 기준일:</strong> 2026-08-29  

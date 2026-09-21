@@ -17,6 +17,9 @@ ogImage: "../../assets/images/tes-nand-1000layer-hbm-backlog-ibk-report-20260910
 description: "IBK투자증권이 신규 커버리지로 제시한 테스(095610)의 3D NAND 1,000단 로드맵 수혜, HBM 및 DRAM 전공정 장비(ACL·BSD) 침투, 사상 최대 수주잔고 2,069억 원의 정량적 근거와 밸류에이션을 심층 분석합니다."
 ---
 
+> <strong>핵심 직답 (Direct Answer)</strong><br>
+> ---
+
 > <strong>TL;DR (3줄 핵심 요약)</strong>
 > 1. <strong>기술적 변곡점:</strong> 3D NAND 300단 돌파 및 1,000단 적층 로드맵 진입으로 장시간 식각 공정을 버티는 <strong>하드마스크 증착용 ACL(Amorphous Carbon Layer)</strong>과 웨이퍼 휨 방지 <strong>BSD(Backside Deposition)</strong> 장비 수요가 폭증하고 있습니다.
 > 2. <strong>체질 개선과 적용처 확장:</strong> 과거 낸드 편중에서 벗어나 DRAM 매출 비중이 60% 이상으로 안착했으며, BSD 장비가 SK하이닉스 HBM 및 선단 DRAM, 삼성전자 파운드리 4nm HBM Base Die로 적용처를 3단 확장 중입니다.

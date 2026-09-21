@@ -15,6 +15,9 @@ ogImage: "../../assets/images/delisting-risk.svg"
 description: 거래소가 동전주와 시총 미달 기업 36곳을 첫 관리종목으로 지정했다. 90일간의 개선 기간과 상장폐지 리스크, 개인투자자 대응 전략을 분석한다.
 ---
 
+> <strong>핵심 직답 (Direct Answer)</strong><br>
+> ---
+
 > <strong>작성 기준일:</strong> 2026-08-14
 > <strong>TL;DR (3줄 요약)</strong>
 > - 한국거래소가 주가 1천 원 미만의 <strong>동전주와</strong> <strong>시가총액 미달</strong> 기준을 적용해 총 36개 기업을 첫 관리종목으로 무더기 지정했다.

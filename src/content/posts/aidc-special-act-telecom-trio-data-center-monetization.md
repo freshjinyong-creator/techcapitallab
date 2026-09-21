@@ -15,6 +15,9 @@ tags:
 ogImage: "../../assets/images/aidc-special-act-telecom-trio-data-center-monetization-og.png"
 ---
 
+> <strong>핵심 직답 (Direct Answer)</strong><br>
+> 2027년 3월 시행 예정인 AIDC 특별법과 비수도권 전력계통영향평가 면제 혜택이 SK텔레콤, KT, LG유플러스 통신 3사의 AI 데이터센터 실적에 미치는 영향을 유안타증권 리포트를 통해 심층 분석합니다.
+
 > <strong>TL;DR (3줄 요약)</strong>
 > - <strong>AIDC 특별법 하위법령 제정과 전력 특례</strong>: 과학기술정보통신부가 추진하는 인공지능 데이터센터(AIDC) 발전 특별법이 2027년 3월 본격 시행을 앞두고 비수도권 AIDC에 대한 전력계통영향평가 면제 등 파격적인 전력 및 인허가 특례 조항을 구체화하고 있습니다.
 > - <strong>단순 배당주에서 AI 인프라 성장주로의 리레이팅</strong>: 수도권 전력 포화로 데이터센터 신규 구축이 사실상 봉쇄된 상황에서, 비수도권 전력망 선점과 기지국 및 해저케이블 인프라를 보유한 통신 3사(SK텔레콤, KT, LG유플러스)가 최대 실수혜 기업으로 부각되고 있습니다.

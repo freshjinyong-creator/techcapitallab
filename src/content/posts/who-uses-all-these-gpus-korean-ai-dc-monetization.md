@@ -10,6 +10,9 @@ description: "국내 AI 데이터센터 투자 열풍 속에 불거진 GPU 수�
 ogImage: "../../assets/images/korea-ai-datacenter-gpu-demand-monetization.png"
 ---
 
+> <strong>핵심 직답 (Direct Answer)</strong><br>
+> 국내 AI 데이터센터 투자 열풍 속에 불거진 GPU 수요 회의론을 파헤칩니다. 정부·공공, 대기업 캡티브, 상업용 GPUaaS, 해외 유입 수요 등 4단계 레이어 분석과 4대 비즈니스 모델별 수익화 전략을 심층 정리했습니다.
+
 ## TL;DR (3줄 요약)
 
 * <strong>GPU 과잉 우려의 실체:</strong> 국내 대형 ICT·재벌 기업들의 AI 데이터센터(AI DC) 대규모 CAPEX 투자를 둘러싸고 "과연 이 많은 GPU를 다 채울 유료 수요가 존재하는가"에 대한 회의론이 제기되고 있습니다.
