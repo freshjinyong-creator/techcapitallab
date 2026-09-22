@@ -10,7 +10,7 @@ description: "대신증권 류형근 연구원의 삼성전자 'Beyond the cycle
 ogImage: "../../assets/images/samsung-electronics-beyond-the-cycle-daeshin-report-20260922-og.png"
 ---
 
-> <strong>핵심 직답 (Direct Answer)</strong><br>
+> <strong>30초 핵심 요약</strong><br>
 > 2026년 9월 22일 대신증권(류형근 애널리스트)은 삼성전자(005930)에 대해 'Beyond the cycle' 기업분석 리포트를 발간하며 투자의견 'BUY' 및 목표주가 560,000원을 유지했습니다. 3-5년 장기공급계약(LTA) 정착과 20-30% 선수금 안전판 구축, 엔비디아 루빈 설계 조정에 숨겨진 실질 HBM 수요 견조세, 그리고 150조 원에 달하는 역대급 주주환원 가능 재원을 바탕으로 전통적 1-2년 단기 사이클을 넘어선 구조적 슈퍼사이클 진입을 명확히 제시했습니다.
 
 ---
