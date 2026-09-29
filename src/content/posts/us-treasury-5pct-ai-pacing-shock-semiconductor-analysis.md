@@ -100,4 +100,4 @@ ogImage: "../../assets/images/us-treasury-5pct-ai-pacing-shock-semiconductor-ana
 ### 함께 읽으면 좋은 관련 포스트
 - <a href="/category/news-macro/">2. 뉴스 속 경제 카테고리 전체보기</a>
 - <a href="/posts/lg-exaone-hair-loss-ai-discovery/">LG AI 엑사원은 어떻게 22개월 걸릴 탈모 신소재를 하루 만에 발견했을까?</a>
-- <a href="/posts/broker-report-market-closing-roundup-2026-09-10/">9월 10일 증권사 장 마감 시황 및 2차전지 반사수혜 분석</a>
+- <a href="/posts/broker-report-market-closing-roundup-2026-09-08/">9월 8일 증권사 장 마감 시황 및 2차전지 반사수혜 분석</a>

@@ -103,4 +103,4 @@ LG는 가상 분석에 그치지 않고 연말부터 AI 자율실험실을 본�
 
 ### 함께 읽으면 좋은 관련 포스트
 - <a href="/category/news-macro/">2. 뉴스 속 경제 카테고리 전체보기</a>
-- <a href="/posts/broker-report-market-closing-roundup-2026-09-10/">9월 10일 증권사 장 마감 시황 및 주요 산업 동향 분석</a>
+- <a href="/posts/broker-report-market-closing-roundup-2026-09-08/">9월 8일 증권사 장 마감 시황 및 주요 산업 동향 분석</a>

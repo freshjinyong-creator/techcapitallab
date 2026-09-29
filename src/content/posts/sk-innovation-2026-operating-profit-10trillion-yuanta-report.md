@@ -118,4 +118,4 @@ SK이노베이션은 하루 111.5만 배럴의 원유를 정제할 수 있는 �
 ### 함께 읽으면 좋은 관련 포스트
 - <a href="/category/report-lab/">3. 증권사 리포트 읽기 카테고리 전체보기</a>
 - <a href="/posts/us-treasury-5pct-ai-pacing-shock-semiconductor-analysis/">미국 10년물 국채금리 5% 돌파와 AI 속도조절론 충격 분석</a>
-- <a href="/posts/broker-report-market-closing-roundup-2026-09-10/">9월 10일 증권사 장 마감 시황 및 주요 산업 동향 분석</a>
+- <a href="/posts/broker-report-market-closing-roundup-2026-09-08/">9월 8일 증권사 장 마감 시황 및 주요 산업 동향 분석</a>
