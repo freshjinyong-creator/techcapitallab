@@ -73,7 +73,7 @@ ogImage: "../../assets/images/leeno-industrial-test-pin-socket-ai-rebound-202610
 
 신규 칩 개발이 활발해질수록 테스트 핀과 소켓의 수요는 기하급수적으로 늘어납니다. 특히 고밀도 어드밴스드 패키징 기술이 도입되면서 테스트 핀의 피치(간격)가 극도로 미세화되고 있으며, 이는 리노공업이 압도적인 기술 격차를 과시하는 주력 무대입니다.
 
-반도체 후공정 및 어드밴스드 패키징 생태계의 전반적인 기술 진화와 밸류체인 수혜 구조에 대해 더 깊이 이해하고 싶으시다면, 관련 분석 포스팅인 [/posts/park-systems-afm-advanced-packaging-sk-report/](/posts/park-systems-afm-advanced-packaging-sk-report/) 및 [/posts/samsung-electro-mechanics-abf-substrate-mlcc-ai-agent-meritz-report-20260923/](/posts/samsung-electro-mechanics-abf-substrate-mlcc-ai-agent-meritz-report-20260923/) 글을 함께 살펴보시기를 권장합니다.
+반도체 후공정 및 어드밴스드 패키징 생태계의 전반적인 기술 진화와 밸류체인 수혜 구조에 대해 더 깊이 이해하고 싶으시다면, 관련 분석 포스팅인 <strong>[파크시스템스: AI 패키징 불량 대란과 원자현미경(AFM) 후공정 독점 분석](/posts/park-systems-afm-advanced-packaging-sk-report/)</strong> 및 <strong>[삼성전기: ABF 기판과 MLCC 슈퍼사이클 분석](/posts/samsung-electro-mechanics-abf-substrate-mlcc-ai-agent-meritz-report-20260923/)</strong> 글을 함께 살펴보시기를 권장합니다.
 
 ---
 

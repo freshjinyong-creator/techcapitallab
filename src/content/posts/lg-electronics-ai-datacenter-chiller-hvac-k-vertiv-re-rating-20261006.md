@@ -75,7 +75,7 @@ LG전자 조주완 CEO는 대표적인 미래 성장 동력으로 <strong>'B2B �
 
 특히 신재생에너지 및 원자력 발전소와 연계된 친환경 데이터센터 단지 구축 프로젝트에서 LG전자의 고효율 히트펌프 및 칠러 솔루션이 필수 선택지로 떠올랐습니다. B2C 가전의 실적 변동성을 B2B 냉난방공조의 안정적인 장기 계약이 메꿔주는 구조적 전환이 일어난 것입니다.
 
-이와 관련하여 글로벌 AI 데이터센터 인프라 확장에 따른 차세대 냉각 기술 및 전력망 연계 메커니즘에 대해 더 자세히 알고 싶으시다면, 기존 분석글인 [/posts/ai-datacenter-nimby-moratorium-liquid-cooling-onsite-power-20260914/](/posts/ai-datacenter-nimby-moratorium-liquid-cooling-onsite-power-20260914/) 포스팅을 함께 참고하시면 구조적 이해에 큰 도움이 됩니다.
+이와 관련하여 글로벌 AI 데이터센터 인프라 확장에 따른 차세대 냉각 기술 및 전력망 연계 메커니즘에 대해 더 자세히 알고 싶으시다면, 기존 분석글인 <strong>[AI 데이터센터 모라토리엄과 액체냉각 인프라 대전환 분석](/posts/ai-datacenter-nimby-moratorium-liquid-cooling-onsite-power-20260914/)</strong> 포스팅을 함께 참고하시면 구조적 이해에 큰 도움이 됩니다.
 
 ---
 
