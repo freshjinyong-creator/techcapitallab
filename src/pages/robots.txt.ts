@@ -1,6 +1,12 @@
 import type { APIRoute } from "astro";
 
 const getRobotsTxt = (sitemapURL: URL, siteURL: URL) => `
+User-agent: Mediapartners-Google
+Allow: /
+
+User-agent: Googlebot
+Allow: /
+
 User-agent: *
 Allow: /
 Disallow: /cdn-cgi/
@@ -8,6 +14,8 @@ Disallow: /tags/
 Disallow: /tags/*
 Disallow: /search
 Disallow: /search/
+Disallow: /archives
+Disallow: /archives/
 Disallow: /rss.xml
 Disallow: /rss.xml/
 
@@ -32,6 +40,7 @@ User-agent: Yeti
 Allow: /
 
 Sitemap: ${sitemapURL.href}
+Sitemap: ${new URL("sitemap-0.xml", siteURL).href}
 `;
 
 export const GET: APIRoute = ({ site }) => {

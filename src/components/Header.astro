@@ -90,6 +90,8 @@ const isActive = (path: string) => {
             카테고리
           </a>
         </li>
+        {/* AdSense review simplification: chart, tags hidden temporarily */}
+        {/*
         <li class="col-span-2">
           <a
             href={getRelativeLocaleUrl(locale, "chart")}
@@ -106,12 +108,21 @@ const isActive = (path: string) => {
             {t.nav.tags}
           </a>
         </li>
+        */}
         <li class="col-span-2">
           <a
             href={getRelativeLocaleUrl(locale, "about")}
             class:list={{ "active-nav": isActive("/about") }}
           >
             {t.nav.about}
+          </a>
+        </li>
+        <li class="col-span-2">
+          <a
+            href={getRelativeLocaleUrl(locale, "contact")}
+            class:list={{ "active-nav": isActive("/contact") }}
+          >
+            문의하기
           </a>
         </li>
         {

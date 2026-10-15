@@ -21,6 +21,7 @@ import config from "./astro-paper.config";
 
 export default defineConfig({
   site: config.site.url,
+  trailingSlash: "always",
   redirects: {
     "/news-macro": "/category/news-macro/",
     "/economy-basics": "/category/economy-basics/",

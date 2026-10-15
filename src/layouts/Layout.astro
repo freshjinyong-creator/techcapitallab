@@ -13,16 +13,23 @@ type Props = {
   ogImage?: string;
   canonicalURL?: string;
   robots?: string;
+  disableAds?: boolean;
 };
 
 const { site } = config;
+
+const normalizedPath = Astro.url.pathname.endsWith("/")
+  ? Astro.url.pathname
+  : `${Astro.url.pathname}/`;
+const defaultCanonicalURL = new URL(normalizedPath, Astro.site ?? site.url).href;
 
 const {
   title = site.title,
   description = site.description,
   ogImage = resolveDefaultOgImagePath(config),
-  canonicalURL = new URL(Astro.url.pathname, Astro.site).href,
+  canonicalURL = defaultCanonicalURL,
   robots,
+  disableAds = false,
 } = Astro.props;
 
 const socialImageURL = new URL(ogImage, Astro.site ?? Astro.url);
@@ -121,11 +128,15 @@ const rssHref = getRelativeLocaleUrl(
 
     <!-- Google AdSense -->
     <meta name="google-adsense-account" content="ca-pub-6393690855810066" />
-    <script
-      async
-      src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6393690855810066"
-      crossorigin="anonymous"
-    ></script>
+    {
+      !disableAds && (
+        <script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6393690855810066"
+          crossorigin="anonymous"
+        ></script>
+      )
+    }
 
     <!-- Google Analytics (GA4) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-29702REPBT"></script>

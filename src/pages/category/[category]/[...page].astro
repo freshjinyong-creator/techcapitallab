@@ -41,7 +41,11 @@ export async function getStaticPaths({ paginate }: GetStaticPathsOptions) {
 const { page, categoryName, categoryDesc } = Astro.props;
 ---
 
-<Layout title={`카테고리: ${categoryName} | ${config.site.title}`}>
+<Layout
+  title={`카테고리: ${categoryName} | ${config.site.title}`}
+  robots="noindex, follow"
+  disableAds={true}
+>
   <Header />
 
   <Breadcrumb />
