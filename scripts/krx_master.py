@@ -37,20 +37,32 @@ MASTER_SPECS: dict[str, dict[str, Any]] = {
         "url": "https://new.real.download.dws.co.kr/common/master/kospi_code.mst.zip",
         "mst_filename": "kospi_code.mst",
         "tail": 227,
+        "low_liq_idx": 16,
         "spac_idx": 29,
+        "short_overheat_idx": 32,
+        "inv_caution_idx": None,
         "halt_idx": 60,
         "liq_idx": 61,
         "mgmt_idx": 62,
+        "mkt_warn_slice": (63, 65),
+        "warn_notice_idx": 65,
+        "unfaithful_idx": 66,
         "listing_date_slice": (105, 113),
     },
     "KOSDAQ": {
         "url": "https://new.real.download.dws.co.kr/common/master/kosdaq_code.mst.zip",
         "mst_filename": "kosdaq_code.mst",
         "tail": 221,
+        "low_liq_idx": 16,
         "spac_idx": 24,
+        "short_overheat_idx": 27,
+        "inv_caution_idx": 30,
         "halt_idx": 55,
         "liq_idx": 56,
         "mgmt_idx": 57,
+        "mkt_warn_slice": (58, 60),
+        "warn_notice_idx": 60,
+        "unfaithful_idx": 61,
         "listing_date_slice": (100, 108),
     },
 }
@@ -127,10 +139,16 @@ def _ensure_mst_file(
 def _parse_mst_file(mst_path: str, market: str, spec: dict[str, Any]) -> dict[str, dict[str, Any]]:
     """Parse a raw cp949 KIS ``.mst`` file into a dictionary keyed by 6-char security code."""
     tail = spec["tail"]
+    low_liq_idx = spec["low_liq_idx"]
     spac_idx = spec["spac_idx"]
+    short_overheat_idx = spec["short_overheat_idx"]
+    inv_caution_idx = spec["inv_caution_idx"]
     halt_idx = spec["halt_idx"]
     liq_idx = spec["liq_idx"]
     mgmt_idx = spec["mgmt_idx"]
+    mw_start, mw_end = spec["mkt_warn_slice"]
+    warn_notice_idx = spec["warn_notice_idx"]
+    unfaithful_idx = spec["unfaithful_idx"]
     ld_start, ld_end = spec["listing_date_slice"]
 
     records: dict[str, dict[str, Any]] = {}
@@ -151,14 +169,27 @@ def _parse_mst_file(mst_path: str, market: str, spec: dict[str, Any]) -> dict[st
             name = part1[21:].decode("cp949", "ignore").strip()
             group_code = part2[0:2].decode("ascii", "ignore").strip()
 
+            low_liq = part2[low_liq_idx : low_liq_idx + 1] == b"Y"
             is_spac = part2[spac_idx : spac_idx + 1] == b"Y"
+            short_overheat = (
+                part2[short_overheat_idx : short_overheat_idx + 1].decode("ascii", "ignore").strip() or "0"
+            )
+            is_short_overheat = short_overheat not in ("0", "N", "")
+            is_inv_caution = (
+                part2[inv_caution_idx : inv_caution_idx + 1] == b"Y"
+                if inv_caution_idx is not None
+                else False
+            )
             is_halt = part2[halt_idx : halt_idx + 1] == b"Y"
             is_liq = part2[liq_idx : liq_idx + 1] == b"Y"
             is_mgmt = part2[mgmt_idx : mgmt_idx + 1] == b"Y"
+            mkt_warn = part2[mw_start:mw_end].decode("ascii", "ignore").strip() or "00"
+            warn_notice = part2[warn_notice_idx : warn_notice_idx + 1] == b"Y"
+            is_unfaithful = part2[unfaithful_idx : unfaithful_idx + 1] == b"Y"
             listing_date = part2[ld_start:ld_end].decode("ascii", "ignore").strip()
 
             is_pref = group_code == "ST" and code[-1] != "0"
-            is_common = (
+            is_unrestricted_common = (
                 group_code == "ST"
                 and not is_spac
                 and not is_pref
@@ -166,6 +197,8 @@ def _parse_mst_file(mst_path: str, market: str, spec: dict[str, Any]) -> dict[st
                 and not is_liq
                 and is_common_stock_name(code, name)
             )
+            has_hard_risk = is_mgmt or is_inv_caution or is_unfaithful or (mkt_warn in ("02", "03"))
+            is_common = is_unrestricted_common and not has_hard_risk
 
             records[code] = {
                 "code": code,
@@ -173,14 +206,22 @@ def _parse_mst_file(mst_path: str, market: str, spec: dict[str, Any]) -> dict[st
                 "name": name,
                 "market": market,
                 "group_code": group_code,
+                "low_liq": low_liq,
                 "is_spac": is_spac,
+                "short_overheat": short_overheat,
+                "is_short_overheat": is_short_overheat,
+                "is_inv_caution": is_inv_caution,
                 "is_halt": is_halt,
                 "is_liq": is_liq,
                 "is_mgmt": is_mgmt,
+                "mkt_warn": mkt_warn,
+                "warn_notice": warn_notice,
+                "is_unfaithful": is_unfaithful,
                 "listing_date": listing_date,
                 "is_pref": is_pref,
                 "is_etf": group_code == "EF",
                 "is_etn": group_code == "EN",
+                "is_unrestricted_common": is_unrestricted_common,
                 "is_common": is_common,
             }
     return records

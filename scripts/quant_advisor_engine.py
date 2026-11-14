@@ -27,6 +27,7 @@ import requests
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from kis_client import KISClient, is_common_stock_name  # noqa: E402
 from krx_master import load_krx_master  # noqa: E402
+from disclosure_filter import filter_candidates_disclosures  # noqa: E402
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DATA_DIR = os.path.join(BASE_DIR, "public", "data")
@@ -476,7 +477,7 @@ def compute_metrics(code: str, name: str, market: str, bars: list):
     vol_ratio = vols[-1] / vol_ma20 if vol_ma20 > 0 else 1.0
     val_ratio = vals[-1] / val_ma20 if val_ma20 > 0 else 1.0
 
-    # Check if there was a Volume Surge Anchor Candle within the last 3 days (for Track 2)
+    # Check if there was a Volume Surge Anchor Candle within the last 3 days (for Track 2, strict A_Strict_Master_Plan)
     recent3_surge = False
     recent3_max_vol_ratio = vol_ratio
     recent3_anchor_date = bars[-1]["date"]
@@ -484,8 +485,8 @@ def compute_metrics(code: str, name: str, market: str, bars: list):
         v_ma = sum(vols[idx - 20:idx]) / 20.0
         vr = vols[idx] / v_ma if v_ma > 0 else 1.0
         day_ret = (closes[idx] / closes[idx - 1] - 1.0) * 100.0
-        is_bull = bars[idx]["close"] > bars[idx]["open"] and day_ret >= 3.0
-        if is_bull and vr >= 1.8:
+        is_bull = bars[idx]["close"] > bars[idx]["open"] and day_ret >= 4.0
+        if is_bull and vr >= 2.5:
             recent3_surge = True
             if vr >= recent3_max_vol_ratio:
                 recent3_max_vol_ratio = vr
@@ -565,19 +566,27 @@ def compute_metrics(code: str, name: str, market: str, bars: list):
     }
 
 
-def build_recommendations(all_metrics: list, breadth_pct: float, kis: KISClient = None):
+def build_recommendations(
+    all_metrics: list,
+    breadth_pct: float,
+    kis: KISClient = None,
+    master_map: dict = None,
+    rec_exposure: int = 100,
+):
     liquid = [m for m in all_metrics if m["valMa20Eok"] >= 50.0]
 
-    # --- TRACK 1: E2_S7_FIP_52W_EOD (52주 신고가 + FIP 연속성 + 과열방지 추세추종) ---
+    # --- TRACK 1: E2_S7_FIP_52W_EOD (A_Strict_Master_Plan: 52주 신고가 90%+ & FIP <= -0.05) ---
     t1_candidates = []
     for m in liquid:
         if not m["stage2"]:
             continue
-        if m["ratio52wHigh"] < 85.0:
+        if m["close"] < 2000:
             continue
-        if m["fipId60"] > 0.02:
+        if m["ratio52wHigh"] < 90.0:
             continue
-        if m["ret5d"] > 12.5 or m["ret5d"] < -6.0:
+        if m["fipId60"] > -0.05:
+            continue
+        if m["ret5d"] > 12.0 or m["ret5d"] < -6.0:
             continue
         if m["ret60d"] <= 0:
             continue
@@ -593,18 +602,21 @@ def build_recommendations(all_metrics: list, breadth_pct: float, kis: KISClient 
         t1_candidates.append(m_copy)
 
     t1_candidates.sort(key=lambda x: x["quantScore"], reverse=True)
-    track1_top = t1_candidates[:8]
+    t1_top20 = t1_candidates[:20]
 
-    # --- TRACK 2: E1_S8_VolBreakout_EOD (거래대금 폭발 기준봉 추세 돌파) ---
+    # --- TRACK 2: E1_S8_VolBreakout_EOD (A_Strict_Master_Plan: 52주 신고가 90%+ & 거래량 2.5배+ & +4~15%) ---
     t2_candidates = []
     for m in liquid:
         if not (m["aboveSma50"] and m["aboveSma20"]):
             continue
-        if m["ratio52wHigh"] < 80.0:
+        if m["close"] < 2000:
             continue
-        if not (m["recent3Surge"] or m["volRatio"] >= 1.7):
+        if m["ratio52wHigh"] < 90.0:
             continue
-        if m["ret10d"] > 25.0:
+        today_surge = (m["volRatio"] >= 2.5 and 4.0 <= m["ret1d"] <= 15.0)
+        if not (today_surge or m["recent3Surge"]):
+            continue
+        if m["ret10d"] > 12.0:
             continue
         max_vr = max(m["volRatio"], m["recent3MaxVolRatio"])
         score = max_vr * 18.0 + (m["ratio52wHigh"] - 75.0) * 1.5 + (-m["fipId60"] * 50.0)
@@ -615,12 +627,14 @@ def build_recommendations(all_metrics: list, breadth_pct: float, kis: KISClient 
         t2_candidates.append(m_copy)
 
     t2_candidates.sort(key=lambda x: x["quantScore"], reverse=True)
-    track2_top = t2_candidates[:8]
+    t2_top20 = t2_candidates[:20]
 
     # --- TRACK 3: Pullback_Rebreak_Watchlist (기준봉 출현 후 거래절벽 + 20일선 눌림목 대기) ---
     t3_candidates = []
     for m in liquid:
         if not (m["aboveSma50"] and m["anchor15d"]):
+            continue
+        if m["ratio52wHigh"] < 85.0:
             continue
         dist_sma20 = (m["close"] / m["sma20"] - 1.0) * 100.0
         if not (-3.5 <= dist_sma20 <= 8.5):
@@ -637,26 +651,82 @@ def build_recommendations(all_metrics: list, breadth_pct: float, kis: KISClient 
         t3_candidates.append(m_copy)
 
     t3_candidates.sort(key=lambda x: x["quantScore"], reverse=True)
-    track3_top = t3_candidates[:6]
+    t3_top20 = t3_candidates[:20]
+
+    # --- Layer 1/2 Disclosure Kill-Switch on top-20 candidates per track BEFORE slicing 8/8/6 ---
+    pre_screen = t1_top20 + t2_top20 + t3_top20
+    candidate_codes = list(dict.fromkeys(c["code"] for c in pre_screen))
+    code_to_name = {c["code"]: c["name"] for c in pre_screen}
+    disc_map = (
+        filter_candidates_disclosures(
+            candidate_codes,
+            master_map=master_map,
+            lookback_days=60,
+            max_workers=6,
+        )
+        if candidate_codes
+        else {}
+    )
+
+    track1_top = [c for c in t1_top20 if not disc_map.get(c["code"], {}).get("blocked", False)][:8]
+    track2_top = [c for c in t2_top20 if not disc_map.get(c["code"], {}).get("blocked", False)][:8]
+    track3_top = [c for c in t3_top20 if not disc_map.get(c["code"], {}).get("blocked", False)][:6]
+
+    sources = [res.get("source", "") for res in disc_map.values() if res.get("source")]
+    if not disc_map:
+        summary_source = "none"
+    elif any(s.startswith("opendart") for s in sources):
+        summary_source = "opendart"
+    elif any(s.startswith("naver") for s in sources):
+        summary_source = "naver"
+    else:
+        summary_source = sources[0] if sources else "none"
+
+    blocked_samples = []
+    for code, res in disc_map.items():
+        if res.get("blocked"):
+            name = code_to_name.get(code) or (master_map or {}).get(code, {}).get("name", code)
+            blocked_samples.append({
+                "code": code,
+                "name": name,
+                "reasons": res.get("block_reasons", []),
+            })
+
+    disclosure_summary = {
+        "source": summary_source,
+        "checkedCount": len(disc_map),
+        "blockedCount": len(blocked_samples),
+        "blockedSamples": blocked_samples[:10],
+    }
 
     all_picks = track1_top + track2_top + track3_top
     unique_codes = list({p["code"] for p in all_picks})
     enrichment_map = {}
-    with ThreadPoolExecutor(max_workers=6) as ex:
-        fut_map = {ex.submit(fetch_stock_enrichment, c, kis): c for c in unique_codes}
-        for fut in as_completed(fut_map):
-            c = fut_map[fut]
-            try:
-                enrichment_map[c] = fut.result()
-            except Exception:
-                enrichment_map[c] = {}
+    if unique_codes:
+        with ThreadPoolExecutor(max_workers=min(6, len(unique_codes))) as ex:
+            fut_map = {ex.submit(fetch_stock_enrichment, c, kis): c for c in unique_codes}
+            for fut in as_completed(fut_map):
+                c = fut_map[fut]
+                try:
+                    enrichment_map[c] = fut.result()
+                except Exception:
+                    enrichment_map[c] = {}
 
     for p in all_picks:
         enr = enrichment_map.get(p["code"], {})
         p["enrichment"] = enr
-        p["reasons"] = synthesize_reasons(p, enr, breadth_pct)
+        reasons = synthesize_reasons(p, enr, breadth_pct)
+        disc = disc_map.get(p["code"], {})
+        for cat in disc.get("catalysts", []):
+            reasons["catalysts"].append(f"[공시 촉매] {cat}")
+        for warn in disc.get("warnings", []):
+            reasons["catalysts"].append(f"[공시/시장경보 유의] {warn}")
+        if rec_exposure == 0:
+            p["recWeightPct"] = 0.0
+            reasons["catalysts"].insert(0, "레짐 차단 (Breadth < 55% 또는 지수 < SMA20): 신규 진입 중단 · 관찰 전용")
+        p["reasons"] = reasons
 
-    return track1_top, track2_top, track3_top
+    return track1_top, track2_top, track3_top, disclosure_summary
 
 
 def synthesize_reasons(p: dict, enr: dict, breadth_pct: float):
@@ -677,7 +747,7 @@ def synthesize_reasons(p: dict, enr: dict, breadth_pct: float):
     formulas.append({
         "source": "George & Hwang (2004, Journal of Finance 52주 신고가 모멘텀)",
         "metric": f"52주 최고가({p['high250']:,}원) 대비 {p['ratio52wHigh']:.1f}% 근접",
-        "desc": "52주 최고가 대비 85~100% 구간에 위치하여 상단 악성 매물대(Overhead Supply) 저항이 최소화된 신고가 탄력 구간입니다."
+        "desc": "52주 최고가 대비 90~100%(관찰군 85%+) 구간에 위치하여 상단 악성 매물대(Overhead Supply) 저항이 최소화된 신고가 탄력 구간입니다."
     })
 
     formulas.append({
@@ -697,7 +767,7 @@ def synthesize_reasons(p: dict, enr: dict, breadth_pct: float):
         formulas.append({
             "source": "Nicolas Darvas & 한국 실전 기준봉 돌파 (거래대금 폭발 공식)",
             "metric": f"최근 기준봉({p['recent3AnchorDate']}) 거래량 20일 평균 대비 {max_vr:.2f}배 폭발 (일평균 대금 {p['valMa20Eok']:,.0f}억)",
-            "desc": "박스권 상단에서 평소 대비 2배 이상의 대량 거래대금이 유입되며 새로운 가격 발견(Price Discovery)이 시작된 기준봉 타점입니다."
+            "desc": "박스권 상단에서 평소 대비 2.5배 이상의 대량 거래대금이 유입되며 새로운 가격 발견(Price Discovery)이 시작된 기준봉 타점입니다."
         })
     elif p["track"] == "TRACK_3_PULLBACK_WATCH":
         formulas.append({
@@ -891,7 +961,7 @@ def _evaluate_single_holding(item: dict, kis: KISClient = None):
     }
 
 
-def evaluate_portfolio(portfolio_items: list, kis: KISClient = None):
+def evaluate_portfolio(portfolio_items: list, kis: KISClient = None, master_map: dict = None):
     evaluated = []
     alerts = []
     if not portfolio_items:
@@ -910,6 +980,22 @@ def evaluate_portfolio(portfolio_items: list, kis: KISClient = None):
             if eval_obj["signal"] in ("SELL_STOP", "SELL_TRAIL", "TIME_STOP", "WARNING"):
                 alerts.append(eval_obj)
 
+    if evaluated:
+        pf_codes = list(dict.fromkeys(e["code"] for e in evaluated))
+        pf_disc_map = filter_candidates_disclosures(
+            pf_codes,
+            master_map=master_map,
+            lookback_days=60,
+            max_workers=min(6, len(pf_codes)),
+        )
+        for eval_obj in evaluated:
+            disc = pf_disc_map.get(eval_obj["code"], {})
+            disc_warnings = list(
+                dict.fromkeys((disc.get("block_reasons") or []) + (disc.get("warnings") or []))
+            )
+            eval_obj["disclosureWarnings"] = disc_warnings
+            eval_obj["disclosureCatalysts"] = disc.get("catalysts", [])
+
     return evaluated, alerts
 
 
@@ -924,6 +1010,11 @@ def format_telegram_report(snapshot: dict, evaluated_portfolio: list, alerts: li
     lines.append(
         f"KOSPI: {m['kospiClose']:,.2f} ({m['kospiRet1d']:+.2f}%) | KOSDAQ: {m['kosdaqClose']:,.2f} ({m['kosdaqRet1d']:+.2f}%)"
     )
+    df = m.get("disclosureFilter")
+    if df:
+        lines.append(
+            f"공시/시장경보 필터({df.get('source', 'none')}): 상위 {df.get('checkedCount', 0)}종목 점검 / {df.get('blockedCount', 0)}종목 Kill-Switch 차단"
+        )
     lines.append("-" * 42)
 
     if evaluated_portfolio:
@@ -934,6 +1025,8 @@ def format_telegram_report(snapshot: dict, evaluated_portfolio: list, alerts: li
             )
             if p["signal"] in ("SELL_STOP", "SELL_TRAIL", "TIME_STOP", "WARNING"):
                 lines.append(f"  -> 권고: {p['advice']}")
+            if p.get("disclosureWarnings"):
+                lines.append(f"  -> [공시/시장경보 유의] {', '.join(p['disclosureWarnings'])}")
         lines.append("-" * 42)
 
     lines.append("[2. 금일 학술·실전 검증 상위 추천 종목]")
@@ -961,6 +1054,7 @@ def main():
     args = parser.parse_args()
 
     os.makedirs(DATA_DIR, exist_ok=True)
+    master_map = load_krx_master()
 
     kis = None
     try:
@@ -1011,7 +1105,7 @@ def main():
         t0 = time.monotonic()
         with open(SNAPSHOT_PATH, "r", encoding="utf-8") as f:
             snapshot = json.load(f)
-        evaluated_portfolio, alerts = evaluate_portfolio(portfolio_items, kis=kis)
+        evaluated_portfolio, alerts = evaluate_portfolio(portfolio_items, kis=kis, master_map=master_map)
         now_str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         snapshot["dataSource"] = data_source
         snapshot["portfolioEvaluated"] = [] if using_local_portfolio else evaluated_portfolio
@@ -1114,36 +1208,42 @@ def main():
     kp = calc_idx_summary(kospi_bars)
     kq = calc_idx_summary(kosdaq_bars)
 
-    if breadth50_pct >= 55.0 and kp["aboveSma50"]:
+    if breadth50_pct >= 55.0 and kp["aboveSma20"]:
         regime_code = "BULL_ATTACK"
-        regime_label = "강세 공격 구간 (Breadth >= 55%)"
+        regime_label = "강세 공격 구간 (Breadth >= 55% & KOSPI > SMA20)"
         rec_exposure = 100
         regime_desc = (
-            f"유동성 상위 종목 중 50일선 상회 비율(Market Breadth)이 {breadth50_pct:.1f}%로 임계치(55%)를 상회합니다. "
-            f"15년 백테스트(E2_S7/E1_S8) 기준 승률과 손익비가 극대화되는 구간으로 주식 비중 80~100% 공격 운용이 유효합니다."
+            f"유동성 상위 종목 중 50일선 상회 비율(Market Breadth)이 {breadth50_pct:.1f}%로 55% 이상이며 KOSPI가 20일 이동평균선 위에 위치합니다. "
+            f"A_Strict_Master_Plan 검증(2012~2026 PF 1.30, 2022~2026 OOS PF 1.91·CAGR +13.73%·MDD -16.18%) 기준 공격 운용이 허용되는 구간입니다."
         )
-    elif breadth50_pct >= 40.0 or kp["aboveSma50"]:
+    elif breadth50_pct >= 45.0:
         regime_code = "SELECTIVE_ROTATION"
-        regime_label = "선별적 주도주 장세 (Breadth 40~55%)"
-        rec_exposure = 60
+        regime_label = "신규 진입 보류·관찰 전용 (Breadth 45~55% 또는 KOSPI < SMA20)"
+        rec_exposure = 0
         regime_desc = (
-            f"시장 Breadth(50일선 상회 비율)가 {breadth50_pct:.1f}%로 지수 대비 종목별 차별화(압축 장세)가 진행 중입니다. "
-            f"총 주식 비중을 50~60%로 조절하고, 52주 신고가 근접(85%+) 및 외인·기관 양매수가 동반된 최상위 주도주에만 선별 진입합니다."
+            f"시장 Breadth({breadth50_pct:.1f}%)가 55% 미만이거나 KOSPI가 20일 이동평균선을 하회합니다. "
+            f"OOS 검증상 레짐 차단 미적용 완화규칙(B1)은 PF 0.73(-74.35%)으로 손실이 발생했으므로 신규 진입 비중을 0%로 차단하고 RS 주도주 관찰만 수행합니다."
         )
     else:
         regime_code = "DEFENSIVE_BEAR"
-        regime_label = "방어적 현금확보 구간 (Breadth < 40%)"
-        rec_exposure = 25
+        regime_label = "현금 100% 방어·신규 매수 전면 중단 (Breadth < 45%)"
+        rec_exposure = 0
         regime_desc = (
-            f"시장 Breadth(50일선 상회 비율)가 {breadth50_pct:.1f}%로 하락장/조정장 임계치(40%)를 하회합니다. "
-            f"한국 증시 추세추종 실패의 제1원인인 하락장 휩쏘(Whipsaw) 방지를 위해 현금 비중을 70% 이상 확보하고 Track 1 최상위 방어/독점 성장주만 소액 운용합니다."
+            f"시장 Breadth(50일선 상회 비율)가 {breadth50_pct:.1f}%로 하락장 임계치(45%)를 하회합니다. "
+            f"하락장 휩쏘(Whipsaw) 방지를 위해 권장 주식 비중 0%(현금 100% 방어)를 적용하고 신규 매수를 전면 중단합니다."
         )
 
-    print("[3/4] Building Track 1 / Track 2 / Track 3 recommendations & fetching live catalysts...")
-    t1, t2, t3 = build_recommendations(all_metrics, breadth50_pct, kis=kis)
+    print("[3/4] Building Track 1 / Track 2 / Track 3 recommendations & screening disclosures...")
+    t1, t2, t3, disclosure_summary = build_recommendations(
+        all_metrics,
+        breadth50_pct,
+        kis=kis,
+        master_map=master_map,
+        rec_exposure=rec_exposure,
+    )
 
     print("[4/4] Evaluating user portfolio...")
-    evaluated_portfolio, alerts = evaluate_portfolio(portfolio_items, kis=kis)
+    evaluated_portfolio, alerts = evaluate_portfolio(portfolio_items, kis=kis, master_map=master_map)
 
     snapshot = {
         "generatedAt": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
@@ -1170,30 +1270,31 @@ def main():
             "kosdaqSma20": kq["sma20"],
             "kosdaqSma50": kq["sma50"],
             "kosdaqSma200": kq["sma200"],
+            "disclosureFilter": disclosure_summary,
         },
         "strategySpecs": {
             "track1": {
                 "id": "TRACK_1_FIP_52W",
                 "name": "Track 1: 52주 신고가 + FIP 연속추세 (E2_S7_EOD)",
                 "booksAndPapers": "Mark Minervini (SEPA Stage 2) + George & Hwang (2004, 52W High) + Da, Gurun & Warachka (2014, FIP) + 고봉찬·김진우 (2014, 저변동성)",
-                "backtest15y": "2022~2026 OOS 5년 연속 양(+) 수익 (연복리 CAGR +42.40%, 15년 PF 1.28, 손익비 2.80, 저변동 결합 시 MDD -17.63%)",
-                "entryRule": "Stage 2 정배열(주가>50일>150일) + 52주 최고가 대비 85~100% + 60일 FIP ID <= 0(양봉우위) + 5일 과열 +12.5% 이하",
+                "backtest15y": "2012~2026-11-13 통합 검증(A_Strict_Master_Plan, N=891, 왕복비용 0.35%): 누적 +122.22%, PF 1.30, 손익비 2.73, MDD -47.16% | 2022~2026-11-13 OOS(N=208): 누적 +85.30%, CAGR +13.73%, PF 1.91, 손익비 3.46, MDD -16.18% (완화규칙 B1 OOS PF 0.73 대비 우위)",
+                "entryRule": "레짐 조건(Breadth >= 55% & KOSPI > SMA20) + Stage 2 정배열(주가>20일>50일>150일) + 52주 최고가 90%+ + 60일 FIP ID <= -0.05 + 5일 수익률 -6%~+12% + 60일 수익률 > 0 + 주가 >= 2,000원 + 20일 평균대금 >= 50억 + Layer 1/2 공시 필터 통과",
                 "exitRule": "장중 아랫꼬리 손절 금지. 15:20 종가 기준 매수가 대비 -7%(또는 2ATR) 이탈 시 손절, 종가 기준 20일 이동평균선 이탈 시 전량 추세 청산 (조기 반익절 금지)"
             },
             "track2": {
                 "id": "TRACK_2_VOL_BREAKOUT",
                 "name": "Track 2: 거래대금 폭발 기준봉 돌파 (E1_S8_EOD)",
                 "booksAndPapers": "Nicolas Darvas (박스 돌파) + William O'Neil (CAN SLIM 거래량) + 유목민·박병창 (거래대금 기준봉)",
-                "backtest15y": "최근 1년 수익률 +73.69%, 2026 YTD +119.33% (MDD -19.50%, 15년 PF 1.26, 손익비 2.75)",
-                "entryRule": "50일·20일선 상회 + 52주 최고가 80% 이상 + 최근 3일 내 거래량 20일 평균 대비 1.8~2.5배 이상 양봉 기준봉 출현",
+                "backtest15y": "Track 1+2 통합 2012~2026-11-13 검증(A_Strict_Master_Plan): Full PF 1.30(+122.22%), 2022~2026-11-13 OOS PF 1.91(CAGR +13.73%, MDD -16.18%) | 엄격 기준봉(거래량 2.5배+, 일간 +4~15%) 미충족 완화규칙(B1)은 OOS PF 0.73(-74.35%)으로 폐기",
+                "entryRule": "레짐 조건(Breadth >= 55% & KOSPI > SMA20) + 50일·20일선 상회 + 52주 최고가 90%+ + 당일 거래량 2.5배+·등락률 +4~15%(또는 최근 3일 내 거래량 2.5배+·+4%+ 양봉 기준봉) + 10일 수익률 <= +12% + 주가 >= 2,000원 + 20일 평균대금 >= 50억 + Layer 1/2 공시 필터 통과",
                 "exitRule": "종가 기준 매수가 대비 -7%(또는 기준봉 시가) 이탈 시 손절, 20일 이동평균선 종가 이탈 시 전량 익절"
             },
             "track3": {
                 "id": "TRACK_3_PULLBACK_WATCH",
                 "name": "Track 3: 기준봉 후 거래절벽 20일선 눌림목 (Type B 대기)",
                 "booksAndPapers": "성필규·한봉호 (중심선 눌림목) + 실전 Type B (거래절벽 후 거래량 재돌파)",
-                "backtest15y": "최근 1년 수익률 +29.81% (승률 63.64%, PF 3.12, MDD -4.08%)",
-                "entryRule": "최근 15일 내 거래량 2.2배+ 기준봉 출현 후 거래량이 20일 평균의 90% 이하로 감소하며 20일선 및 기준봉 중심값 지지 (음봉 무지성 매수 금지, 양봉 재돌파 확인 진입)",
+                "backtest15y": "관찰 전용(Watchlist): 2012~2026-11-13 OOS 통합 포트폴리오 미포함(개별 15일 기준봉 눌림목 후보군). 레짐 차단 구간(Breadth < 55% 또는 KOSPI < SMA20)에서는 비중 0%로 관찰만 수행",
+                "entryRule": "50일선 상회 + 52주 최고가 85%+ + 최근 15일 내 거래량 2.2배+·+5%+ 양봉 기준봉 후 당일 거래량 0.90배 이하 거래절벽 + 20일선 이격 -3.5%~+8.5% + 기준봉 중심값 97%+ 지지 + Layer 1/2 공시 필터 통과",
                 "exitRule": "종가 기준 20일선 또는 기준봉 중심값 이탈 시 손절, 직전 전고점 도달 및 20일선 트레일링 청산"
             }
         },

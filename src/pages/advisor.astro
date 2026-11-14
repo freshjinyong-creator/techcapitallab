@@ -42,7 +42,7 @@ const pageDesc =
     <article class="app-prose border-t border-slate-700/50 pt-8 mt-12">
       <h2>퀀트 종목 추천 & 포트폴리오 리스크 관리 프로토콜 명세</h2>
       <p>
-        본 어드바이저 시스템은 글로벌 추세추종 구루(Mark Minervini, William O'Neil, Nicolas Darvas, Ed Seykota)와 학술 논문(George &amp; Hwang 2004, Da, Gurun &amp; Warachka 2014, 고봉찬·김진우 2014), 그리고 한국 실전 대가(성필규, 한봉호, 유목민, 박병창)의 매매 공식을 한국 증시 15년(2011~2026, 4,306종목 947만 일봉) 데이터로 전수 검증하여 설계되었습니다.
+        본 어드바이저 시스템은 글로벌 추세추종(Mark Minervini Stage 2, 52주 신고가, FIP 연속성) 규칙을 한국 증시 통합 Parquet 일봉(2012-01-02~2026-11-13, 2,416종목·3,652거래일, 왕복 거래비용 0.35%, 최대 8슬롯, EOD -7% 손절, 최대 40거래일 보유)으로 OOS 재검증하고, KIS <code>.mst</code> 마스터 및 공시/위험 Kill-Switch 필터를 결합하여 설계되었습니다.
       </p>
 
       <h3>1. 한국 증시 15년 실증에서 폐기된 패배 공식 vs 채택된 승리 공식</h3>
@@ -76,16 +76,22 @@ const pageDesc =
               <td class="p-3">15:20 종가(EOD Close) 기준 확정 시에만 손절</td>
             </tr>
             <tr class="border border-slate-700">
-              <td class="p-3 font-bold text-emerald-400">채택 (Track 1)</td>
-              <td class="p-3">Stage 2 + 52주 신고가 + FIP 연속성 + EOD 스탑</td>
-              <td class="p-3 font-mono">2022~2026 5년 연속 수익 (연복리 CAGR +42.40%, PF 1.28)</td>
-              <td class="p-3">주력 스윙 포트폴리오 (저변동 결합 시 MDD -17.6%)</td>
+              <td class="p-3 font-bold text-emerald-400">채택 (Master Plan)</td>
+              <td class="p-3">A_Strict_Master_Plan (Stage 2 + 52주 신고가 + Breadth &lt; 55% 전면 현금화)</td>
+              <td class="p-3 font-mono">Full(2012~2026): PF 1.30, +122.22%(MDD -47.16%) | 5Y OOS(2022~2026): PF 1.91, CAGR +13.73%, MDD -16.18%</td>
+              <td class="p-3">주력 OOS 검증 기준선 (왕복 0.35%, 5Y 평균 현금비중 69.76%)</td>
             </tr>
             <tr class="border border-slate-700">
-              <td class="p-3 font-bold text-emerald-400">채택 (Track 2)</td>
-              <td class="p-3">Stage 2 + 거래대금 2배+ 폭발 기준봉 돌파</td>
-              <td class="p-3 font-mono">최근 1년 +73.69%, 2026 YTD +119.33% (MDD -19.50%)</td>
-              <td class="p-3">모멘텀 주도주 공격 트랙</td>
+              <td class="p-3 font-bold text-rose-400">폐기 (완화 레짐)</td>
+              <td class="p-3">Breadth &lt; 55% 구간 완화 진입 (B1_Live_Graduated_25pct / C_Unfiltered)</td>
+              <td class="p-3 font-mono">5Y OOS: B1 PF 0.73(-74.35%, MDD -75.66%) / 무필터 PF 0.59(-95.59%)</td>
+              <td class="p-3">Breadth &lt; 55% 시 엄격한 0% 현금 게이트 적용으로 하락장 손실 차단</td>
+            </tr>
+            <tr class="border border-slate-700">
+              <td class="p-3 font-bold text-emerald-400">채택 (Kill-Switch)</td>
+              <td class="p-3">KIS .mst 마스터 + 공시/위험 Kill-Switch 사전 필터</td>
+              <td class="p-3 font-mono">최근 약세장(2026-08-26~11-13) A_Strict PF 0.24(-10.72%) 구간 방어 보강</td>
+              <td class="p-3">관리종목·거래정지·악재 공시 종목 추천 및 신규 진입 즉시 차단</td>
             </tr>
           </tbody>
         </table>

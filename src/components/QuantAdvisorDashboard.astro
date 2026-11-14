@@ -277,7 +277,7 @@
         </h2>
       </div>
       <p class="mt-1 text-xs text-muted-foreground">
-        한국 증시 15년(2011~2026, 947만 일봉) 전수 검증에서 살아남은 3대 핵심 전략 트랙 조건과 금일 네이버 금융 수급·컨센서스·주요 뉴스를 결합한 추천 리스트입니다.
+        통합 Parquet 일봉(2012-01-02~2026-11-13, 2,416종목·3,652거래일, 왕복 0.35% 비용 반영) OOS 검증(5Y PF 1.91, CAGR +13.73%, MDD -16.18%) 기반 3대 트랙 조건과 KIS .mst·공시 Kill-Switch·실시간 수급을 결합한 스크리너입니다.
       </p>
 
       <!-- Track Tabs -->
@@ -589,7 +589,25 @@
       updatedEl.textContent = `생성일시: ${generatedAt} (장마감 기준: ${macro.lastMarketDate})`;
     }
     if (descEl) {
-      descEl.textContent = macro.regimeDesc || "";
+      const baseDesc = macro.regimeDesc || "";
+      const df = macro.disclosureFilter;
+      if (df && typeof df === "object") {
+        const checked = df.checkedCount ?? df.scannedCount ?? df.totalChecked ?? df.checked ?? 0;
+        const blocked = df.blockedCount ?? df.excludedCount ?? df.filteredCount ?? df.blocked ?? 0;
+        descEl.innerHTML = "";
+        descEl.appendChild(document.createTextNode(baseDesc));
+        const dfBadge = document.createElement("span");
+        dfBadge.className = `mt-1.5 inline-block rounded border px-2 py-0.5 text-[11px] font-mono ${
+          Number(blocked) > 0
+            ? "border-rose-500/40 bg-rose-500/10 text-rose-400"
+            : "border-emerald-500/40 bg-emerald-500/10 text-emerald-400"
+        }`;
+        dfBadge.textContent = `공시/위험 Kill-Switch: ${checked}종목 점검, ${blocked}종목 차단`;
+        descEl.appendChild(document.createElement("br"));
+        descEl.appendChild(dfBadge);
+      } else {
+        descEl.textContent = baseDesc;
+      }
     }
     if (badgeEl) {
       badgeEl.textContent = macro.regimeLabel || "";
@@ -636,8 +654,10 @@
     setEl("metric-breadth50", `${macro.breadthPct}% (유동성 ${macro.universeCount}종목)`);
     setEl("metric-breadth20", `${macro.breadth20Pct}%`);
     setEl("metric-stage2", `${macro.stage2Pct}%`);
-    setEl("metric-exposure", `주식 ${macro.recEquityExposurePct}%`);
-    setEl("metric-cash", `권장 현금 비중: ${100 - Number(macro.recEquityExposurePct)}%`);
+    const expPct = Number(macro.recEquityExposurePct ?? 0);
+    const expColor = expPct <= 0 ? "text-rose-400" : expPct < 100 ? "text-amber-400" : "text-emerald-400";
+    setEl("metric-exposure", `주식 ${expPct}%`, `mt-1 text-base font-extrabold font-mono ${expColor}`);
+    setEl("metric-cash", `권장 현금 비중: ${Math.max(0, 100 - expPct)}%`);
   }
 
   function renderRecommendations(trackKey: "track1" | "track2" | "track3") {
@@ -681,9 +701,12 @@
       return;
     }
 
+    const macroExposurePct = Number(snapshotData.macro?.recEquityExposurePct ?? 0);
+
     container.innerHTML = list
       .map((item, idx) => {
         const retColor = item.ret1d >= 0 ? "text-rose-400" : "text-blue-400";
+        const isObserveOnly = Number(item.recWeightPct ?? 0) <= 0 || macroExposurePct === 0;
         const formulasHtml = (item.reasons?.formulas || [])
           .map(
             (f: any) => `
@@ -760,8 +783,12 @@
                 <div class="font-bold text-amber-400">${Number(item.sma20).toLocaleString()}원</div>
               </div>
               <div>
-                <div class="text-[10px] text-muted-foreground">ATR 권장 계좌비중</div>
-                <div class="font-bold text-foreground">${item.recWeightPct}% (일평균 ${item.valMa20Eok}억)</div>
+                <div class="text-[10px] text-muted-foreground">${isObserveOnly ? "진입 상태 / 계좌비중" : "ATR 권장 계좌비중"}</div>
+                <div class="font-bold ${isObserveOnly ? "text-rose-400/90" : "text-foreground"}">${
+                  isObserveOnly
+                    ? "관찰 전용 · 0% (신규 진입 중단)"
+                    : `${item.recWeightPct}% (일평균 ${item.valMa20Eok}억)`
+                }</div>
               </div>
             </div>
 
