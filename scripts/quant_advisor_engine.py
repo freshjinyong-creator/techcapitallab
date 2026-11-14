@@ -14,17 +14,19 @@ KRX Quant Stock Recommendation & Portfolio Advisor Engine
 
 import os
 import sys
+import glob
 import json
 import math
 import time
 import argparse
 import xml.etree.ElementTree as ET
-from datetime import datetime
+from datetime import datetime, timedelta
 from concurrent.futures import ThreadPoolExecutor, as_completed
 import requests
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from kis_client import KISClient, is_common_stock_name  # noqa: E402
+from krx_master import load_krx_master  # noqa: E402
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DATA_DIR = os.path.join(BASE_DIR, "public", "data")
@@ -32,6 +34,10 @@ SNAPSHOT_PATH = os.path.join(DATA_DIR, "quant_advisor_snapshot.json")
 PORTFOLIO_PATH = os.path.join(DATA_DIR, "my_portfolio.json")
 LOCAL_PORTFOLIO_PATH = os.path.join(BASE_DIR, "my_portfolio.local.json")
 LOCAL_PORTFOLIO_CACHE_PATH = os.path.join(BASE_DIR, ".cache", "quant_advisor_local_portfolio.json")
+PARQUET_GLOB = os.environ.get(
+    "QUANT_PARQUET_GLOB",
+    "/home/freshjinyong/quant_data/market_data_daily_parquet/year=*/data.parquet",
+)
 
 HEADERS = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
@@ -315,6 +321,91 @@ def fetch_stock_enrichment(code: str, kis: KISClient = None):
 
     info["news"] = fetch_stock_news_only(code, limit=3)
     return info
+
+
+def load_parquet_universe_metrics(lookback_days: int = 450):
+    """Load trailing daily bars for all active KRX common stocks via one DuckDB query and compute metrics."""
+    import duckdb
+
+    parquet_files = sorted(glob.glob(PARQUET_GLOB))
+    if not parquet_files:
+        raise FileNotFoundError(f"No parquet files found matching {PARQUET_GLOB}")
+
+    master = load_krx_master()
+    common_map = {
+        f"A{code}": info
+        for code, info in master.items()
+        if info.get("is_common")
+    }
+    if not common_map:
+        return [], 0, ""
+
+    cutoff_dt = (datetime.now() - timedelta(days=lookback_days)).strftime("%Y%m%d")
+    cutoff_year = int(cutoff_dt[:4])
+    a_codes = list(common_map.keys())
+
+    con = duckdb.connect()
+    try:
+        rows = con.execute(
+            """
+            SELECT code, trade_date, open, high, low, close, volume, trading_value
+            FROM read_parquet(?)
+            WHERE year >= ?
+              AND trade_date >= ?
+              AND code IN (SELECT unnest(?))
+            ORDER BY code, trade_date ASC
+            """,
+            [parquet_files, cutoff_year, cutoff_dt, a_codes],
+        ).fetchall()
+    finally:
+        con.close()
+
+    all_metrics = []
+    max_trade_date = ""
+    cur_code = None
+    cur_bars = []
+
+    def _flush_stock(a_code: str, bars: list):
+        nonlocal max_trade_date
+        if not a_code or len(bars) < 160:
+            return
+        info = common_map.get(a_code)
+        if not info:
+            return
+        m = compute_metrics(info["code"], info["name"], info["market"], bars)
+        if m:
+            all_metrics.append(m)
+            last_dt = bars[-1]["date"]
+            if last_dt > max_trade_date:
+                max_trade_date = last_dt
+
+    for a_code, dt, o, h, l, c, v, tv in rows:
+        if c is None or c <= 0 or not dt:
+            continue
+        if a_code != cur_code:
+            _flush_stock(cur_code, cur_bars)
+            cur_code = a_code
+            cur_bars = []
+
+        c_f = float(c)
+        o_f = float(o) if (o is not None and o > 0) else c_f
+        h_f = float(h) if (h is not None and h > 0) else c_f
+        l_f = float(l) if (l is not None and l > 0) else c_f
+        v_f = float(v) if (v is not None and v > 0) else 0.0
+        val_f = float(tv) if (tv is not None and tv > 0) else (c_f * v_f if v_f > 0 else 0.0)
+        cur_bars.append({
+            "date": str(dt),
+            "open": o_f,
+            "high": h_f,
+            "low": l_f,
+            "close": c_f,
+            "volume": v_f,
+            "value": val_f,
+            "value_est": val_f,
+        })
+
+    _flush_stock(cur_code, cur_bars)
+    return all_metrics, len(common_map), max_trade_date
 
 
 def compute_metrics(code: str, name: str, market: str, bars: list):
@@ -861,17 +952,37 @@ def main():
     parser = argparse.ArgumentParser(description="KRX Quant Recommendation & Portfolio Advisor Engine")
     parser.add_argument("--notify-telegram", action="store_true", help="Send Telegram report")
     parser.add_argument("--only-portfolio", action="store_true", help="Only re-evaluate portfolio")
+    parser.add_argument(
+        "--source",
+        choices=["auto", "parquet", "kis"],
+        default="auto",
+        help="Universe & OHLCV data source (default: auto)",
+    )
     args = parser.parse_args()
 
     os.makedirs(DATA_DIR, exist_ok=True)
 
     kis = None
-    data_source = "NAVER_FALLBACK"
     try:
         kis = KISClient()
-        data_source = f"KIS_REST_{kis.mode.upper()}"
     except Exception as e:
         print(f"[WARN] KISClient init failed ({e}); falling back to Naver API.")
+
+    parquet_available = bool(glob.glob(PARQUET_GLOB))
+    if args.source == "parquet":
+        if not parquet_available:
+            print(f"[ERROR] --source parquet requested, but no files found at {PARQUET_GLOB}")
+            sys.exit(1)
+        use_parquet = True
+    elif args.source == "kis":
+        use_parquet = False
+    else:
+        use_parquet = parquet_available
+
+    if use_parquet:
+        data_source = "PARQUET_FULL_KIS" if kis is not None else "PARQUET_FULL_NAVER"
+    else:
+        data_source = f"KIS_REST_{kis.mode.upper()}" if kis is not None else "NAVER_FALLBACK"
 
     using_local_portfolio = os.path.exists(LOCAL_PORTFOLIO_PATH)
     active_portfolio_path = LOCAL_PORTFOLIO_PATH if using_local_portfolio else PORTFOLIO_PATH
@@ -928,39 +1039,46 @@ def main():
     if len(kosdaq_bars) < 200:
         _, kosdaq_bars = fetch_fchart_daily("KOSDAQ", 260)
 
-    universe = fetch_liquid_universe(kis=kis, kospi_pages=2, kosdaq_pages=2, page_size=60, max_universe=240)
-    print(f"  -> Universe count: {len(universe)} stocks")
+    max_scanned_date = ""
+    if use_parquet:
+        print("[2/4] Scanning full KRX common-stock universe from Parquet via DuckDB (trailing ~450d)...")
+        all_metrics, master_common_cnt, max_scanned_date = load_parquet_universe_metrics(lookback_days=450)
+        print(f"  -> Master common stocks: {master_common_cnt} | Computed metrics (>=160 bars): {len(all_metrics)} stocks (maxDate={max_scanned_date})")
+    else:
+        universe = fetch_liquid_universe(kis=kis, kospi_pages=2, kosdaq_pages=2, page_size=60, max_universe=240)
+        print(f"  -> Universe count: {len(universe)} stocks")
 
-    print("[2/4] Fetching 260-day daily bars in parallel...")
-    all_metrics = []
+        print("[2/4] Fetching 260-day daily bars in parallel...")
+        all_metrics = []
 
-    def fetch_and_compute(u):
-        bars = []
-        name = u["name"]
-        if kis is not None:
-            try:
-                bars = kis.get_daily_bars(u["code"], min_bars=260)
-            except Exception:
-                bars = []
-        if not bars:
-            fb_name, bars = fetch_fchart_daily(u["code"], 260)
-            if fb_name:
-                name = fb_name
-        if not bars:
-            return None
-        return compute_metrics(u["code"], name, u["market"], bars)
+        def fetch_and_compute(u):
+            bars = []
+            name = u["name"]
+            if kis is not None:
+                try:
+                    bars = kis.get_daily_bars(u["code"], min_bars=260)
+                except Exception:
+                    bars = []
+            if not bars:
+                fb_name, bars = fetch_fchart_daily(u["code"], 260)
+                if fb_name:
+                    name = fb_name
+            if not bars:
+                return None
+            return compute_metrics(u["code"], name, u["market"], bars)
 
-    with ThreadPoolExecutor(max_workers=6) as ex:
-        fut_map = {ex.submit(fetch_and_compute, u): u for u in universe}
-        for fut in as_completed(fut_map):
-            try:
-                m = fut.result()
-                if m:
-                    all_metrics.append(m)
-            except Exception:
-                pass
+        with ThreadPoolExecutor(max_workers=6) as ex:
+            fut_map = {ex.submit(fetch_and_compute, u): u for u in universe}
+            for fut in as_completed(fut_map):
+                try:
+                    m = fut.result()
+                    if m:
+                        all_metrics.append(m)
+                except Exception:
+                    pass
 
-    print(f"  -> Computed metrics for {len(all_metrics)} stocks")
+        max_scanned_date = max((m["lastDate"] for m in all_metrics), default="")
+        print(f"  -> Computed metrics for {len(all_metrics)} stocks")
 
     above50_cnt = sum(1 for m in all_metrics if m["aboveSma50"])
     above20_cnt = sum(1 for m in all_metrics if m["aboveSma20"])
@@ -1031,7 +1149,7 @@ def main():
         "generatedAt": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
         "dataSource": data_source,
         "macro": {
-            "lastMarketDate": kp.get("date", ""),
+            "lastMarketDate": max_scanned_date if (use_parquet and max_scanned_date) else (kp.get("date", "") or max_scanned_date),
             "regimeCode": regime_code,
             "regimeLabel": regime_label,
             "recEquityExposurePct": rec_exposure,
