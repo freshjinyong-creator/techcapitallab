@@ -372,6 +372,8 @@ const { initialCode = "000660", defaultTab = "chart" } = Astro.props;
 
   let mainChart: any = null;
   let subChart: any = null;
+  let chartResizeObserver: ResizeObserver | null = null;
+  let docClickHandler: ((e: MouseEvent) => void) | null = null;
 
   let candleSeries: any = null;
   let volumeSeries: any = null;
@@ -423,6 +425,10 @@ const { initialCode = "000660", defaultTab = "chart" } = Astro.props;
     if (subChart) {
       try { subChart.remove(); } catch(e) {}
       subChart = null;
+    }
+    if (chartResizeObserver) {
+      chartResizeObserver.disconnect();
+      chartResizeObserver = null;
     }
 
     mainContainer.innerHTML = "";
@@ -533,11 +539,11 @@ const { initialCode = "000660", defaultTab = "chart" } = Astro.props;
       if (volEl) volEl.innerText = v?.value?.toLocaleString() ?? "-";
     });
 
-    const resizeObserver = new ResizeObserver(() => {
+    chartResizeObserver = new ResizeObserver(() => {
       if (mainContainer && mainChart) mainChart.applyOptions({ width: mainContainer.clientWidth });
       if (subContainer && subChart) subChart.applyOptions({ width: subContainer.clientWidth });
     });
-    resizeObserver.observe(mainContainer);
+    chartResizeObserver.observe(mainContainer);
   }
 
   function updateLegendDefault() {
@@ -563,7 +569,7 @@ const { initialCode = "000660", defaultTab = "chart" } = Astro.props;
     if (loadingEl) loadingEl.classList.remove("hidden");
 
     try {
-      const resp = await fetch(`https://pub-88fccd299b1d47fe97d43f35f238d0ce.r2.dev/data/daily/${code}.json`);
+      const resp = await fetch(`https://pub-88fccd299b1d47fe97d43f35f238d0ce.r2.dev/data/daily/${code}.json?t=${Date.now()}`);
       if (!resp.ok) throw new Error("데이터를 찾을 수 없습니다.");
       const data = await resp.json();
       currentStockData = data;
@@ -889,10 +895,15 @@ const { initialCode = "000660", defaultTab = "chart" } = Astro.props;
   }
 
   function setup() {
+    if (docClickHandler) {
+      document.removeEventListener("click", docClickHandler);
+      docClickHandler = null;
+    }
+
     initCharts();
     loadStock(currentCode, currentName);
 
-    fetch("https://pub-88fccd299b1d47fe97d43f35f238d0ce.r2.dev/data/stock_list.json")
+    fetch(`https://pub-88fccd299b1d47fe97d43f35f238d0ce.r2.dev/data/stock_list.json?t=${Date.now()}`)
       .then(r => r.json())
       .then(data => {
         stockList = data;
@@ -939,11 +950,12 @@ const { initialCode = "000660", defaultTab = "chart" } = Astro.props;
         }
       });
 
-      document.addEventListener("click", e => {
+      docClickHandler = (e: MouseEvent) => {
         if (!searchInput.contains(e.target as Node) && !searchDropdown.contains(e.target as Node)) {
           searchDropdown.classList.add("hidden");
         }
-      });
+      };
+      document.addEventListener("click", docClickHandler);
     }
 
     document.querySelectorAll(".quick-stock-btn").forEach(btn => {

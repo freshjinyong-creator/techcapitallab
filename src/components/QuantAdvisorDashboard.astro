@@ -1233,6 +1233,50 @@
     });
   }
 
+  function parseSnapshotTimestamp(data: any): number {
+    const raw = data?.generatedAt;
+    if (typeof raw === "number" && Number.isFinite(raw)) return raw;
+    if (typeof raw === "string" && raw.trim()) {
+      const parsed = Date.parse(raw);
+      if (!Number.isNaN(parsed)) return parsed;
+    }
+    return -Infinity;
+  }
+
+  async function fetchLatestAdvisorSnapshot(): Promise<any> {
+    const ts = Date.now();
+    const urls = [
+      `https://pub-88fccd299b1d47fe97d43f35f238d0ce.r2.dev/data/quant_advisor_snapshot.json?t=${ts}`,
+      `/data/quant_advisor_snapshot.json?t=${ts}`,
+    ];
+
+    const results = await Promise.allSettled(
+      urls.map(async url => {
+        const resp = await fetch(url);
+        if (!resp.ok) {
+          throw new Error(`HTTP ${resp.status} for ${url}`);
+        }
+        const data = await resp.json();
+        if (!data || typeof data !== "object") {
+          throw new Error(`Invalid snapshot JSON from ${url}`);
+        }
+        return data;
+      })
+    );
+
+    const validSnapshots = results
+      .filter((r): r is PromiseFulfilledResult<any> => r.status === "fulfilled")
+      .map(r => r.value);
+
+    if (validSnapshots.length === 0) {
+      throw new Error("Failed to load quant_advisor_snapshot.json from both R2 and static fallback");
+    }
+
+    return validSnapshots.reduce((newest, candidate) =>
+      parseSnapshotTimestamp(candidate) > parseSnapshotTimestamp(newest) ? candidate : newest
+    );
+  }
+
   async function initDashboard() {
     initAdvisorChart();
 
@@ -1252,27 +1296,24 @@
 
     setupSearchAutocomplete();
 
-    // Load snapshot JSON
+    // Load snapshot JSON (R2 + static fallback, picking newest generatedAt)
     try {
-      const snapResp = await fetch(`/data/quant_advisor_snapshot.json?t=${Date.now()}`);
-      if (snapResp.ok) {
-        snapshotData = await snapResp.json();
-        renderMacroBanner(snapshotData.macro, snapshotData.generatedAt, snapshotData.dataSource);
-        renderRecommendations("track1");
+      snapshotData = await fetchLatestAdvisorSnapshot();
+      renderMacroBanner(snapshotData.macro, snapshotData.generatedAt, snapshotData.dataSource);
+      renderRecommendations("track1");
 
-        // Load initial chart with top #1 recommendation
-        const firstPick =
-          snapshotData.recommendations?.track1?.[0] ||
-          snapshotData.recommendations?.track2?.[0];
-        if (firstPick) {
-          loadChartWithDefenseLines(
-            firstPick.code,
-            firstPick.name,
-            firstPick.close,
-            firstPick.recommendedStop,
-            firstPick.sma20
-          );
-        }
+      // Load initial chart with top #1 recommendation
+      const firstPick =
+        snapshotData.recommendations?.track1?.[0] ||
+        snapshotData.recommendations?.track2?.[0];
+      if (firstPick) {
+        loadChartWithDefenseLines(
+          firstPick.code,
+          firstPick.name,
+          firstPick.close,
+          firstPick.recommendedStop,
+          firstPick.sma20
+        );
       }
     } catch (e) {
       console.error("Failed to load snapshot:", e);
@@ -1549,15 +1590,12 @@
       try {
         const r = await fetch("/api/quant-refresh", { method: "POST" });
         if (r.ok) {
-          const snapResp = await fetch(`/data/quant_advisor_snapshot.json?t=${Date.now()}`);
-          if (snapResp.ok) {
-            snapshotData = await snapResp.json();
-            renderMacroBanner(snapshotData.macro, snapshotData.generatedAt, snapshotData.dataSource);
-            renderRecommendations(currentTrackTab);
-            await refreshAndRenderPortfolio();
-            showToast("실시간 종목 재스캔 및 추천 리스트 갱신이 완료되었습니다.");
-            return;
-          }
+          snapshotData = await fetchLatestAdvisorSnapshot();
+          renderMacroBanner(snapshotData.macro, snapshotData.generatedAt, snapshotData.dataSource);
+          renderRecommendations(currentTrackTab);
+          await refreshAndRenderPortfolio();
+          showToast("실시간 종목 재스캔 및 추천 리스트 갱신이 완료되었습니다.");
+          return;
         }
         showToast("정적 배포 환경에서는 기존 스냅샷을 리로드합니다.");
       } catch {
