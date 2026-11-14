@@ -14,6 +14,8 @@ yarn-error.log*
 pnpm-debug.log*
 
 # environment variables
+.kis_token_cache*
+.env*
 .env
 .env.production
 google_indexing_key.json
@@ -36,3 +38,12 @@ __pycache__/
 
 # docker compose
 compose.override.yaml
+.cache/
+
+# local private portfolio and user scratch/bak files
+my_portfolio.local.json
+*.bak
+/temp_reports/
+/hynix_eugene.*
+/lges_shinhan.*
+/samsung_hanwha.*

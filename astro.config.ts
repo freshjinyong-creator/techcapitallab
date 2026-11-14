@@ -17,6 +17,7 @@ import {
   transformerNotationWordHighlight,
 } from "@shikijs/transformers";
 import { transformerFileName } from "./src/utils/transformers/fileName";
+import { quantAdvisorVitePlugin } from "./src/utils/quantDevMiddleware";
 import config from "./astro-paper.config";
 
 export default defineConfig({
@@ -37,9 +38,9 @@ export default defineConfig({
     mdx(),
     sitemap({
       filter: page => {
-        // Search and tag pages are excluded to prevent thin content & conserve crawl budget
         if (page.includes("/tags/") || page.endsWith("/tags") || page.endsWith("/tags/")) return false;
         if (page.includes("/search/") || page.endsWith("/search") || page.endsWith("/search/")) return false;
+        if (page.includes("/advisor/") || page.endsWith("/advisor") || page.endsWith("/advisor/")) return false;
         if (config.features?.showArchives === false && page.endsWith("/archives/")) return false;
         return true;
       },
@@ -73,7 +74,7 @@ export default defineConfig({
     },
   },
   vite: {
-    plugins: [tailwindcss()],
+    plugins: [tailwindcss(), quantAdvisorVitePlugin()],
   },
   fonts: [
     {

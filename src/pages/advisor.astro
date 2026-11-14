@@ -1,0 +1,105 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import Header from "@/components/Header.astro";
+import Breadcrumb from "@/components/Breadcrumb.astro";
+import Main from "@/components/Main.astro";
+import Footer from "@/components/Footer.astro";
+import QuantAdvisorDashboard from "@/components/QuantAdvisorDashboard.astro";
+import config from "@/config";
+
+const pageTitle = "퀀트 종목 추천 & 포트폴리오 손절·청산 어드바이저";
+const pageDesc =
+  "한국 증시 15년 일봉 실증 검증된 추세추종·기준봉 수식(Minervini Stage 2, 52주 신고가, FIP 연속성)과 실시간 네이버 금융 수급·컨센서스·뉴스를 결합한 종목 추천 및 보유 포트폴리오 리스크 관리 시스템";
+---
+
+<Layout
+  title={`${pageTitle} | ${config.site.title}`}
+  description={pageDesc}
+  robots="noindex, follow"
+  disableAds={true}
+>
+  <Header />
+
+  <Breadcrumb />
+
+  <Main pageTitle={pageTitle} pageDesc={pageDesc}>
+    <div class="mb-4 flex flex-wrap items-center justify-between gap-2 rounded-xl border border-border/70 bg-muted/20 px-4 py-2.5 text-xs">
+      <span class="text-muted-foreground">
+        본 시스템은 무인 자동매매가 아닌 <strong>정량 수식·뉴스 기반 종목 추천 및 보유 종목 손절·트레일링 어드바이저</strong>입니다.
+      </span>
+      <a
+        href="/chart/"
+        class="font-bold text-accent hover:underline"
+      >
+        전 종목 15년 상세 차트 & 백테스터 이동 &rarr;
+      </a>
+    </div>
+
+    <!-- 1. Interactive Quant Advisor & Portfolio Manager Component -->
+    <QuantAdvisorDashboard />
+
+    <!-- 2. Quantitative Methodology & Rule Documentation -->
+    <article class="app-prose border-t border-slate-700/50 pt-8 mt-12">
+      <h2>퀀트 종목 추천 & 포트폴리오 리스크 관리 프로토콜 명세</h2>
+      <p>
+        본 어드바이저 시스템은 글로벌 추세추종 구루(Mark Minervini, William O'Neil, Nicolas Darvas, Ed Seykota)와 학술 논문(George &amp; Hwang 2004, Da, Gurun &amp; Warachka 2014, 고봉찬·김진우 2014), 그리고 한국 실전 대가(성필규, 한봉호, 유목민, 박병창)의 매매 공식을 한국 증시 15년(2011~2026, 4,306종목 947만 일봉) 데이터로 전수 검증하여 설계되었습니다.
+      </p>
+
+      <h3>1. 한국 증시 15년 실증에서 폐기된 패배 공식 vs 채택된 승리 공식</h3>
+      <div class="overflow-x-auto my-4">
+        <table class="w-full text-left border-collapse border border-slate-700 text-xs sm:text-sm">
+          <thead>
+            <tr class="bg-slate-800 text-slate-200">
+              <th class="p-3 border border-slate-700">구분</th>
+              <th class="p-3 border border-slate-700">전략/습관 유형</th>
+              <th class="p-3 border border-slate-700">15년 KRX 실증 결과</th>
+              <th class="p-3 border border-slate-700">시스템 반영 여부</th>
+            </tr>
+          </thead>
+          <tbody class="text-slate-300">
+            <tr class="border border-slate-700">
+              <td class="p-3 font-bold text-rose-400">폐기</td>
+              <td class="p-3">음봉 무지성 눌림목 매수 (5일선/엔벨로프 역추세)</td>
+              <td class="p-3 font-mono">승률 51.8%, 손익비 0.84, PF 0.90 (기대값 마이너스)</td>
+              <td class="p-3">음봉 매수 전면 배제 (양봉/거래량 확인만 허용)</td>
+            </tr>
+            <tr class="border border-slate-700">
+              <td class="p-3 font-bold text-rose-400">폐기</td>
+              <td class="p-3">+10% 도달 시 50% 조기 반익절 (처분효과)</td>
+              <td class="p-3 font-mono">평균 익절폭 +18.1% &rarr; +8.1% 반토막, PF 0.85 추락</td>
+              <td class="p-3">조기 반익절 금지, 20일선 이탈 전까지 전량 보유</td>
+            </tr>
+            <tr class="border border-slate-700">
+              <td class="p-3 font-bold text-rose-400">폐기</td>
+              <td class="p-3">장중 저가(Low) 기준 기계적 스탑로스</td>
+              <td class="p-3 font-mono">장중 아랫꼬리 노이즈에 조기 손절 후 본추세 상승 소외</td>
+              <td class="p-3">15:20 종가(EOD Close) 기준 확정 시에만 손절</td>
+            </tr>
+            <tr class="border border-slate-700">
+              <td class="p-3 font-bold text-emerald-400">채택 (Track 1)</td>
+              <td class="p-3">Stage 2 + 52주 신고가 + FIP 연속성 + EOD 스탑</td>
+              <td class="p-3 font-mono">2022~2026 5년 연속 수익 (연복리 CAGR +42.40%, PF 1.28)</td>
+              <td class="p-3">주력 스윙 포트폴리오 (저변동 결합 시 MDD -17.6%)</td>
+            </tr>
+            <tr class="border border-slate-700">
+              <td class="p-3 font-bold text-emerald-400">채택 (Track 2)</td>
+              <td class="p-3">Stage 2 + 거래대금 2배+ 폭발 기준봉 돌파</td>
+              <td class="p-3 font-mono">최근 1년 +73.69%, 2026 YTD +119.33% (MDD -19.50%)</td>
+              <td class="p-3">모멘텀 주도주 공격 트랙</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>2. 보유 포트폴리오 4대 매도·손절 판정 프로토콜</h3>
+      <ul>
+        <li><strong>[SELL_STOP] EOD 하드 손절선 이탈:</strong> 현재가(종가 기준)가 <code>max(매수가 &times; 0.93, 매수가 - 2 &times; ATR20)</code> 아래로 내려간 경우. 어떠한 낙관 편향이나 물타기도 허용하지 않으며 장마감 동시호가 또는 익일 시가에 전량 청산합니다.</li>
+        <li><strong>[SELL_TRAIL] 20일 이동평균선(생명선) 종가 이탈:</strong> 추세추종 전략의 핵심 청산 규칙으로, 20일 이동평균선을 종가 기준으로 하향 이탈하면 단기·중기 추세가 종료된 것으로 판정하여 전량 이익실현/청산합니다.</li>
+        <li><strong>[TIME_STOP] 10거래일 시간 손절:</strong> 매수 후 10거래일이 경과했음에도 평가수익률이 +3.0%에 미달하면 모멘텀 탄력이 소멸된 것으로 보고 기회비용 회수를 위해 교체를 권고합니다.</li>
+        <li><strong>[HOLD_TRAIL] 수익 추세 보유 (Let Winners Run):</strong> 평가수익률이 +10%를 넘더라도 성급하게 절반을 팔지 않고, 20일 생명선이 유지되는 한 추세의 우측 꼬리(Right Tail)를 끝까지 추종합니다.</li>
+      </ul>
+    </article>
+  </Main>
+
+  <Footer />
+</Layout>

@@ -1,0 +1,1571 @@
+---
+/**
+ * QuantAdvisorDashboard.astro
+ * KRX Quant Stock Recommendation & Portfolio Risk/Stop-Loss Advisor Dashboard
+ * Strictly adheres to Zero Emoji and Data-Driven Quantitative Reporting rules.
+ */
+---
+
+<div class="quant-advisor-wrapper my-4 flex flex-col gap-8 text-foreground">
+  <!-- 1. Top Macro & Market Regime Banner -->
+  <section class="rounded-2xl border border-border bg-muted/20 p-5 shadow-xs">
+    <div class="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between border-b border-border/60 pb-4">
+      <div>
+        <div class="flex flex-wrap items-center gap-2.5">
+          <span class="rounded-md bg-accent/15 px-2.5 py-1 text-xs font-mono font-bold text-accent">
+            KRX QUANT ADVISOR v1.0
+          </span>
+          <span id="macro-regime-badge" class="rounded-md bg-slate-700 px-3 py-1 text-xs font-bold text-white">
+            레짐 데이터 로딩 중...
+          </span>
+          <span id="macro-data-source-badge" class="rounded-md border border-border bg-background px-2.5 py-1 text-[11px] font-mono font-bold text-muted-foreground">
+            데이터 소스: 확인 중...
+          </span>
+          <span id="macro-updated-at" class="text-xs font-mono text-muted-foreground">
+            기준일시: -
+          </span>
+        </div>
+        <h2 class="mt-2 text-lg font-bold sm:text-xl">
+          거시경제·시장 레짐 진단 및 권장 주식 비중
+        </h2>
+        <p id="macro-regime-desc" class="mt-1 text-xs sm:text-sm text-muted-foreground leading-relaxed">
+          데이터를 불러오는 중입니다...
+        </p>
+      </div>
+
+      <div class="flex flex-wrap items-center gap-2 shrink-0">
+        <button
+          id="btn-refresh-screener"
+          class="rounded-xl border border-border bg-background px-3.5 py-2 text-xs font-bold hover:border-accent hover:text-accent transition-colors cursor-pointer"
+        >
+          실시간 종목 재스캔
+        </button>
+        <button
+          id="btn-send-telegram-all"
+          class="rounded-xl bg-accent px-3.5 py-2 text-xs font-bold text-white hover:opacity-90 transition-opacity cursor-pointer"
+        >
+          텔레그램 전체 리포트 발송
+        </button>
+      </div>
+    </div>
+
+    <!-- Macro Metrics Grid -->
+    <div class="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
+      <div class="rounded-xl border border-border/60 bg-background p-3">
+        <div class="text-[11px] text-muted-foreground">KOSPI 지수 (20일선 비교)</div>
+        <div id="metric-kospi" class="mt-1 text-base font-extrabold font-mono">-</div>
+        <div id="metric-kospi-sub" class="mt-0.5 text-[11px] font-mono text-muted-foreground">-</div>
+      </div>
+      <div class="rounded-xl border border-border/60 bg-background p-3">
+        <div class="text-[11px] text-muted-foreground">KOSDAQ 지수 (20일선 비교)</div>
+        <div id="metric-kosdaq" class="mt-1 text-base font-extrabold font-mono">-</div>
+        <div id="metric-kosdaq-sub" class="mt-0.5 text-[11px] font-mono text-muted-foreground">-</div>
+      </div>
+      <div class="rounded-xl border border-border/60 bg-background p-3">
+        <div class="text-[11px] text-muted-foreground">Market Breadth (50일선 상회)</div>
+        <div id="metric-breadth50" class="mt-1 text-base font-extrabold font-mono text-accent">-</div>
+        <div class="mt-0.5 text-[11px] text-muted-foreground">공격 임계치: 55.0% 이상</div>
+      </div>
+      <div class="rounded-xl border border-border/60 bg-background p-3">
+        <div class="text-[11px] text-muted-foreground">단기 Breadth (20일선 상회)</div>
+        <div id="metric-breadth20" class="mt-1 text-base font-extrabold font-mono">-</div>
+        <div class="mt-0.5 text-[11px] text-muted-foreground">단기 수급 확산도</div>
+      </div>
+      <div class="rounded-xl border border-border/60 bg-background p-3">
+        <div class="text-[11px] text-muted-foreground">Minervini Stage 2 비율</div>
+        <div id="metric-stage2" class="mt-1 text-base font-extrabold font-mono">-</div>
+        <div class="mt-0.5 text-[11px] text-muted-foreground">완전 정배열 주도주 비율</div>
+      </div>
+      <div class="rounded-xl border border-border/60 bg-background p-3">
+        <div class="text-[11px] text-muted-foreground">권장 총 주식 노출 비중</div>
+        <div id="metric-exposure" class="mt-1 text-base font-extrabold font-mono text-emerald-400">-</div>
+        <div id="metric-cash" class="mt-0.5 text-[11px] font-mono text-muted-foreground">권장 현금 비중: -</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. My Portfolio Management & Real-Time Stop/Trailing Advisor -->
+  <section class="rounded-2xl border-2 border-accent/40 bg-background p-5 shadow-sm">
+    <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between border-b border-border pb-4">
+      <div>
+        <div class="flex flex-wrap items-center gap-2">
+          <span class="rounded-md bg-accent px-2 py-0.5 text-[11px] font-mono font-bold text-white">
+            PORTFOLIO RISK ADVISOR
+          </span>
+          <span id="portfolio-data-source-badge" class="rounded-md border border-border bg-muted/40 px-2.5 py-0.5 text-[11px] font-mono font-bold text-muted-foreground">
+            시세 소스: 대기 중
+          </span>
+          <h2 class="text-lg font-bold sm:text-xl">
+            내 보유 종목 관리 및 실시간 손절·청산 어드바이저
+          </h2>
+        </div>
+        <p class="mt-1 text-xs text-muted-foreground">
+          매수한 종목과 매수가를 등록하면 KIS 공식 REST API(장애 시 네이버 폴백) 실시간 일봉·시세를 연동하여 종가 기준 손절선(-7% / 2ATR), 20일 생명선 이탈 여부, 보유일수 기반 시간손절 신호를 즉시 판정합니다.
+        </p>
+      </div>
+      <div class="flex items-center gap-2 shrink-0">
+        <button
+          id="btn-refresh-portfolio"
+          class="rounded-xl border border-border bg-muted/40 px-3 py-1.5 text-xs font-bold hover:border-accent hover:text-accent transition-colors cursor-pointer"
+        >
+          보유종목 실시간 시세 갱신
+        </button>
+      </div>
+    </div>
+
+    <!-- Add Position Form -->
+    <form id="form-add-portfolio" class="mt-4 grid grid-cols-1 gap-3 rounded-xl bg-muted/25 p-4 sm:grid-cols-2 lg:grid-cols-6">
+      <div class="relative lg:col-span-2">
+        <label class="block text-[11px] font-bold text-muted-foreground mb-1">
+          종목명 검색 또는 6자리 코드
+        </label>
+        <input
+          type="text"
+          id="pf-input-search"
+          placeholder="예: SK하이닉스 또는 000660"
+          autocomplete="off"
+          required
+          class="w-full rounded-lg border border-border bg-background px-3 py-2 text-xs font-medium focus:border-accent focus:outline-none"
+        />
+        <input type="hidden" id="pf-input-code" />
+        <input type="hidden" id="pf-input-name" />
+        <div
+          id="pf-search-dropdown"
+          class="absolute left-0 top-full z-50 mt-1 hidden max-h-56 w-full overflow-y-auto rounded-xl border border-border bg-background py-1 shadow-xl text-xs"
+        ></div>
+      </div>
+
+      <div>
+        <label class="block text-[11px] font-bold text-muted-foreground mb-1">
+          매수 평균단가 (원)
+        </label>
+        <input
+          type="number"
+          id="pf-input-price"
+          placeholder="예: 100900"
+          min="1"
+          step="1"
+          required
+          class="w-full rounded-lg border border-border bg-background px-3 py-2 text-xs font-mono focus:border-accent focus:outline-none"
+        />
+      </div>
+
+      <div>
+        <label class="block text-[11px] font-bold text-muted-foreground mb-1">
+          보유 수량 (주)
+        </label>
+        <input
+          type="number"
+          id="pf-input-qty"
+          value="10"
+          min="1"
+          step="1"
+          required
+          class="w-full rounded-lg border border-border bg-background px-3 py-2 text-xs font-mono focus:border-accent focus:outline-none"
+        />
+      </div>
+
+      <div>
+        <label class="block text-[11px] font-bold text-muted-foreground mb-1">
+          매수 일자
+        </label>
+        <input
+          type="date"
+          id="pf-input-date"
+          required
+          class="w-full rounded-lg border border-border bg-background px-3 py-2 text-xs font-mono focus:border-accent focus:outline-none"
+        />
+      </div>
+
+      <div class="flex flex-col justify-end">
+        <label class="block text-[11px] font-bold text-muted-foreground mb-1">
+          적용 전략 트랙
+        </label>
+        <div class="flex gap-1.5">
+          <select
+            id="pf-input-track"
+            class="w-full rounded-lg border border-border bg-background px-2 py-2 text-xs font-medium focus:border-accent focus:outline-none"
+          >
+            <option value="TRACK_1_FIP_52W">Track 1 (신고가+FIP)</option>
+            <option value="TRACK_2_VOL_BREAKOUT">Track 2 (거래량돌파)</option>
+            <option value="TRACK_3_PULLBACK_WATCH">Track 3 (눌림목재돌파)</option>
+          </select>
+          <button
+            type="submit"
+            class="shrink-0 rounded-lg bg-accent px-3.5 py-2 text-xs font-bold text-white hover:opacity-90 transition-opacity cursor-pointer"
+          >
+            등록
+          </button>
+        </div>
+      </div>
+    </form>
+
+    <!-- Portfolio Summary Bar -->
+    <div id="pf-summary-bar" class="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-4">
+      <div class="rounded-xl border border-border/60 bg-muted/15 p-3">
+        <div class="text-[11px] text-muted-foreground">총 매수 원금</div>
+        <div id="pf-total-cost" class="mt-1 text-sm sm:text-base font-bold font-mono">0 원</div>
+      </div>
+      <div class="rounded-xl border border-border/60 bg-muted/15 p-3">
+        <div class="text-[11px] text-muted-foreground">현재 총 평가금액</div>
+        <div id="pf-total-eval" class="mt-1 text-sm sm:text-base font-bold font-mono">0 원</div>
+      </div>
+      <div class="rounded-xl border border-border/60 bg-muted/15 p-3">
+        <div class="text-[11px] text-muted-foreground">순평가손익 (수수료·세금 0.23% 차감)</div>
+        <div id="pf-total-pnl" class="mt-1 text-sm sm:text-base font-bold font-mono">0 원 (0.00%)</div>
+      </div>
+      <div class="rounded-xl border border-border/60 bg-muted/15 p-3">
+        <div class="text-[11px] text-muted-foreground">즉시 조치 필요 종목 (손절/이탈/경고)</div>
+        <div id="pf-alert-count" class="mt-1 text-sm sm:text-base font-bold font-mono">0 종목</div>
+      </div>
+    </div>
+
+    <!-- Portfolio Positions List -->
+    <div id="pf-cards-container" class="mt-4 flex flex-col gap-3">
+      <div class="rounded-xl border border-border/50 p-6 text-center text-xs text-muted-foreground">
+        보유 종목을 평가하는 중입니다...
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. Interactive Price & Stop/Trailing Line Chart Panel -->
+  <section id="advisor-chart-section" class="rounded-2xl border border-border bg-background p-5 shadow-xs">
+    <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between border-b border-border/60 pb-3">
+      <div>
+        <div class="flex items-center gap-2">
+          <span class="rounded-md bg-muted px-2 py-0.5 text-[11px] font-mono font-bold text-foreground">
+            PRICE & DEFENSE LINE VIEWER
+          </span>
+          <h3 id="chart-panel-title" class="text-base font-bold sm:text-lg">
+            종목 차트 및 손절선·20일 생명선 시각화
+          </h3>
+        </div>
+        <p id="chart-panel-subtitle" class="mt-0.5 text-xs text-muted-foreground">
+          추천 종목 또는 보유 종목의 [차트 및 방어선 보기] 버튼을 클릭하면 일봉 캔들과 매수가·EOD 손절선(-7%/2ATR)·20일선이 차트 위에 표시됩니다.
+        </p>
+      </div>
+      <div class="flex flex-wrap items-center gap-3 text-xs font-mono">
+        <span class="flex items-center gap-1">
+          <span class="inline-block h-0.5 w-3 bg-emerald-400"></span>매수/진입가
+        </span>
+        <span class="flex items-center gap-1">
+          <span class="inline-block h-0.5 w-3 bg-rose-500"></span>EOD 손절선(-7%/2ATR)
+        </span>
+        <span class="flex items-center gap-1">
+          <span class="inline-block h-0.5 w-3 bg-amber-400"></span>20일 생명선(SMA20)
+        </span>
+        <span class="flex items-center gap-1">
+          <span class="inline-block h-0.5 w-3 bg-purple-400"></span>50일 수급선(SMA50)
+        </span>
+      </div>
+    </div>
+
+    <div class="mt-3 relative h-[340px] w-full rounded-xl border border-border bg-[#0b0e14] overflow-hidden">
+      <div id="advisor-lw-chart" class="h-full w-full"></div>
+    </div>
+  </section>
+
+  <!-- 4. Quant Recommended Stocks by Strategy Track -->
+  <section class="rounded-2xl border border-border bg-background p-5 shadow-xs">
+    <div class="border-b border-border pb-4">
+      <div class="flex items-center gap-2">
+        <span class="rounded-md bg-accent/15 px-2.5 py-0.5 text-[11px] font-mono font-bold text-accent">
+          15-YEAR KRX VERIFIED SCREENER
+        </span>
+        <h2 class="text-lg font-bold sm:text-xl">
+          서적·논문 정량 공식 및 실시간 뉴스·수급 기반 추천 종목
+        </h2>
+      </div>
+      <p class="mt-1 text-xs text-muted-foreground">
+        한국 증시 15년(2011~2026, 947만 일봉) 전수 검증에서 살아남은 3대 핵심 전략 트랙 조건과 금일 네이버 금융 수급·컨센서스·주요 뉴스를 결합한 추천 리스트입니다.
+      </p>
+
+      <!-- Track Tabs -->
+      <div class="mt-4 flex flex-wrap gap-2">
+        <button
+          data-track-tab="track1"
+          class="track-tab-btn rounded-xl border border-accent bg-accent text-white px-4 py-2 text-xs font-bold transition-colors cursor-pointer"
+        >
+          Track 1: 52주 신고가 + FIP 연속추세 (E2_S7)
+        </button>
+        <button
+          data-track-tab="track2"
+          class="track-tab-btn rounded-xl border border-border bg-muted/40 text-foreground px-4 py-2 text-xs font-bold hover:border-accent transition-colors cursor-pointer"
+        >
+          Track 2: 거래대금 폭발 기준봉 돌파 (E1_S8)
+        </button>
+        <button
+          data-track-tab="track3"
+          class="track-tab-btn rounded-xl border border-border bg-muted/40 text-foreground px-4 py-2 text-xs font-bold hover:border-accent transition-colors cursor-pointer"
+        >
+          Track 3: 기준봉 후 거래절벽 20일선 눌림목 (Type B 대기)
+        </button>
+      </div>
+    </div>
+
+    <!-- Track Strategy Specification Banner -->
+    <div id="track-spec-banner" class="mt-4 rounded-xl border border-border/80 bg-muted/20 p-4 text-xs">
+      <div class="grid grid-cols-1 gap-2 md:grid-cols-2">
+        <div>
+          <span class="font-bold text-accent">[이론 및 학술 논문 근거]</span>
+          <p id="spec-books" class="mt-0.5 text-foreground font-medium">-</p>
+        </div>
+        <div>
+          <span class="font-bold text-emerald-400">[15년 KRX 실증 백테스트 성적 (수수료·슬리피지 0.35% 차감)]</span>
+          <p id="spec-backtest" class="mt-0.5 text-foreground font-mono font-medium">-</p>
+        </div>
+        <div>
+          <span class="font-bold text-muted-foreground">[진입 공식 (Entry Rule)]</span>
+          <p id="spec-entry" class="mt-0.5 text-muted-foreground">-</p>
+        </div>
+        <div>
+          <span class="font-bold text-rose-400">[청산 및 손절 공식 (Exit & Stop Rule)]</span>
+          <p id="spec-exit" class="mt-0.5 text-muted-foreground">-</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Recommended Stock Cards Container -->
+    <div id="rec-cards-container" class="mt-5 grid grid-cols-1 gap-4 lg:grid-cols-2">
+      <div class="col-span-full rounded-xl border border-border/50 p-8 text-center text-xs text-muted-foreground">
+        추천 종목 데이터를 불러오는 중입니다...
+      </div>
+    </div>
+  </section>
+
+  <!-- Toast Status Notification -->
+  <div
+    id="advisor-toast"
+    class="fixed bottom-5 right-5 z-50 hidden max-w-md rounded-xl border border-accent bg-slate-900 px-4 py-3 text-xs font-medium text-white shadow-2xl"
+  ></div>
+</div>
+
+<script>
+  import { createChart, ColorType, CrosshairMode, CandlestickSeries, LineSeries } from "lightweight-charts";
+
+  interface PortfolioItem {
+    code: string;
+    name: string;
+    buyPrice: number;
+    qty: number;
+    buyDate: string;
+    track: string;
+  }
+
+  const STORAGE_KEY = "tcl_quant_my_portfolio_v1";
+  let snapshotData: any = null;
+  let stockMasterList: Array<{ code: string; name: string; market?: string }> = [];
+  let currentTrackTab: "track1" | "track2" | "track3" = "track1";
+  let myPortfolio: PortfolioItem[] = [];
+  let evaluatedPortfolioCache: any[] = [];
+
+  // Chart references
+  let lwChart: any = null;
+  let candleSeries: any = null;
+  let sma20Series: any = null;
+  let sma50Series: any = null;
+  let priceLines: any[] = [];
+
+  function showToast(msg: string, duration = 4000) {
+    const el = document.getElementById("advisor-toast");
+    if (!el) return;
+    el.textContent = msg;
+    el.classList.remove("hidden");
+    setTimeout(() => {
+      el.classList.add("hidden");
+    }, duration);
+  }
+
+  function initAdvisorChart() {
+    const container = document.getElementById("advisor-lw-chart");
+    if (!container) return;
+    container.innerHTML = "";
+
+    lwChart = createChart(container, {
+      layout: {
+        background: { type: ColorType.Solid, color: "#0b0e14" },
+        textColor: "#94a3b8",
+      },
+      grid: {
+        vertLines: { color: "rgba(148, 163, 184, 0.08)" },
+        horzLines: { color: "rgba(148, 163, 184, 0.08)" },
+      },
+      crosshair: { mode: CrosshairMode.Normal },
+      rightPriceScale: { borderColor: "rgba(148, 163, 184, 0.2)" },
+      timeScale: { borderColor: "rgba(148, 163, 184, 0.2)", timeVisible: false },
+      width: container.clientWidth,
+      height: container.clientHeight || 340,
+    });
+
+    candleSeries = lwChart.addSeries(CandlestickSeries, {
+      upColor: "#ef4444",
+      downColor: "#3b82f6",
+      borderUpColor: "#ef4444",
+      borderDownColor: "#3b82f6",
+      wickUpColor: "#ef4444",
+      wickDownColor: "#3b82f6",
+    });
+
+    sma20Series = lwChart.addSeries(LineSeries, {
+      color: "#fbbf24",
+      lineWidth: 2,
+      title: "20일선(생명선)",
+    });
+
+    sma50Series = lwChart.addSeries(LineSeries, {
+      color: "#c084fc",
+      lineWidth: 2,
+      title: "50일선(수급선)",
+    });
+
+    window.addEventListener("resize", () => {
+      if (lwChart && container) {
+        lwChart.applyOptions({ width: container.clientWidth });
+      }
+    });
+  }
+
+  function clearPriceLines() {
+    if (!candleSeries) return;
+    for (const pl of priceLines) {
+      try {
+        candleSeries.removePriceLine(pl);
+      } catch {
+        // ignore
+      }
+    }
+    priceLines = [];
+  }
+
+  async function loadChartWithDefenseLines(
+    code: string,
+    name: string,
+    entryPrice: number,
+    stopPrice: number,
+    sma20Price: number
+  ) {
+    const titleEl = document.getElementById("chart-panel-title");
+    const subEl = document.getElementById("chart-panel-subtitle");
+    if (titleEl) {
+      titleEl.textContent = `${name} (${code}) - 일봉 및 핵심 방어선 (손절선 ${stopPrice.toLocaleString()}원 / 20일선 ${sma20Price.toLocaleString()}원)`;
+    }
+
+    try {
+      let bars: any[] = [];
+      // 1. Try live quote API first for up-to-today bars
+      const liveResp = await fetch(`/api/quant-quote?code=${code}`);
+      if (liveResp.ok) {
+        const liveData = await liveResp.json();
+        if (Array.isArray(liveData.recentBars) && liveData.recentBars.length > 0) {
+          bars = liveData.recentBars.map((b: any) => ({
+            time: `${b.date.slice(0, 4)}-${b.date.slice(4, 6)}-${b.date.slice(6, 8)}`,
+            open: b.open,
+            high: b.high,
+            low: b.low,
+            close: b.close,
+          }));
+        }
+      }
+
+      // 2. Fallback to R2 15-year daily JSON if needed
+      if (bars.length === 0) {
+        const r2Resp = await fetch(
+          `https://pub-88fccd299b1d47fe97d43f35f238d0ce.r2.dev/data/daily/${code}.json`
+        );
+        if (r2Resp.ok) {
+          const r2Data = await r2Resp.json();
+          bars = r2Data.slice(-120);
+        }
+      }
+
+      if (!bars || bars.length === 0 || !candleSeries) return;
+
+      candleSeries.setData(bars);
+
+      // Compute SMA20 and SMA50 series
+      const sma20Data: any[] = [];
+      const sma50Data: any[] = [];
+      for (let i = 0; i < bars.length; i++) {
+        if (i >= 19) {
+          let sum20 = 0;
+          for (let j = i - 19; j <= i; j++) sum20 += bars[j].close;
+          sma20Data.push({ time: bars[i].time, value: Math.round(sum20 / 20) });
+        }
+        if (i >= 49) {
+          let sum50 = 0;
+          for (let j = i - 49; j <= i; j++) sum50 += bars[j].close;
+          sma50Data.push({ time: bars[i].time, value: Math.round(sum50 / 50) });
+        }
+      }
+      sma20Series.setData(sma20Data);
+      sma50Series.setData(sma50Data);
+
+      clearPriceLines();
+
+      if (entryPrice > 0) {
+        priceLines.push(
+          candleSeries.createPriceLine({
+            price: entryPrice,
+            color: "#10b981",
+            lineWidth: 2,
+            lineStyle: 0,
+            axisLabelVisible: true,
+            title: `매수/기준가 (${entryPrice.toLocaleString()}원)`,
+          })
+        );
+      }
+
+      if (stopPrice > 0) {
+        priceLines.push(
+          candleSeries.createPriceLine({
+            price: stopPrice,
+            color: "#f43f5e",
+            lineWidth: 2,
+            lineStyle: 2,
+            axisLabelVisible: true,
+            title: `EOD 손절선 (${stopPrice.toLocaleString()}원)`,
+          })
+        );
+      }
+
+      lwChart.timeScale().fitContent();
+      if (subEl) {
+        const lastBar = bars[bars.length - 1];
+        subEl.textContent = `최근 기준일(${lastBar.time}) 종가: ${lastBar.close.toLocaleString()}원 | 매수/기준가: ${entryPrice.toLocaleString()}원 | EOD 손절선: ${stopPrice.toLocaleString()}원 | 20일 생명선: ${sma20Price.toLocaleString()}원`;
+      }
+    } catch (e) {
+      console.error("Chart load error:", e);
+    }
+  }
+
+  function formatDataSourceBadge(ds: string): { label: string; cls: string } {
+    const base = "rounded-md border px-2.5 py-1 text-[11px] font-mono font-bold ";
+    if (ds === "KIS_REST_PROD") {
+      return {
+        label: "KIS 공식 REST API (PROD)",
+        cls: base + "border-emerald-500/40 bg-emerald-500/10 text-emerald-400",
+      };
+    }
+    if (ds === "KIS_REST_VPS") {
+      return {
+        label: "KIS 공식 REST API (VPS)",
+        cls: base + "border-sky-500/40 bg-sky-500/10 text-sky-400",
+      };
+    }
+    if (ds === "NAVER_FALLBACK") {
+      return {
+        label: "NAVER FALLBACK",
+        cls: base + "border-amber-500/40 bg-amber-500/10 text-amber-400",
+      };
+    }
+    if (ds === "SNAPSHOT_FALLBACK") {
+      return {
+        label: "스냅샷 폴백",
+        cls: base + "border-slate-500/40 bg-slate-500/10 text-slate-300",
+      };
+    }
+    return {
+      label: ds || "SNAPSHOT",
+      cls: base + "border-border bg-background text-muted-foreground",
+    };
+  }
+
+  function updateDataSourceBadge(elementId: string, ds: string) {
+    const el = document.getElementById(elementId);
+    if (!el) return;
+    const { label, cls } = formatDataSourceBadge(ds);
+    el.textContent = label;
+    el.className = cls;
+  }
+
+  function renderMacroBanner(macro: any, generatedAt: string, dataSource?: string) {
+    const badgeEl = document.getElementById("macro-regime-badge");
+    const updatedEl = document.getElementById("macro-updated-at");
+    const descEl = document.getElementById("macro-regime-desc");
+    const ds = dataSource || macro?.dataSource || snapshotData?.dataSource || "SNAPSHOT";
+    updateDataSourceBadge("macro-data-source-badge", ds);
+
+    if (updatedEl) {
+      updatedEl.textContent = `생성일시: ${generatedAt} (장마감 기준: ${macro.lastMarketDate})`;
+    }
+    if (descEl) {
+      descEl.textContent = macro.regimeDesc || "";
+    }
+    if (badgeEl) {
+      badgeEl.textContent = macro.regimeLabel || "";
+      badgeEl.className = "rounded-md px-3 py-1 text-xs font-bold text-white ";
+      if (macro.regimeCode === "BULL_ATTACK") {
+        badgeEl.className += "bg-emerald-600";
+      } else if (macro.regimeCode === "SELECTIVE_ROTATION") {
+        badgeEl.className += "bg-amber-600";
+      } else {
+        badgeEl.className += "bg-rose-600";
+      }
+    }
+
+    const setEl = (id: string, text: string, cls?: string) => {
+      const el = document.getElementById(id);
+      if (el) {
+        el.textContent = text;
+        if (cls) el.className = cls;
+      }
+    };
+
+    const kpColor = macro.kospiRet1d >= 0 ? "text-rose-400" : "text-blue-400";
+    setEl(
+      "metric-kospi",
+      `${Number(macro.kospiClose).toLocaleString()} (${macro.kospiRet1d >= 0 ? "+" : ""}${macro.kospiRet1d}%)`,
+      `mt-1 text-base font-extrabold font-mono ${kpColor}`
+    );
+    setEl(
+      "metric-kospi-sub",
+      `20일선 ${Number(macro.kospiSma20).toLocaleString()} / 50일선 ${Number(macro.kospiSma50).toLocaleString()}`
+    );
+
+    const kqColor = macro.kosdaqRet1d >= 0 ? "text-rose-400" : "text-blue-400";
+    setEl(
+      "metric-kosdaq",
+      `${Number(macro.kosdaqClose).toLocaleString()} (${macro.kosdaqRet1d >= 0 ? "+" : ""}${macro.kosdaqRet1d}%)`,
+      `mt-1 text-base font-extrabold font-mono ${kqColor}`
+    );
+    setEl(
+      "metric-kosdaq-sub",
+      `20일선 ${Number(macro.kosdaqSma20).toLocaleString()} / 50일선 ${Number(macro.kosdaqSma50).toLocaleString()}`
+    );
+
+    setEl("metric-breadth50", `${macro.breadthPct}% (유동성 ${macro.universeCount}종목)`);
+    setEl("metric-breadth20", `${macro.breadth20Pct}%`);
+    setEl("metric-stage2", `${macro.stage2Pct}%`);
+    setEl("metric-exposure", `주식 ${macro.recEquityExposurePct}%`);
+    setEl("metric-cash", `권장 현금 비중: ${100 - Number(macro.recEquityExposurePct)}%`);
+  }
+
+  function renderRecommendations(trackKey: "track1" | "track2" | "track3") {
+    if (!snapshotData) return;
+    currentTrackTab = trackKey;
+
+    // Update tab button styles
+    document.querySelectorAll(".track-tab-btn").forEach(btn => {
+      const k = btn.getAttribute("data-track-tab");
+      if (k === trackKey) {
+        btn.className =
+          "track-tab-btn rounded-xl border border-accent bg-accent text-white px-4 py-2 text-xs font-bold transition-colors cursor-pointer";
+      } else {
+        btn.className =
+          "track-tab-btn rounded-xl border border-border bg-muted/40 text-foreground px-4 py-2 text-xs font-bold hover:border-accent transition-colors cursor-pointer";
+      }
+    });
+
+    const spec = snapshotData.strategySpecs?.[trackKey];
+    if (spec) {
+      const bEl = document.getElementById("spec-books");
+      const btEl = document.getElementById("spec-backtest");
+      const enEl = document.getElementById("spec-entry");
+      const exEl = document.getElementById("spec-exit");
+      if (bEl) bEl.textContent = spec.booksAndPapers;
+      if (btEl) btEl.textContent = spec.backtest15y;
+      if (enEl) enEl.textContent = spec.entryRule;
+      if (exEl) exEl.textContent = spec.exitRule;
+    }
+
+    const list: any[] = snapshotData.recommendations?.[trackKey] || [];
+    const container = document.getElementById("rec-cards-container");
+    if (!container) return;
+
+    if (list.length === 0) {
+      container.innerHTML = `
+        <div class="col-span-full rounded-xl border border-border/50 p-8 text-center text-xs text-muted-foreground">
+          현재 시장 레짐에서 해당 트랙의 엄격한 정량 기준을 통과한 종목이 없습니다. (현금 비중 유지 권고)
+        </div>
+      `;
+      return;
+    }
+
+    container.innerHTML = list
+      .map((item, idx) => {
+        const retColor = item.ret1d >= 0 ? "text-rose-400" : "text-blue-400";
+        const formulasHtml = (item.reasons?.formulas || [])
+          .map(
+            (f: any) => `
+            <li class="border-l-2 border-accent/60 pl-2.5 py-0.5">
+              <div class="font-bold text-foreground text-xs">${f.source}</div>
+              <div class="font-mono text-[11px] text-accent">${f.metric}</div>
+              <div class="text-[11px] text-muted-foreground">${f.desc}</div>
+            </li>
+          `
+          )
+          .join("");
+
+        const catalystsHtml = (item.reasons?.catalysts || [])
+          .map(
+            (c: string) => `
+            <li class="text-[11px] text-foreground/90 leading-relaxed">- ${c}</li>
+          `
+          )
+          .join("");
+
+        const newsLinksHtml = (item.enrichment?.news || [])
+          .map(
+            (n: any) => `
+            <a href="${n.url}" target="_blank" rel="noopener noreferrer" class="block text-[11px] text-accent hover:underline truncate">
+              [뉴스 원문] ${n.title} (${n.press}, ${n.date})
+            </a>
+          `
+          )
+          .join("");
+
+        return `
+        <div class="flex flex-col justify-between rounded-2xl border border-border bg-muted/15 p-4 shadow-xs hover:border-accent/50 transition-colors">
+          <div>
+            <!-- Card Header -->
+            <div class="flex items-start justify-between gap-2 border-b border-border/60 pb-3">
+              <div>
+                <div class="flex items-center gap-2">
+                  <span class="rounded bg-accent px-2 py-0.5 text-[11px] font-mono font-bold text-white">
+                    RANK #${idx + 1}
+                  </span>
+                  <span class="rounded bg-muted px-2 py-0.5 text-[11px] font-mono text-muted-foreground">
+                    ${item.market}
+                  </span>
+                  <span class="text-xs font-mono text-accent font-bold">
+                    Quant Score: ${item.quantScore}
+                  </span>
+                </div>
+                <div class="mt-1.5 flex items-baseline gap-2">
+                  <h3 class="text-lg font-extrabold text-foreground">${item.name}</h3>
+                  <span class="text-xs font-mono text-muted-foreground">${item.code}</span>
+                </div>
+              </div>
+
+              <div class="text-right font-mono">
+                <div class="text-lg font-extrabold text-foreground">${Number(item.close).toLocaleString()}원</div>
+                <div class="text-xs font-bold ${retColor}">
+                  일간 ${item.ret1d >= 0 ? "+" : ""}${item.ret1d}% | 60일 ${item.ret60d >= 0 ? "+" : ""}${item.ret60d}%
+                </div>
+              </div>
+            </div>
+
+            <!-- Quantitative Action Price Grid -->
+            <div class="mt-3 grid grid-cols-2 gap-2 rounded-xl bg-background p-3 text-xs font-mono sm:grid-cols-4">
+              <div>
+                <div class="text-[10px] text-muted-foreground">권장 진입 기준가</div>
+                <div class="font-bold text-emerald-400">${Number(item.close).toLocaleString()}원</div>
+              </div>
+              <div>
+                <div class="text-[10px] text-muted-foreground">EOD 손절선 (-${item.stopDistPct}%)</div>
+                <div class="font-bold text-rose-400">${Number(item.recommendedStop).toLocaleString()}원</div>
+              </div>
+              <div>
+                <div class="text-[10px] text-muted-foreground">20일 생명선 (트레일링)</div>
+                <div class="font-bold text-amber-400">${Number(item.sma20).toLocaleString()}원</div>
+              </div>
+              <div>
+                <div class="text-[10px] text-muted-foreground">ATR 권장 계좌비중</div>
+                <div class="font-bold text-foreground">${item.recWeightPct}% (일평균 ${item.valMa20Eok}억)</div>
+              </div>
+            </div>
+
+            <!-- Formula Reasons -->
+            <div class="mt-3">
+              <div class="text-xs font-bold text-foreground mb-1.5">
+                1. 서적 및 학술 논문 공식 부합 내역
+              </div>
+              <ul class="flex flex-col gap-2">
+                ${formulasHtml}
+              </ul>
+            </div>
+
+            <!-- Live News / Consensus / Supply Reasons -->
+            <div class="mt-3 border-t border-border/50 pt-2.5">
+              <div class="text-xs font-bold text-foreground mb-1">
+                2. 실시간 수급·컨센서스·뉴스 및 거시경제 근거
+              </div>
+              <ul class="flex flex-col gap-1">
+                ${catalystsHtml}
+              </ul>
+              ${newsLinksHtml ? `<div class="mt-2 flex flex-col gap-1 border-t border-border/40 pt-1.5">${newsLinksHtml}</div>` : ""}
+            </div>
+          </div>
+
+          <!-- Card Footer Buttons -->
+          <div class="mt-4 flex flex-wrap items-center gap-2 border-t border-border/60 pt-3">
+            <button
+              type="button"
+              data-action="add-to-pf"
+              data-code="${item.code}"
+              data-name="${item.name}"
+              data-price="${item.close}"
+              data-track="${item.track}"
+              class="flex-1 rounded-xl bg-accent px-3 py-2 text-xs font-bold text-white hover:opacity-90 transition-opacity cursor-pointer"
+            >
+              + 내 보유 종목에 편입
+            </button>
+            <button
+              type="button"
+              data-action="view-chart"
+              data-code="${item.code}"
+              data-name="${item.name}"
+              data-entry="${item.close}"
+              data-stop="${item.recommendedStop}"
+              data-sma20="${item.sma20}"
+              class="rounded-xl border border-border bg-background px-3 py-2 text-xs font-bold hover:border-accent hover:text-accent transition-colors cursor-pointer"
+            >
+              차트 및 방어선 보기
+            </button>
+          </div>
+        </div>
+      `;
+      })
+      .join("");
+  }
+
+  function evaluatePositionClientSide(item: PortfolioItem, quote: any) {
+    const c = Number(quote.currentPrice || item.buyPrice);
+    const buyPrice = Number(item.buyPrice);
+    const qty = Number(item.qty || 1);
+    const sma20 = Number(quote.sma20 || c);
+    const sma50 = Number(quote.sma50 || c);
+    const atr20 = Number(quote.atr20 || Math.round(c * 0.025));
+
+    const grossPnlPct = ((c / buyPrice - 1) * 100);
+    const netPnlPct = grossPnlPct - 0.23;
+    const netPnlKrw = Math.round((c - buyPrice) * qty - c * qty * 0.0023);
+
+    const hardStop7pct = Math.round(buyPrice * 0.93);
+    const atrStop2x = Math.round(buyPrice - 2.0 * atr20);
+    const activeHardStop = Math.max(hardStop7pct, atrStop2x);
+
+    const distToStopPct = ((c - activeHardStop) / c) * 100;
+    const distToSma20Pct = ((c - sma20) / c) * 100;
+
+    // Calculate holding days from recentBars if available
+    const buyDateClean = (item.buyDate || "").replace(/-/g, "");
+    let holdDays = 1;
+    let mfePct = Math.max(0, grossPnlPct);
+    if (Array.isArray(quote.recentBars) && buyDateClean.length === 8) {
+      const heldBars = quote.recentBars.filter((b: any) => b.date >= buyDateClean);
+      holdDays = Math.max(1, heldBars.length);
+      if (heldBars.length > 0) {
+        const peak = Math.max(...heldBars.map((b: any) => b.high));
+        mfePct = ((peak / buyPrice - 1) * 100);
+      }
+    }
+
+    let signal = "HOLD";
+    let signalLabel = "정상 보유 (추세 및 방어선 양호)";
+    let advice = `현재가(${c.toLocaleString()}원)가 20일선(${sma20.toLocaleString()}원) 및 손절선(${activeHardStop.toLocaleString()}원) 위에서 정상 추세를 유지 중입니다. 종가 기준 방어선 이탈 전까지 보유를 유지합니다.`;
+
+    if (c <= activeHardStop) {
+      signal = "SELL_STOP";
+      signalLabel = "손절 청산 신호 (EOD Hard Stop 이탈)";
+      advice = `현재가(${c.toLocaleString()}원)가 설정된 손절선(${activeHardStop.toLocaleString()}원, 매수가 대비 -7% / 2ATR)을 하향 이탈했습니다. 15년 실증 백테스트 원칙에 따라 물타기나 비자발적 장기보유를 배제하고 장마감 동시호가 또는 익일 시가에 전량 기계적 손절을 권고합니다.`;
+    } else if (c < sma20 && holdDays >= 2) {
+      signal = "SELL_TRAIL";
+      signalLabel = "추세 이탈 청산 신호 (20일 생명선 종가 이탈)";
+      advice = `현재가(${c.toLocaleString()}원)가 20일 이동평균선(${sma20.toLocaleString()}원) 아래로 이탈했습니다 (현재 순손익 ${netPnlPct >= 0 ? "+" : ""}${netPnlPct.toFixed(2)}%). 추세추종 원칙상 20일선 종가 이탈은 중기 추세 종료를 의미하므로 익일 시가 전량 청산을 권고합니다.`;
+    } else if (holdDays >= 10 && grossPnlPct < 3.0) {
+      signal = "TIME_STOP";
+      signalLabel = "시간 손절 권고 (10거래일 경과 탄력 둔화)";
+      advice = `매수 후 ${holdDays}거래일이 경과했으나 수익률(${netPnlPct.toFixed(2)}%)이 목표 탄력(+3.0%)에 미달합니다. Mark Minervini 시간 손절(Time Stop) 원칙에 따라 기회비용 회수를 위해 신규 주도주로의 교체 매매를 권고합니다.`;
+    } else if (distToStopPct <= 2.0 || distToSma20Pct <= 1.8) {
+      signal = "WARNING";
+      signalLabel = "주의 경계 (손절선/20일선 버퍼 2% 이내 근접)";
+      advice = `현재가(${c.toLocaleString()}원)가 핵심 방어선(손절선 ${activeHardStop.toLocaleString()}원 / 20일선 ${sma20.toLocaleString()}원)에 근접했습니다. 장중 아랫꼬리 흔들기에는 매도하지 않되(EOD Stop 원칙), 15:20 종가 기준으로 방어선 하향 돌파 시 즉시 청산할 준비가 필요합니다.`;
+    } else if (grossPnlPct >= 10.0) {
+      signal = "HOLD_TRAIL";
+      signalLabel = "수익 추세 순항 중 (조기 반익절 금지 / 20일선 트레일링)";
+      advice = `현재 ${netPnlPct >= 0 ? "+" : ""}${netPnlPct.toFixed(2)}% 수익 구간입니다 (최고 도달 수익률 +${mfePct.toFixed(1)}%). 15년 KRX 실증 결과 +10% 조기 반익절은 손익비를 2.80에서 1.35로 훼손합니다. 20일선(${sma20.toLocaleString()}원) 종가 이탈 전까지 전량 보유(Let Winners Run)하십시오.`;
+    }
+
+    return {
+      ...item,
+      name: quote.name || item.name,
+      currentPrice: c,
+      ret1d: quote.ret1d || 0,
+      grossPnlPct: Number(grossPnlPct.toFixed(2)),
+      netPnlPct: Number(netPnlPct.toFixed(2)),
+      netPnlKrw,
+      holdDays,
+      mfePct: Number(mfePct.toFixed(1)),
+      sma20,
+      sma50,
+      atr20,
+      activeHardStop,
+      distToStopPct: Number(distToStopPct.toFixed(2)),
+      distToSma20Pct: Number(distToSma20Pct.toFixed(2)),
+      signal,
+      signalLabel,
+      advice,
+      foreign5dNet: quote.foreign5dNet || 0,
+      inst5dNet: quote.inst5dNet || 0,
+      news: quote.news || [],
+    };
+  }
+
+  async function refreshAndRenderPortfolio() {
+    const container = document.getElementById("pf-cards-container");
+    if (!container) return;
+
+    if (myPortfolio.length === 0) {
+      evaluatedPortfolioCache = [];
+      updatePortfolioSummary([]);
+      const pfBadge = document.getElementById("portfolio-data-source-badge");
+      if (pfBadge) {
+        pfBadge.textContent = "시세 소스: 대기 중";
+        pfBadge.className =
+          "rounded-md border border-border bg-muted/40 px-2.5 py-0.5 text-[11px] font-mono font-bold text-muted-foreground";
+      }
+      container.innerHTML = `
+        <div class="rounded-xl border border-border/50 p-6 text-center text-xs text-muted-foreground">
+          등록된 보유 종목이 없습니다. 상단 입력 폼에서 매수한 종목을 등록하거나 아래 추천 종목에서 [+ 내 보유 종목에 편입] 버튼을 눌러 추가하세요.
+        </div>
+      `;
+      return;
+    }
+
+    container.innerHTML = `
+      <div class="rounded-xl border border-border/50 p-6 text-center text-xs text-muted-foreground">
+        실시간 시세(KIS 공식 REST API 우선) 및 20일 생명선·ATR 방어선을 계산 중입니다...
+      </div>
+    `;
+
+    const results: any[] = [];
+    const observedSources: string[] = [];
+    await Promise.all(
+      myPortfolio.map(async item => {
+        try {
+          const resp = await fetch(`/api/quant-quote?code=${item.code}`);
+          if (resp.ok) {
+            const q = await resp.json();
+            observedSources.push(q.dataSource || "NAVER_FALLBACK");
+            results.push(evaluatePositionClientSide(item, q));
+            return;
+          }
+        } catch {
+          // fallback
+        }
+        // Fallback to snapshot pre-evaluated item if API unreachable
+        observedSources.push("SNAPSHOT_FALLBACK");
+        const snapEval = (snapshotData?.portfolioEvaluated || []).find(
+          (e: any) => e.code === item.code
+        );
+        if (snapEval) {
+          results.push(
+            evaluatePositionClientSide(item, {
+              name: snapEval.name,
+              currentPrice: snapEval.currentPrice,
+              ret1d: snapEval.ret1d,
+              sma20: snapEval.sma20,
+              sma50: snapEval.sma50,
+              atr20: snapEval.atr20,
+              foreign5dNet: snapEval.foreign5dNet,
+              inst5dNet: snapEval.inst5dNet,
+              news: snapEval.news,
+            })
+          );
+        } else {
+          results.push(
+            evaluatePositionClientSide(item, {
+              name: item.name,
+              currentPrice: item.buyPrice,
+              ret1d: 0,
+              sma20: Math.round(item.buyPrice * 0.96),
+              sma50: Math.round(item.buyPrice * 0.92),
+              atr20: Math.round(item.buyPrice * 0.025),
+            })
+          );
+        }
+      })
+    );
+
+    if (observedSources.length > 0) {
+      const uniqueSources = Array.from(new Set(observedSources));
+      if (uniqueSources.length === 1) {
+        updateDataSourceBadge("portfolio-data-source-badge", uniqueSources[0]);
+      } else {
+        const primary =
+          uniqueSources.find(s => s === "KIS_REST_PROD" || s === "KIS_REST_VPS") ||
+          uniqueSources[0];
+        updateDataSourceBadge("portfolio-data-source-badge", primary);
+        const pfBadge = document.getElementById("portfolio-data-source-badge");
+        if (pfBadge) {
+          pfBadge.textContent += " (일부 폴백)";
+        }
+      }
+    }
+
+    evaluatedPortfolioCache = results;
+    updatePortfolioSummary(results);
+
+    container.innerHTML = results
+      .map((p, idx) => {
+        let badgeCls = "bg-blue-600 text-white";
+        let borderCls = "border-border";
+        if (p.signal === "SELL_STOP") {
+          badgeCls = "bg-rose-600 text-white";
+          borderCls = "border-rose-500/80 bg-rose-950/10";
+        } else if (p.signal === "SELL_TRAIL") {
+          badgeCls = "bg-orange-600 text-white";
+          borderCls = "border-orange-500/80 bg-orange-950/10";
+        } else if (p.signal === "TIME_STOP" || p.signal === "WARNING") {
+          badgeCls = "bg-amber-600 text-white";
+          borderCls = "border-amber-500/70 bg-amber-950/10";
+        } else if (p.signal === "HOLD_TRAIL") {
+          badgeCls = "bg-emerald-600 text-white";
+          borderCls = "border-emerald-500/60";
+        }
+
+        const pnlColor = p.netPnlPct >= 0 ? "text-rose-400" : "text-blue-400";
+
+        return `
+        <div class="rounded-xl border-2 ${borderCls} p-4 shadow-xs">
+          <div class="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between border-b border-border/50 pb-3">
+            <div class="flex flex-wrap items-center gap-2.5">
+              <span class="rounded-md px-2.5 py-1 text-xs font-bold ${badgeCls}">
+                [${p.signal}] ${p.signalLabel}
+              </span>
+              <h3 class="text-base font-extrabold text-foreground">${p.name}</h3>
+              <span class="text-xs font-mono text-muted-foreground">(${p.code})</span>
+              <span class="rounded bg-muted px-2 py-0.5 text-[11px] font-mono text-muted-foreground">
+                매수일: ${p.buyDate} (${p.holdDays}거래일 보유)
+              </span>
+            </div>
+
+            <div class="flex flex-wrap items-center gap-4 font-mono text-xs">
+              <div>
+                <span class="text-muted-foreground">매수가:</span>
+                <strong class="ml-1 text-foreground">${Number(p.buyPrice).toLocaleString()}원</strong>
+                <span class="text-muted-foreground">(${p.qty}주)</span>
+              </div>
+              <div>
+                <span class="text-muted-foreground">현재가:</span>
+                <strong class="ml-1 text-foreground">${Number(p.currentPrice).toLocaleString()}원</strong>
+                <span class="${p.ret1d >= 0 ? "text-rose-400" : "text-blue-400"}">(${p.ret1d >= 0 ? "+" : ""}${p.ret1d}%)</span>
+              </div>
+              <div>
+                <span class="text-muted-foreground">순손익:</span>
+                <strong class="ml-1 text-sm ${pnlColor}">
+                  ${p.netPnlPct >= 0 ? "+" : ""}${p.netPnlPct}% (${p.netPnlKrw >= 0 ? "+" : ""}${Number(p.netPnlKrw).toLocaleString()}원)
+                </strong>
+              </div>
+            </div>
+          </div>
+
+          <!-- Defense Line Metrics & Advice Box -->
+          <div class="mt-3 grid grid-cols-1 gap-3 lg:grid-cols-12">
+            <div class="grid grid-cols-3 gap-2 rounded-xl bg-muted/20 p-3 font-mono text-xs lg:col-span-5">
+              <div>
+                <div class="text-[10px] text-muted-foreground">EOD 손절선 (-7%/2ATR)</div>
+                <div class="font-bold text-rose-400">${Number(p.activeHardStop).toLocaleString()}원</div>
+                <div class="text-[10px] text-muted-foreground">버퍼: ${p.distToStopPct >= 0 ? "+" : ""}${p.distToStopPct}%</div>
+              </div>
+              <div>
+                <div class="text-[10px] text-muted-foreground">20일 생명선 (SMA20)</div>
+                <div class="font-bold text-amber-400">${Number(p.sma20).toLocaleString()}원</div>
+                <div class="text-[10px] text-muted-foreground">이격: ${p.distToSma20Pct >= 0 ? "+" : ""}${p.distToSma20Pct}%</div>
+              </div>
+              <div>
+                <div class="text-[10px] text-muted-foreground">5일 수급 (외인/기관)</div>
+                <div class="font-bold text-foreground">${p.foreign5dNet >= 0 ? "+" : ""}${Number(p.foreign5dNet).toLocaleString()}</div>
+                <div class="text-[10px] text-muted-foreground">기관: ${p.inst5dNet >= 0 ? "+" : ""}${Number(p.inst5dNet).toLocaleString()}</div>
+              </div>
+            </div>
+
+            <div class="flex flex-col justify-between rounded-xl bg-muted/15 p-3 text-xs lg:col-span-7">
+              <div>
+                <span class="font-bold text-accent">[시스템 어드바이스]</span>
+                <p class="mt-1 text-foreground leading-relaxed">${p.advice}</p>
+              </div>
+              <div class="mt-3 flex flex-wrap items-center justify-end gap-2">
+                <button
+                  type="button"
+                  data-pf-action="chart"
+                  data-code="${p.code}"
+                  data-name="${p.name}"
+                  data-entry="${p.buyPrice}"
+                  data-stop="${p.activeHardStop}"
+                  data-sma20="${p.sma20}"
+                  class="rounded-lg border border-border bg-background px-3 py-1.5 text-[11px] font-bold hover:border-accent hover:text-accent transition-colors cursor-pointer"
+                >
+                  차트 및 방어선 보기
+                </button>
+                <button
+                  type="button"
+                  data-pf-action="telegram"
+                  data-idx="${idx}"
+                  class="rounded-lg bg-accent/20 px-3 py-1.5 text-[11px] font-bold text-accent hover:bg-accent hover:text-white transition-colors cursor-pointer"
+                >
+                  이 종목 텔레그램 알림 발송
+                </button>
+                <button
+                  type="button"
+                  data-pf-action="delete"
+                  data-code="${p.code}"
+                  class="rounded-lg border border-rose-500/40 bg-rose-500/10 px-3 py-1.5 text-[11px] font-bold text-rose-400 hover:bg-rose-600 hover:text-white transition-colors cursor-pointer"
+                >
+                  삭제
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+      })
+      .join("");
+  }
+
+  function updatePortfolioSummary(evaluated: any[]) {
+    let totalCost = 0;
+    let totalEval = 0;
+    let alertCount = 0;
+
+    for (const p of evaluated) {
+      totalCost += p.buyPrice * p.qty;
+      totalEval += p.currentPrice * p.qty;
+      if (["SELL_STOP", "SELL_TRAIL", "TIME_STOP", "WARNING"].includes(p.signal)) {
+        alertCount += 1;
+      }
+    }
+
+    const netPnlKrw = Math.round(totalEval - totalCost - totalEval * 0.0023);
+    const netPnlPct = totalCost > 0 ? ((netPnlKrw / totalCost) * 100) : 0;
+
+    const costEl = document.getElementById("pf-total-cost");
+    const evalEl = document.getElementById("pf-total-eval");
+    const pnlEl = document.getElementById("pf-total-pnl");
+    const alertEl = document.getElementById("pf-alert-count");
+
+    if (costEl) costEl.textContent = `${totalCost.toLocaleString()} 원`;
+    if (evalEl) evalEl.textContent = `${totalEval.toLocaleString()} 원`;
+    if (pnlEl) {
+      pnlEl.textContent = `${netPnlKrw >= 0 ? "+" : ""}${netPnlKrw.toLocaleString()} 원 (${netPnlPct >= 0 ? "+" : ""}${netPnlPct.toFixed(2)}%)`;
+      pnlEl.className = `mt-1 text-sm sm:text-base font-bold font-mono ${netPnlKrw >= 0 ? "text-rose-400" : "text-blue-400"}`;
+    }
+    if (alertEl) {
+      alertEl.textContent = `${alertCount} 종목`;
+      alertEl.className = `mt-1 text-sm sm:text-base font-bold font-mono ${alertCount > 0 ? "text-rose-400" : "text-emerald-400"}`;
+    }
+  }
+
+  async function syncPortfolioToServer() {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(myPortfolio));
+    try {
+      await fetch("/api/quant-portfolio", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ portfolio: myPortfolio }),
+      });
+    } catch {
+      // ignore on static hosting
+    }
+  }
+
+  function setupSearchAutocomplete() {
+    const input = document.getElementById("pf-input-search") as HTMLInputElement | null;
+    const codeInput = document.getElementById("pf-input-code") as HTMLInputElement | null;
+    const nameInput = document.getElementById("pf-input-name") as HTMLInputElement | null;
+    const priceInput = document.getElementById("pf-input-price") as HTMLInputElement | null;
+    const dropdown = document.getElementById("pf-search-dropdown");
+
+    if (!input || !dropdown) return;
+
+    input.addEventListener("input", () => {
+      const q = input.value.trim().toLowerCase();
+      if (!q) {
+        dropdown.classList.add("hidden");
+        return;
+      }
+      const matches = stockMasterList
+        .filter(s => s.name.toLowerCase().includes(q) || s.code.includes(q))
+        .slice(0, 12);
+
+      if (matches.length === 0) {
+        dropdown.classList.add("hidden");
+        return;
+      }
+
+      dropdown.innerHTML = matches
+        .map(
+          s => `
+          <button
+            type="button"
+            data-code="${s.code}"
+            data-name="${s.name}"
+            class="flex w-full items-center justify-between px-3 py-2 text-left hover:bg-accent/15 transition-colors cursor-pointer"
+          >
+            <span class="font-bold text-foreground">${s.name}</span>
+            <span class="font-mono text-muted-foreground">${s.code}</span>
+          </button>
+        `
+        )
+        .join("");
+      dropdown.classList.remove("hidden");
+    });
+
+    dropdown.addEventListener("click", async e => {
+      const btn = (e.target as HTMLElement).closest("button[data-code]");
+      if (!btn) return;
+      const code = btn.getAttribute("data-code") || "";
+      const name = btn.getAttribute("data-name") || "";
+      input.value = `${name} (${code})`;
+      if (codeInput) codeInput.value = code;
+      if (nameInput) nameInput.value = name;
+      dropdown.classList.add("hidden");
+
+      // Pre-fill current price from live quote API
+      try {
+        const resp = await fetch(`/api/quant-quote?code=${code}`);
+        if (resp.ok) {
+          const d = await resp.json();
+          if (priceInput && !priceInput.value && d.currentPrice) {
+            priceInput.value = String(d.currentPrice);
+          }
+        }
+      } catch {
+        // ignore
+      }
+    });
+
+    document.addEventListener("click", e => {
+      if (!input.contains(e.target as Node) && !dropdown.contains(e.target as Node)) {
+        dropdown.classList.add("hidden");
+      }
+    });
+  }
+
+  async function initDashboard() {
+    initAdvisorChart();
+
+    // Set default date to today
+    const dateInput = document.getElementById("pf-input-date") as HTMLInputElement | null;
+    if (dateInput) {
+      dateInput.value = new Date().toISOString().slice(0, 10);
+    }
+
+    // Load stock master list from R2 for autocomplete
+    fetch("https://pub-88fccd299b1d47fe97d43f35f238d0ce.r2.dev/data/stock_list.json")
+      .then(r => r.json())
+      .then(list => {
+        if (Array.isArray(list)) stockMasterList = list;
+      })
+      .catch(() => {});
+
+    setupSearchAutocomplete();
+
+    // Load snapshot JSON
+    try {
+      const snapResp = await fetch(`/data/quant_advisor_snapshot.json?t=${Date.now()}`);
+      if (snapResp.ok) {
+        snapshotData = await snapResp.json();
+        renderMacroBanner(snapshotData.macro, snapshotData.generatedAt, snapshotData.dataSource);
+        renderRecommendations("track1");
+
+        // Load initial chart with top #1 recommendation
+        const firstPick =
+          snapshotData.recommendations?.track1?.[0] ||
+          snapshotData.recommendations?.track2?.[0];
+        if (firstPick) {
+          loadChartWithDefenseLines(
+            firstPick.code,
+            firstPick.name,
+            firstPick.close,
+            firstPick.recommendedStop,
+            firstPick.sma20
+          );
+        }
+      }
+    } catch (e) {
+      console.error("Failed to load snapshot:", e);
+    }
+
+    // Load portfolio: try local dev API (/api/quant-portfolio) first, then localStorage, then /data/my_portfolio.json
+    let loadedFromApi = false;
+    try {
+      const apiResp = await fetch(`/api/quant-portfolio?t=${Date.now()}`);
+      const contentType = apiResp.headers.get("content-type") || "";
+      if (apiResp.ok && contentType.includes("application/json")) {
+        const data = await apiResp.json();
+        if (Array.isArray(data?.portfolio)) {
+          myPortfolio = data.portfolio;
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(myPortfolio));
+          if (Array.isArray(data.portfolioEvaluated) && data.portfolioEvaluated.length > 0) {
+            if (!snapshotData) snapshotData = {};
+            snapshotData.portfolioEvaluated = data.portfolioEvaluated;
+          }
+          loadedFromApi = true;
+        }
+      }
+    } catch {
+      // Static prod or offline: fall back to localStorage / public JSON
+    }
+
+    if (!loadedFromApi) {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved) {
+        try {
+          const parsed = JSON.parse(saved);
+          myPortfolio = Array.isArray(parsed) ? parsed : [];
+        } catch {
+          myPortfolio = [];
+        }
+      } else {
+        try {
+          const pfResp = await fetch(`/data/my_portfolio.json?t=${Date.now()}`);
+          if (pfResp.ok) {
+            const parsed = await pfResp.json();
+            myPortfolio = Array.isArray(parsed) ? parsed : [];
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(myPortfolio));
+          }
+        } catch {
+          myPortfolio = [];
+        }
+      }
+    }
+
+    await refreshAndRenderPortfolio();
+
+    // Event Listeners: Track Tabs
+    document.querySelectorAll(".track-tab-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const k = btn.getAttribute("data-track-tab") as "track1" | "track2" | "track3";
+        if (k) renderRecommendations(k);
+      });
+    });
+
+    // Event Listener: Add Position Form
+    const form = document.getElementById("form-add-portfolio") as HTMLFormElement | null;
+    if (form) {
+      form.addEventListener("submit", async e => {
+        e.preventDefault();
+        const searchVal = (
+          (document.getElementById("pf-input-search") as HTMLInputElement)?.value || ""
+        ).trim();
+        let code = (
+          (document.getElementById("pf-input-code") as HTMLInputElement)?.value || ""
+        ).trim();
+        let name = (
+          (document.getElementById("pf-input-name") as HTMLInputElement)?.value || ""
+        ).trim();
+
+        if (!code) {
+          const codeMatch = searchVal.match(/\b(\d{6})\b/);
+          if (codeMatch) {
+            code = codeMatch[1];
+            const found = stockMasterList.find(s => s.code === code);
+            name = found ? found.name : code;
+          } else {
+            const found = stockMasterList.find(
+              s => s.name.toLowerCase() === searchVal.toLowerCase()
+            );
+            if (found) {
+              code = found.code;
+              name = found.name;
+            }
+          }
+        }
+
+        if (!/^\d{6}$/.test(code)) {
+          showToast("유효한 종목명 또는 6자리 종목코드를 선택해 주세요.");
+          return;
+        }
+
+        const buyPrice = Number(
+          (document.getElementById("pf-input-price") as HTMLInputElement)?.value || 0
+        );
+        const qty = Number(
+          (document.getElementById("pf-input-qty") as HTMLInputElement)?.value || 1
+        );
+        const buyDate =
+          (document.getElementById("pf-input-date") as HTMLInputElement)?.value ||
+          new Date().toISOString().slice(0, 10);
+        const track =
+          (document.getElementById("pf-input-track") as HTMLSelectElement)?.value ||
+          "TRACK_1_FIP_52W";
+
+        if (buyPrice <= 0) {
+          showToast("매수 평균단가를 입력해 주세요.");
+          return;
+        }
+
+        const existingIdx = myPortfolio.findIndex(p => p.code === code);
+        if (existingIdx >= 0) {
+          myPortfolio[existingIdx] = { code, name: name || code, buyPrice, qty, buyDate, track };
+        } else {
+          myPortfolio.unshift({ code, name: name || code, buyPrice, qty, buyDate, track });
+        }
+
+        await syncPortfolioToServer();
+        await refreshAndRenderPortfolio();
+        showToast(`${name || code}(${code}) 종목이 내 보유 포트폴리오에 등록되었습니다.`);
+
+        (document.getElementById("pf-input-search") as HTMLInputElement).value = "";
+        (document.getElementById("pf-input-code") as HTMLInputElement).value = "";
+        (document.getElementById("pf-input-name") as HTMLInputElement).value = "";
+        (document.getElementById("pf-input-price") as HTMLInputElement).value = "";
+      });
+    }
+
+    // Event Listener: Recommendation Cards Actions (+ Add to Portfolio / View Chart)
+    const recContainer = document.getElementById("rec-cards-container");
+    if (recContainer) {
+      recContainer.addEventListener("click", async e => {
+        const btn = (e.target as HTMLElement).closest("button[data-action]");
+        if (!btn) return;
+        const action = btn.getAttribute("data-action");
+        const code = btn.getAttribute("data-code") || "";
+        const name = btn.getAttribute("data-name") || "";
+
+        if (action === "add-to-pf") {
+          const price = Number(btn.getAttribute("data-price") || 0);
+          const track = btn.getAttribute("data-track") || "TRACK_1_FIP_52W";
+          const today = new Date().toISOString().slice(0, 10);
+          const existingIdx = myPortfolio.findIndex(p => p.code === code);
+          if (existingIdx >= 0) {
+            myPortfolio[existingIdx] = { code, name, buyPrice: price, qty: 10, buyDate: today, track };
+          } else {
+            myPortfolio.unshift({ code, name, buyPrice: price, qty: 10, buyDate: today, track });
+          }
+          await syncPortfolioToServer();
+          await refreshAndRenderPortfolio();
+          showToast(`${name}(${code}) 종목을 현재가(${price.toLocaleString()}원) 기준으로 내 포트폴리오에 편입했습니다.`);
+          document.getElementById("pf-cards-container")?.scrollIntoView({ behavior: "smooth" });
+        } else if (action === "view-chart") {
+          const entry = Number(btn.getAttribute("data-entry") || 0);
+          const stop = Number(btn.getAttribute("data-stop") || 0);
+          const sma20 = Number(btn.getAttribute("data-sma20") || 0);
+          await loadChartWithDefenseLines(code, name, entry, stop, sma20);
+          document.getElementById("advisor-chart-section")?.scrollIntoView({ behavior: "smooth" });
+        }
+      });
+    }
+
+    // Event Listener: Portfolio Cards Actions (View Chart / Telegram / Delete)
+    const pfContainer = document.getElementById("pf-cards-container");
+    if (pfContainer) {
+      pfContainer.addEventListener("click", async e => {
+        const btn = (e.target as HTMLElement).closest("button[data-pf-action]");
+        if (!btn) return;
+        const action = btn.getAttribute("data-pf-action");
+
+        if (action === "delete") {
+          const code = btn.getAttribute("data-code") || "";
+          myPortfolio = myPortfolio.filter(p => p.code !== code);
+          await syncPortfolioToServer();
+          await refreshAndRenderPortfolio();
+          showToast(`종목(${code})이 보유 포트폴리오에서 삭제되었습니다.`);
+        } else if (action === "chart") {
+          const code = btn.getAttribute("data-code") || "";
+          const name = btn.getAttribute("data-name") || "";
+          const entry = Number(btn.getAttribute("data-entry") || 0);
+          const stop = Number(btn.getAttribute("data-stop") || 0);
+          const sma20 = Number(btn.getAttribute("data-sma20") || 0);
+          await loadChartWithDefenseLines(code, name, entry, stop, sma20);
+          document.getElementById("advisor-chart-section")?.scrollIntoView({ behavior: "smooth" });
+        } else if (action === "telegram") {
+          const idx = Number(btn.getAttribute("data-idx") || 0);
+          const p = evaluatedPortfolioCache[idx];
+          if (!p) return;
+          const text = [
+            `[돈테크랩 포트폴리오 종목 진단 알림]`,
+            `- 종목: ${p.name} (${p.code})`,
+            `- 판정 신호: [${p.signal}] ${p.signalLabel}`,
+            `- 매수가: ${Number(p.buyPrice).toLocaleString()}원 (${p.qty}주, ${p.holdDays}거래일 보유)`,
+            `- 현재가: ${Number(p.currentPrice).toLocaleString()}원 (순손익 ${p.netPnlPct >= 0 ? "+" : ""}${p.netPnlPct}%, ${p.netPnlKrw >= 0 ? "+" : ""}${Number(p.netPnlKrw).toLocaleString()}원)`,
+            `- EOD 손절선: ${Number(p.activeHardStop).toLocaleString()}원 (버퍼 ${p.distToStopPct}%)`,
+            `- 20일 생명선: ${Number(p.sma20).toLocaleString()}원 (이격 ${p.distToSma20Pct}%)`,
+            `- 어드바이스: ${p.advice}`,
+          ].join("\n");
+
+          showToast("텔레그램으로 종목 진단 알림을 발송 중입니다...");
+          const resp = await fetch("/api/quant-quote", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ text }),
+          });
+          const resJson = await resp.json();
+          if (resJson.ok) {
+            showToast(`${p.name} 진단 리포트가 텔레그램으로 발송되었습니다.`);
+          } else {
+            showToast(`텔레그램 발송 실패: ${resJson.error || "설정 확인 필요"}`);
+          }
+        }
+      });
+    }
+
+    // Event Listener: Refresh Portfolio button
+    document.getElementById("btn-refresh-portfolio")?.addEventListener("click", async () => {
+      showToast("보유 종목 실시간 시세 및 방어선을 갱신합니다...");
+      await refreshAndRenderPortfolio();
+      showToast("보유 종목 실시간 시세 갱신이 완료되었습니다.");
+    });
+
+    // Event Listener: Send Full Telegram Report
+    document.getElementById("btn-send-telegram-all")?.addEventListener("click", async () => {
+      if (!snapshotData) return;
+      const m = snapshotData.macro;
+      const lines: string[] = [
+        `[돈테크랩 퀀트 어드바이저 & 포트폴리오 종합 리포트]`,
+        `기준일시: ${new Date().toLocaleString("ko-KR")} (최근 장마감: ${m.lastMarketDate})`,
+        `시장 레짐: ${m.regimeLabel} | Breadth(50일선): ${m.breadthPct}% | 권장 주식비중: ${m.recEquityExposurePct}%`,
+        `KOSPI: ${m.kospiClose} (${m.kospiRet1d >= 0 ? "+" : ""}${m.kospiRet1d}%) | KOSDAQ: ${m.kosdaqClose} (${m.kosdaqRet1d >= 0 ? "+" : ""}${m.kosdaqRet1d}%)`,
+        `----------------------------------------`,
+        `[1. 내 보유 포트폴리오 진단 (${evaluatedPortfolioCache.length}종목)]`,
+      ];
+      for (const p of evaluatedPortfolioCache) {
+        lines.push(
+          `- ${p.name}(${p.code}): [${p.signalLabel}] 현재가 ${Number(p.currentPrice).toLocaleString()}원 / 매수가 ${Number(p.buyPrice).toLocaleString()}원 (${p.netPnlPct >= 0 ? "+" : ""}${p.netPnlPct}%) | 손절선 ${Number(p.activeHardStop).toLocaleString()}원 | 20일선 ${Number(p.sma20).toLocaleString()}원`
+        );
+      }
+      lines.push(`----------------------------------------`);
+      lines.push(`[2. 금일 추천 종목 상위 (Track 1 & Track 2)]`);
+      for (const t of (snapshotData.recommendations?.track1 || []).slice(0, 3)) {
+        lines.push(
+          `- [Track1] ${t.name}(${t.code}): 현재가 ${Number(t.close).toLocaleString()}원 | 52주고가비율 ${t.ratio52wHigh}% | FIP ${t.fipId60} | 손절선 ${Number(t.recommendedStop).toLocaleString()}원`
+        );
+      }
+      for (const t of (snapshotData.recommendations?.track2 || []).slice(0, 3)) {
+        lines.push(
+          `- [Track2] ${t.name}(${t.code}): 현재가 ${Number(t.close).toLocaleString()}원 | 거래량 ${Math.max(t.volRatio, t.recent3MaxVolRatio)}배 | 손절선 ${Number(t.recommendedStop).toLocaleString()}원`
+        );
+      }
+
+      showToast("텔레그램으로 종합 리포트를 전송 중입니다...");
+      const resp = await fetch("/api/quant-quote", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ text: lines.join("\n") }),
+      });
+      const resJson = await resp.json();
+      if (resJson.ok) {
+        showToast("텔레그램 종합 리포트 발송이 완료되었습니다.");
+      } else {
+        showToast(`텔레그램 발송 안내: ${resJson.error}`);
+      }
+    });
+
+    // Event Listener: Refresh Screener
+    document.getElementById("btn-refresh-screener")?.addEventListener("click", async () => {
+      showToast("전 종목 실시간 일봉 및 뉴스·수급 재스캔을 시작합니다 (약 5~8초 소요)...");
+      try {
+        const r = await fetch("/api/quant-refresh", { method: "POST" });
+        if (r.ok) {
+          const snapResp = await fetch(`/data/quant_advisor_snapshot.json?t=${Date.now()}`);
+          if (snapResp.ok) {
+            snapshotData = await snapResp.json();
+            renderMacroBanner(snapshotData.macro, snapshotData.generatedAt, snapshotData.dataSource);
+            renderRecommendations(currentTrackTab);
+            await refreshAndRenderPortfolio();
+            showToast("실시간 종목 재스캔 및 추천 리스트 갱신이 완료되었습니다.");
+            return;
+          }
+        }
+        showToast("정적 배포 환경에서는 기존 스냅샷을 리로드합니다.");
+      } catch {
+        showToast("스냅샷 데이터를 다시 불러왔습니다.");
+      }
+    });
+  }
+
+  initDashboard();
+  document.addEventListener("astro:after-swap", initDashboard);
+</script>

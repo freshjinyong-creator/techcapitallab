@@ -1,0 +1,1116 @@
+{
+  "generatedAt": "2026-11-14 17:44:05",
+  "dataSource": "KIS_REST_PROD",
+  "macro": {
+    "lastMarketDate": "20261113",
+    "regimeCode": "DEFENSIVE_BEAR",
+    "regimeLabel": "방어적 현금확보 구간 (Breadth < 40%)",
+    "recEquityExposurePct": 25,
+    "regimeDesc": "시장 Breadth(50일선 상회 비율)가 23.7%로 하락장/조정장 임계치(40%)를 하회합니다. 한국 증시 추세추종 실패의 제1원인인 하락장 휩쏘(Whipsaw) 방지를 위해 현금 비중을 70% 이상 확보하고 Track 1 최상위 방어/독점 성장주만 소액 운용합니다.",
+    "breadthPct": 23.7,
+    "breadth20Pct": 41.4,
+    "stage2Pct": 9.3,
+    "universeCount": 215,
+    "kospiClose": 5290.53,
+    "kospiRet1d": -0.98,
+    "kospiRet20d": -6.66,
+    "kospiSma20": 5541.54,
+    "kospiSma50": 6235.66,
+    "kospiSma200": 6522.63,
+    "kosdaqClose": 699.66,
+    "kosdaqRet1d": 0.45,
+    "kosdaqRet20d": -11.97,
+    "kosdaqSma20": 725.18,
+    "kosdaqSma50": 791.41,
+    "kosdaqSma200": 959.68
+  },
+  "strategySpecs": {
+    "track1": {
+      "id": "TRACK_1_FIP_52W",
+      "name": "Track 1: 52주 신고가 + FIP 연속추세 (E2_S7_EOD)",
+      "booksAndPapers": "Mark Minervini (SEPA Stage 2) + George & Hwang (2004, 52W High) + Da, Gurun & Warachka (2014, FIP) + 고봉찬·김진우 (2014, 저변동성)",
+      "backtest15y": "2022~2026 OOS 5년 연속 양(+) 수익 (연복리 CAGR +42.40%, 15년 PF 1.28, 손익비 2.80, 저변동 결합 시 MDD -17.63%)",
+      "entryRule": "Stage 2 정배열(주가>50일>150일) + 52주 최고가 대비 85~100% + 60일 FIP ID <= 0(양봉우위) + 5일 과열 +12.5% 이하",
+      "exitRule": "장중 아랫꼬리 손절 금지. 15:20 종가 기준 매수가 대비 -7%(또는 2ATR) 이탈 시 손절, 종가 기준 20일 이동평균선 이탈 시 전량 추세 청산 (조기 반익절 금지)"
+    },
+    "track2": {
+      "id": "TRACK_2_VOL_BREAKOUT",
+      "name": "Track 2: 거래대금 폭발 기준봉 돌파 (E1_S8_EOD)",
+      "booksAndPapers": "Nicolas Darvas (박스 돌파) + William O'Neil (CAN SLIM 거래량) + 유목민·박병창 (거래대금 기준봉)",
+      "backtest15y": "최근 1년 수익률 +73.69%, 2026 YTD +119.33% (MDD -19.50%, 15년 PF 1.26, 손익비 2.75)",
+      "entryRule": "50일·20일선 상회 + 52주 최고가 80% 이상 + 최근 3일 내 거래량 20일 평균 대비 1.8~2.5배 이상 양봉 기준봉 출현",
+      "exitRule": "종가 기준 매수가 대비 -7%(또는 기준봉 시가) 이탈 시 손절, 20일 이동평균선 종가 이탈 시 전량 익절"
+    },
+    "track3": {
+      "id": "TRACK_3_PULLBACK_WATCH",
+      "name": "Track 3: 기준봉 후 거래절벽 20일선 눌림목 (Type B 대기)",
+      "booksAndPapers": "성필규·한봉호 (중심선 눌림목) + 실전 Type B (거래절벽 후 거래량 재돌파)",
+      "backtest15y": "최근 1년 수익률 +29.81% (승률 63.64%, PF 3.12, MDD -4.08%)",
+      "entryRule": "최근 15일 내 거래량 2.2배+ 기준봉 출현 후 거래량이 20일 평균의 90% 이하로 감소하며 20일선 및 기준봉 중심값 지지 (음봉 무지성 매수 금지, 양봉 재돌파 확인 진입)",
+      "exitRule": "종가 기준 20일선 또는 기준봉 중심값 이탈 시 손절, 직전 전고점 도달 및 20일선 트레일링 청산"
+    }
+  },
+  "recommendations": {
+    "track1": [
+      {
+        "code": "003490",
+        "name": "대한항공",
+        "market": "KOSPI",
+        "lastDate": "20261113",
+        "close": 31600,
+        "ret1d": -0.16,
+        "ret5d": 7.48,
+        "ret10d": 19.02,
+        "ret20d": 19.92,
+        "ret60d": 20.15,
+        "sma5": 31260,
+        "sma10": 30340,
+        "sma20": 28300,
+        "sma50": 29352,
+        "sma150": 27246,
+        "sma200": 26590,
+        "high250": 32800,
+        "low250": 21000,
+        "ratio52wHigh": 96.3,
+        "fipId60": -0.05,
+        "posDays60": 31,
+        "negDays60": 28,
+        "posRatio60": 51.7,
+        "vol60dPct": 3.24,
+        "atr20": 1400,
+        "atr20Pct": 4.43,
+        "volRatio": 0.63,
+        "valRatio": 0.68,
+        "valTodayEok": 628.3,
+        "valMa20Eok": 918.6,
+        "stage2": true,
+        "aboveSma50": true,
+        "aboveSma20": true,
+        "recent3Surge": false,
+        "recent3MaxVolRatio": 0.63,
+        "recent3AnchorDate": "20261113",
+        "anchor15d": true,
+        "anchor15dDate": "20261110",
+        "anchor15dVolRatio": 3.33,
+        "anchor15dMid": 31350,
+        "eodStop7pct": 29388,
+        "atrStop2x": 28800,
+        "recommendedStop": 29388,
+        "stopDistPct": 7.0,
+        "recWeightPct": 12.5,
+        "track": "TRACK_1_FIP_52W",
+        "trackName": "Track 1: 52주 신고가 + FIP 연속추세 (E2_S7_EOD)",
+        "quantScore": 49.4,
+        "enrichment": {
+          "per": "14.97",
+          "cnsPer": "22.48배",
+          "pbr": "1.07",
+          "foreignRate": "55.48%",
+          "marketCap": "116,358억원",
+          "targetPrice": 39083,
+          "recommMean": "3.92",
+          "foreign5dNet": 3067403,
+          "inst5dNet": 1358987,
+          "indiv5dNet": -4380961,
+          "foreign5dTrPbmn": 97796,
+          "inst5dTrPbmn": 42842,
+          "reports": [
+            {
+              "broker": "한화투자증권",
+              "title": "다시 계산해본 통합 시너지, MAX 1조원",
+              "date": "20261027"
+            },
+            {
+              "broker": "iM증권",
+              "title": "과도한 주가 하락은 매수 기회",
+              "date": "20261019"
+            },
+            {
+              "broker": "한화투자증권",
+              "title": "[3Q26 Review] 2Q 성과급 미반영분 반영",
+              "date": "20261016"
+            }
+          ],
+          "news": [
+            {
+              "title": "미국행 항공편 결항 취소됐지만 지연 속출",
+              "press": "YTN",
+              "date": "2026-11-14",
+              "url": "https://n.news.naver.com/mnews/article/052/0002432850"
+            },
+            {
+              "title": "오전 미국행 여객기 대혼란...운항 재개했지만 지연 속출",
+              "press": "YTN",
+              "date": "2026-11-14",
+              "url": "https://n.news.naver.com/mnews/article/052/0002432845"
+            },
+            {
+              "title": "美, 이륙 중단 4시간여 만에 해제…대한항공·아시아나 결항 철회",
+              "press": "디지털데일리",
+              "date": "2026-11-14",
+              "url": "https://n.news.naver.com/mnews/article/138/0002248551"
+            }
+          ]
+        },
+        "reasons": {
+          "formulas": [
+            {
+              "source": "Mark Minervini (초수익 성장주 투자, SEPA Stage 2)",
+              "metric": "현재가(31,600원) > 20일선(28,300원) > 50일선(29,352원) > 150일선(27,246원)",
+              "desc": "단기·중기·장기 이동평균선이 완전 정배열된 제2단계(기관 매집 추세 국면) 조건을 충족합니다."
+            },
+            {
+              "source": "George & Hwang (2004, Journal of Finance 52주 신고가 모멘텀)",
+              "metric": "52주 최고가(32,800원) 대비 96.3% 근접",
+              "desc": "52주 최고가 대비 85~100% 구간에 위치하여 상단 악성 매물대(Overhead Supply) 저항이 최소화된 신고가 탄력 구간입니다."
+            },
+            {
+              "source": "Da, Gurun & Warachka (2014, RFS Frog-in-the-Pan 연속정보 가설)",
+              "metric": "60일 FIP ID = -0.050 (양봉 31일 / 음봉 28일, 승률 51.7%)",
+              "desc": "단발성 작전 급등이 아니라 60거래일 동안 양봉 빈도가 음봉을 압도하며 기관성 자금이 점진적으로 유입된 고품질 추세입니다."
+            },
+            {
+              "source": "고봉찬·김진우 (2014, 증권학회지 저변동성 결합) & 5일 과열 필터",
+              "metric": "60일 일간변동성 3.24% / 최근 5일 수익률 +7.48%",
+              "desc": "단기 급등 과열(+12% 초과) 없이 변동성이 통제된 상태에서 신고가 권역을 돌파 중이므로 추격매수 물림 위험이 낮습니다."
+            }
+          ],
+          "catalysts": [
+            "[양매수 수급] 최근 5거래일 외국인 +3,067,403주, 기관 +1,358,987주 동반 순매수 유입 (추종모멘텀 논문 부합)",
+            "[컨센서스 & 밸류] 증권사 평균 목표주가 39,083원 (괴리율 +23.7%), PER 14.97 / 추정PER 22.48배, PBR 1.07",
+            "[증권사 리포트 (20261027)] 한화투자증권: 다시 계산해본 통합 시너지, MAX 1조원",
+            "[증권사 리포트 (20261019)] iM증권: 과도한 주가 하락은 매수 기회",
+            "[주요 뉴스 (2026-11-14)] 미국행 항공편 결항 취소됐지만 지연 속출 (YTN)",
+            "[주요 뉴스 (2026-11-14)] 오전 미국행 여객기 대혼란...운항 재개했지만 지연 속출 (YTN)"
+          ]
+        }
+      },
+      {
+        "code": "251970",
+        "name": "펌텍코리아",
+        "market": "KOSDAQ",
+        "lastDate": "20261113",
+        "close": 73400,
+        "ret1d": -5.17,
+        "ret5d": 4.41,
+        "ret10d": 14.33,
+        "ret20d": 2.95,
+        "ret60d": 38.49,
+        "sma5": 72340,
+        "sma10": 69340,
+        "sma20": 68790,
+        "sma50": 63824,
+        "sma150": 50093,
+        "sma200": 50840,
+        "high250": 79400,
+        "low250": 31400,
+        "ratio52wHigh": 92.4,
+        "fipId60": 0.0,
+        "posDays60": 30,
+        "negDays60": 30,
+        "posRatio60": 50.0,
+        "vol60dPct": 3.97,
+        "atr20": 5088,
+        "atr20Pct": 6.93,
+        "volRatio": 0.73,
+        "valRatio": 0.79,
+        "valTodayEok": 61.7,
+        "valMa20Eok": 78.1,
+        "stage2": true,
+        "aboveSma50": true,
+        "aboveSma20": true,
+        "recent3Surge": false,
+        "recent3MaxVolRatio": 0.73,
+        "recent3AnchorDate": "20261113",
+        "anchor15d": false,
+        "anchor15dDate": null,
+        "anchor15dVolRatio": 0.0,
+        "anchor15dMid": 0,
+        "eodStop7pct": 68262,
+        "atrStop2x": 63225,
+        "recommendedStop": 68262,
+        "stopDistPct": 7.0,
+        "recWeightPct": 12.5,
+        "track": "TRACK_1_FIP_52W",
+        "trackName": "Track 1: 52주 신고가 + FIP 연속추세 (E2_S7_EOD)",
+        "quantScore": 27.5,
+        "enrichment": {
+          "per": "26.42",
+          "cnsPer": "14.53배",
+          "pbr": "3.09",
+          "foreignRate": "13.18%",
+          "marketCap": "9,102억원",
+          "targetPrice": 93250,
+          "recommMean": "4.00",
+          "foreign5dNet": 36300,
+          "inst5dNet": -1417,
+          "indiv5dNet": -28771,
+          "foreign5dTrPbmn": 2569,
+          "inst5dTrPbmn": 139,
+          "reports": [
+            {
+              "broker": "한화투자증권",
+              "title": "프리미엄 받아 마땅한",
+              "date": "20261110"
+            },
+            {
+              "broker": "하나증권",
+              "title": "3Q26 Re: 맘껏 호황을 누리다",
+              "date": "20261110"
+            },
+            {
+              "broker": "IBK투자증권",
+              "title": "3Q26 Review: 견조한 수요, 높아진 생산 효율",
+              "date": "20261110"
+            }
+          ],
+          "news": [
+            {
+              "title": "월가 달구는 K-뷰티…아모레·파마리서치 담은 ETF, 뉴욕증시 상장",
+              "press": "머니투데이",
+              "date": "2026-11-14",
+              "url": "https://n.news.naver.com/mnews/article/008/0005441028"
+            },
+            {
+              "title": "K-뷰티, 아마존 '스킨케어 키트' 점령…소용량 인기에 中企 용기 제조...",
+              "press": "뉴스1",
+              "date": "2026-11-13",
+              "url": "https://n.news.naver.com/mnews/article/421/0009286916"
+            },
+            {
+              "title": "펌텍코리아, 선제적 증설로 K뷰티 수혜 극대화…목표가 8%↑-메리츠",
+              "press": "머니투데이",
+              "date": "2026-11-10",
+              "url": "https://n.news.naver.com/mnews/article/008/0005438794"
+            }
+          ]
+        },
+        "reasons": {
+          "formulas": [
+            {
+              "source": "Mark Minervini (초수익 성장주 투자, SEPA Stage 2)",
+              "metric": "현재가(73,400원) > 20일선(68,790원) > 50일선(63,824원) > 150일선(50,093원)",
+              "desc": "단기·중기·장기 이동평균선이 완전 정배열된 제2단계(기관 매집 추세 국면) 조건을 충족합니다."
+            },
+            {
+              "source": "George & Hwang (2004, Journal of Finance 52주 신고가 모멘텀)",
+              "metric": "52주 최고가(79,400원) 대비 92.4% 근접",
+              "desc": "52주 최고가 대비 85~100% 구간에 위치하여 상단 악성 매물대(Overhead Supply) 저항이 최소화된 신고가 탄력 구간입니다."
+            },
+            {
+              "source": "Da, Gurun & Warachka (2014, RFS Frog-in-the-Pan 연속정보 가설)",
+              "metric": "60일 FIP ID = +0.000 (양봉 30일 / 음봉 30일, 승률 50.0%)",
+              "desc": "단발성 작전 급등이 아니라 60거래일 동안 양봉 빈도가 음봉을 압도하며 기관성 자금이 점진적으로 유입된 고품질 추세입니다."
+            },
+            {
+              "source": "고봉찬·김진우 (2014, 증권학회지 저변동성 결합) & 5일 과열 필터",
+              "metric": "60일 일간변동성 3.97% / 최근 5일 수익률 +4.41%",
+              "desc": "단기 급등 과열(+12% 초과) 없이 변동성이 통제된 상태에서 신고가 권역을 돌파 중이므로 추격매수 물림 위험이 낮습니다."
+            }
+          ],
+          "catalysts": [
+            "[외국인 수급] 최근 5거래일 외국인 +36,300주 순매수 유입 (외인 지분율 13.18%)",
+            "[컨센서스 & 밸류] 증권사 평균 목표주가 93,250원 (괴리율 +27.0%), PER 26.42 / 추정PER 14.53배, PBR 3.09",
+            "[증권사 리포트 (20261110)] 한화투자증권: 프리미엄 받아 마땅한",
+            "[증권사 리포트 (20261110)] 하나증권: 3Q26 Re: 맘껏 호황을 누리다",
+            "[주요 뉴스 (2026-11-14)] 월가 달구는 K-뷰티…아모레·파마리서치 담은 ETF, 뉴욕증시 상장 (머니투데이)",
+            "[주요 뉴스 (2026-11-13)] K-뷰티, 아마존 '스킨케어 키트' 점령…소용량 인기에 中企 용기 제조... (뉴스1)"
+          ]
+        }
+      }
+    ],
+    "track2": [
+      {
+        "code": "263860",
+        "name": "지니언스",
+        "market": "KRX",
+        "lastDate": "20261113",
+        "close": 34150,
+        "ret1d": 8.93,
+        "ret5d": 49.13,
+        "ret10d": 23.06,
+        "ret20d": 55.23,
+        "ret60d": 124.97,
+        "sma5": 28080,
+        "sma10": 26895,
+        "sma20": 24682,
+        "sma50": 21340,
+        "sma150": 16602,
+        "sma200": 16443,
+        "high250": 36450,
+        "low250": 11000,
+        "ratio52wHigh": 93.7,
+        "fipId60": -0.1,
+        "posDays60": 33,
+        "negDays60": 27,
+        "posRatio60": 55.0,
+        "vol60dPct": 7.61,
+        "atr20": 3751,
+        "atr20Pct": 10.98,
+        "volRatio": 4.12,
+        "valRatio": 5.1,
+        "valTodayEok": 2303.7,
+        "valMa20Eok": 451.8,
+        "stage2": true,
+        "aboveSma50": true,
+        "aboveSma20": true,
+        "recent3Surge": true,
+        "recent3MaxVolRatio": 6.77,
+        "recent3AnchorDate": "20261112",
+        "anchor15d": true,
+        "anchor15dDate": "20261103",
+        "anchor15dVolRatio": 5.67,
+        "anchor15dMid": 29100,
+        "eodStop7pct": 31760,
+        "atrStop2x": 26648,
+        "recommendedStop": 31760,
+        "stopDistPct": 7.0,
+        "recWeightPct": 12.5,
+        "track": "TRACK_2_VOL_BREAKOUT",
+        "trackName": "Track 2: 거래대금 폭발 기준봉 돌파 (E1_S8_EOD)",
+        "quantScore": 154.9,
+        "enrichment": {
+          "per": "41.34",
+          "cnsPer": "N/A",
+          "pbr": "4.76",
+          "foreignRate": "18.32%",
+          "marketCap": "3,101억원",
+          "targetPrice": null,
+          "recommMean": null,
+          "foreign5dNet": -655513,
+          "inst5dNet": 152991,
+          "indiv5dNet": 492468,
+          "foreign5dTrPbmn": -17892,
+          "inst5dTrPbmn": 4515,
+          "reports": [
+            {
+              "broker": "유안타증권",
+              "title": "더 이상 늦을 수 없는 보안투자",
+              "date": "20261113"
+            },
+            {
+              "broker": "유안타증권",
+              "title": "일시적이 아닌 구조적 변화에 기인한 실적개선",
+              "date": "20260806"
+            },
+            {
+              "broker": "유진투자증권",
+              "title": "2Q26P Review: 영업이익 어닝서프라이즈 시현",
+              "date": "20260805"
+            }
+          ],
+          "news": [
+            {
+              "title": "지니언스 2대주주 교체…미리캐피탈, 보유 지분 75% 매도",
+              "press": "블로터",
+              "date": "2026-11-13",
+              "url": "https://n.news.naver.com/mnews/article/293/0000093205"
+            },
+            {
+              "title": "[ET특징주] '3분기 영업익 3.5배 ↑' 지니언스, 호실적에 주가 이틀째...",
+              "press": "전자신문",
+              "date": "2026-11-13",
+              "url": "https://n.news.naver.com/mnews/article/030/0003485367"
+            },
+            {
+              "title": "삼성 온양 ‘HBM 패키징 거점’ 첫삽…충청권에 415조 투자",
+              "press": "서울경제",
+              "date": "2026-11-13",
+              "url": "https://n.news.naver.com/mnews/article/011/0004681814"
+            }
+          ]
+        },
+        "reasons": {
+          "formulas": [
+            {
+              "source": "Mark Minervini (초수익 성장주 투자, SEPA Stage 2)",
+              "metric": "현재가(34,150원) > 20일선(24,682원) > 50일선(21,340원) > 150일선(16,602원)",
+              "desc": "단기·중기·장기 이동평균선이 완전 정배열된 제2단계(기관 매집 추세 국면) 조건을 충족합니다."
+            },
+            {
+              "source": "George & Hwang (2004, Journal of Finance 52주 신고가 모멘텀)",
+              "metric": "52주 최고가(36,450원) 대비 93.7% 근접",
+              "desc": "52주 최고가 대비 85~100% 구간에 위치하여 상단 악성 매물대(Overhead Supply) 저항이 최소화된 신고가 탄력 구간입니다."
+            },
+            {
+              "source": "Da, Gurun & Warachka (2014, RFS Frog-in-the-Pan 연속정보 가설)",
+              "metric": "60일 FIP ID = -0.100 (양봉 33일 / 음봉 27일, 승률 55.0%)",
+              "desc": "단발성 작전 급등이 아니라 60거래일 동안 양봉 빈도가 음봉을 압도하며 기관성 자금이 점진적으로 유입된 고품질 추세입니다."
+            },
+            {
+              "source": "Nicolas Darvas & 한국 실전 기준봉 돌파 (거래대금 폭발 공식)",
+              "metric": "최근 기준봉(20261112) 거래량 20일 평균 대비 6.77배 폭발 (일평균 대금 452억)",
+              "desc": "박스권 상단에서 평소 대비 2배 이상의 대량 거래대금이 유입되며 새로운 가격 발견(Price Discovery)이 시작된 기준봉 타점입니다."
+            }
+          ],
+          "catalysts": [
+            "[기관 수급] 최근 5거래일 기관 +152,991주 순매수 유입 (기관 추세 형성)",
+            "[밸류에이션] 시가총액 3,101억원, PER 41.34 / 추정PER N/A, PBR 4.76",
+            "[증권사 리포트 (20261113)] 유안타증권: 더 이상 늦을 수 없는 보안투자",
+            "[증권사 리포트 (20260806)] 유안타증권: 일시적이 아닌 구조적 변화에 기인한 실적개선",
+            "[주요 뉴스 (2026-11-13)] 지니언스 2대주주 교체…미리캐피탈, 보유 지분 75% 매도 (블로터)",
+            "[주요 뉴스 (2026-11-13)] [ET특징주] '3분기 영업익 3.5배 ↑' 지니언스, 호실적에 주가 이틀째... (전자신문)"
+          ]
+        }
+      },
+      {
+        "code": "092870",
+        "name": "엑시콘",
+        "market": "KOSDAQ",
+        "lastDate": "20261113",
+        "close": 62500,
+        "ret1d": 7.57,
+        "ret5d": 50.24,
+        "ret10d": 2.97,
+        "ret20d": 15.53,
+        "ret60d": 194.81,
+        "sma5": 55410,
+        "sma10": 53030,
+        "sma20": 54295,
+        "sma50": 46078,
+        "sma150": 31839,
+        "sma200": 30744,
+        "high250": 67800,
+        "low250": 10110,
+        "ratio52wHigh": 92.2,
+        "fipId60": -0.15,
+        "posDays60": 34,
+        "negDays60": 25,
+        "posRatio60": 56.7,
+        "vol60dPct": 8.57,
+        "atr20": 7530,
+        "atr20Pct": 12.05,
+        "volRatio": 2.15,
+        "valRatio": 2.46,
+        "valTodayEok": 728.1,
+        "valMa20Eok": 296.1,
+        "stage2": true,
+        "aboveSma50": true,
+        "aboveSma20": true,
+        "recent3Surge": true,
+        "recent3MaxVolRatio": 2.15,
+        "recent3AnchorDate": "20261113",
+        "anchor15d": false,
+        "anchor15dDate": null,
+        "anchor15dVolRatio": 0.0,
+        "anchor15dMid": 0,
+        "eodStop7pct": 58125,
+        "atrStop2x": 47440,
+        "recommendedStop": 58125,
+        "stopDistPct": 7.0,
+        "recWeightPct": 12.5,
+        "track": "TRACK_2_VOL_BREAKOUT",
+        "trackName": "Track 2: 거래대금 폭발 기준봉 돌파 (E1_S8_EOD)",
+        "quantScore": 72.0,
+        "enrichment": {
+          "per": "90.98",
+          "cnsPer": "N/A",
+          "pbr": "4.14",
+          "foreignRate": "4.33%",
+          "marketCap": "8,157억원",
+          "targetPrice": 68000,
+          "recommMean": "4.00",
+          "foreign5dNet": -610134,
+          "inst5dNet": 257475,
+          "indiv5dNet": 320123,
+          "foreign5dTrPbmn": -32698,
+          "inst5dTrPbmn": 13779,
+          "reports": [
+            {
+              "broker": "대신증권",
+              "title": "아직도 더 갈 수 있다",
+              "date": "20261008"
+            },
+            {
+              "broker": "신한투자증권",
+              "title": "CLT 장비를 넘어 부품 공급 업체로",
+              "date": "20260910"
+            },
+            {
+              "broker": "iM증권",
+              "title": "CLT, SSD 테스터 등으로 올해와 내년 사상 최대 실적",
+              "date": "20260810"
+            }
+          ],
+          "news": [
+            {
+              "title": "美 반도체 강세에 삼전닉스 상승…\"AI 투자 유지 기대감\"",
+              "press": "머니투데이",
+              "date": "2026-11-10",
+              "url": "https://n.news.naver.com/mnews/article/008/0005439170"
+            },
+            {
+              "title": "앤트로픽·하이닉스발 훈풍에 반도체 소부장도 ‘꿈틀’…훈풍 이어질...",
+              "press": "매일경제",
+              "date": "2026-10-28",
+              "url": "https://n.news.naver.com/mnews/article/009/0005755115"
+            },
+            {
+              "title": "[이 시각 시황] 국내증시 2거래일 연속 강세…반도체·통신장비·유리...",
+              "press": "SBS Biz",
+              "date": "2026-10-28",
+              "url": "https://n.news.naver.com/mnews/article/374/0000540196"
+            }
+          ]
+        },
+        "reasons": {
+          "formulas": [
+            {
+              "source": "Mark Minervini (초수익 성장주 투자, SEPA Stage 2)",
+              "metric": "현재가(62,500원) > 20일선(54,295원) > 50일선(46,078원) > 150일선(31,839원)",
+              "desc": "단기·중기·장기 이동평균선이 완전 정배열된 제2단계(기관 매집 추세 국면) 조건을 충족합니다."
+            },
+            {
+              "source": "George & Hwang (2004, Journal of Finance 52주 신고가 모멘텀)",
+              "metric": "52주 최고가(67,800원) 대비 92.2% 근접",
+              "desc": "52주 최고가 대비 85~100% 구간에 위치하여 상단 악성 매물대(Overhead Supply) 저항이 최소화된 신고가 탄력 구간입니다."
+            },
+            {
+              "source": "Da, Gurun & Warachka (2014, RFS Frog-in-the-Pan 연속정보 가설)",
+              "metric": "60일 FIP ID = -0.150 (양봉 34일 / 음봉 25일, 승률 56.7%)",
+              "desc": "단발성 작전 급등이 아니라 60거래일 동안 양봉 빈도가 음봉을 압도하며 기관성 자금이 점진적으로 유입된 고품질 추세입니다."
+            },
+            {
+              "source": "Nicolas Darvas & 한국 실전 기준봉 돌파 (거래대금 폭발 공식)",
+              "metric": "최근 기준봉(20261113) 거래량 20일 평균 대비 2.15배 폭발 (일평균 대금 296억)",
+              "desc": "박스권 상단에서 평소 대비 2배 이상의 대량 거래대금이 유입되며 새로운 가격 발견(Price Discovery)이 시작된 기준봉 타점입니다."
+            }
+          ],
+          "catalysts": [
+            "[기관 수급] 최근 5거래일 기관 +257,475주 순매수 유입 (기관 추세 형성)",
+            "[컨센서스 & 밸류] 증권사 평균 목표주가 68,000원 (괴리율 +8.8%), PER 90.98 / 추정PER N/A, PBR 4.14",
+            "[증권사 리포트 (20261008)] 대신증권: 아직도 더 갈 수 있다",
+            "[증권사 리포트 (20260910)] 신한투자증권: CLT 장비를 넘어 부품 공급 업체로",
+            "[주요 뉴스 (2026-11-10)] 美 반도체 강세에 삼전닉스 상승…\"AI 투자 유지 기대감\" (머니투데이)",
+            "[주요 뉴스 (2026-10-28)] 앤트로픽·하이닉스발 훈풍에 반도체 소부장도 ‘꿈틀’…훈풍 이어질... (매일경제)"
+          ]
+        }
+      },
+      {
+        "code": "064290",
+        "name": "인텍플러스",
+        "market": "KOSDAQ",
+        "lastDate": "20261113",
+        "close": 55200,
+        "ret1d": 15.6,
+        "ret5d": 52.49,
+        "ret10d": 1.1,
+        "ret20d": -4.33,
+        "ret60d": 78.64,
+        "sma5": 46580,
+        "sma10": 46335,
+        "sma20": 51892,
+        "sma50": 50937,
+        "sma150": 39867,
+        "sma200": 34099,
+        "high250": 64700,
+        "low250": 10960,
+        "ratio52wHigh": 85.3,
+        "fipId60": -0.1,
+        "posDays60": 33,
+        "negDays60": 27,
+        "posRatio60": 55.0,
+        "vol60dPct": 7.94,
+        "atr20": 6432,
+        "atr20Pct": 11.65,
+        "volRatio": 2.32,
+        "valRatio": 2.5,
+        "valTodayEok": 586.7,
+        "valMa20Eok": 234.3,
+        "stage2": true,
+        "aboveSma50": true,
+        "aboveSma20": true,
+        "recent3Surge": true,
+        "recent3MaxVolRatio": 2.32,
+        "recent3AnchorDate": "20261113",
+        "anchor15d": false,
+        "anchor15dDate": null,
+        "anchor15dVolRatio": 0.0,
+        "anchor15dMid": 0,
+        "eodStop7pct": 51336,
+        "atrStop2x": 42335,
+        "recommendedStop": 51336,
+        "stopDistPct": 7.0,
+        "recWeightPct": 12.5,
+        "track": "TRACK_2_VOL_BREAKOUT",
+        "trackName": "Track 2: 거래대금 폭발 기준봉 돌파 (E1_S8_EOD)",
+        "quantScore": 62.2,
+        "enrichment": {
+          "per": "-214.79",
+          "cnsPer": "118.97배",
+          "pbr": "14.66",
+          "foreignRate": "4.09%",
+          "marketCap": "7,184억원",
+          "targetPrice": 79333,
+          "recommMean": "4.00",
+          "foreign5dNet": -464788,
+          "inst5dNet": 283601,
+          "indiv5dNet": 176244,
+          "foreign5dTrPbmn": -20245,
+          "inst5dTrPbmn": 13253,
+          "reports": [
+            {
+              "broker": "유안타증권",
+              "title": "실적보다는 수주잔고 추이가 중요",
+              "date": "20261027"
+            },
+            {
+              "broker": "iM증권",
+              "title": "수주급증 믹스개선 비용감소 삼박자",
+              "date": "20260921"
+            },
+            {
+              "broker": "한국IR협의회",
+              "title": "[AI] 반도체·2차전지 3D 외관검사장비 기업",
+              "date": "20260910"
+            }
+          ],
+          "news": [
+            {
+              "title": "코스닥 반도체 장비株, 장초반 '불기둥'",
+              "press": "머니투데이",
+              "date": "2026-11-13",
+              "url": "https://n.news.naver.com/mnews/article/008/0005440735"
+            },
+            {
+              "title": "[이 시각 시황] 코스피·코스닥 2%대 동반 급등…반도체·증권주 강세...",
+              "press": "SBS Biz",
+              "date": "2026-11-13",
+              "url": "https://n.news.naver.com/mnews/article/374/0000543448"
+            },
+            {
+              "title": "코리아써키트 10%대 급등…반도체 기판주 동반 상승",
+              "press": "머니투데이",
+              "date": "2026-11-10",
+              "url": "https://n.news.naver.com/mnews/article/008/0005438824"
+            }
+          ]
+        },
+        "reasons": {
+          "formulas": [
+            {
+              "source": "Mark Minervini (초수익 성장주 투자, SEPA Stage 2)",
+              "metric": "현재가(55,200원) > 20일선(51,892원) > 50일선(50,937원) > 150일선(39,867원)",
+              "desc": "단기·중기·장기 이동평균선이 완전 정배열된 제2단계(기관 매집 추세 국면) 조건을 충족합니다."
+            },
+            {
+              "source": "George & Hwang (2004, Journal of Finance 52주 신고가 모멘텀)",
+              "metric": "52주 최고가(64,700원) 대비 85.3% 근접",
+              "desc": "52주 최고가 대비 85~100% 구간에 위치하여 상단 악성 매물대(Overhead Supply) 저항이 최소화된 신고가 탄력 구간입니다."
+            },
+            {
+              "source": "Da, Gurun & Warachka (2014, RFS Frog-in-the-Pan 연속정보 가설)",
+              "metric": "60일 FIP ID = -0.100 (양봉 33일 / 음봉 27일, 승률 55.0%)",
+              "desc": "단발성 작전 급등이 아니라 60거래일 동안 양봉 빈도가 음봉을 압도하며 기관성 자금이 점진적으로 유입된 고품질 추세입니다."
+            },
+            {
+              "source": "Nicolas Darvas & 한국 실전 기준봉 돌파 (거래대금 폭발 공식)",
+              "metric": "최근 기준봉(20261113) 거래량 20일 평균 대비 2.32배 폭발 (일평균 대금 234억)",
+              "desc": "박스권 상단에서 평소 대비 2배 이상의 대량 거래대금이 유입되며 새로운 가격 발견(Price Discovery)이 시작된 기준봉 타점입니다."
+            }
+          ],
+          "catalysts": [
+            "[기관 수급] 최근 5거래일 기관 +283,601주 순매수 유입 (기관 추세 형성)",
+            "[컨센서스 & 밸류] 증권사 평균 목표주가 79,333원 (괴리율 +43.7%), PER -214.79 / 추정PER 118.97배, PBR 14.66",
+            "[증권사 리포트 (20261027)] 유안타증권: 실적보다는 수주잔고 추이가 중요",
+            "[증권사 리포트 (20260921)] iM증권: 수주급증 믹스개선 비용감소 삼박자",
+            "[주요 뉴스 (2026-11-13)] 코스닥 반도체 장비株, 장초반 '불기둥' (머니투데이)",
+            "[주요 뉴스 (2026-11-13)] [이 시각 시황] 코스피·코스닥 2%대 동반 급등…반도체·증권주 강세... (SBS Biz)"
+          ]
+        }
+      },
+      {
+        "code": "252990",
+        "name": "샘씨엔에스",
+        "market": "KOSDAQ",
+        "lastDate": "20261113",
+        "close": 16930,
+        "ret1d": 2.86,
+        "ret5d": 49.16,
+        "ret10d": 7.22,
+        "ret20d": 0.77,
+        "ret60d": 6.14,
+        "sma5": 14716,
+        "sma10": 14184,
+        "sma20": 15143,
+        "sma50": 16008,
+        "sma150": 13998,
+        "sma200": 13038,
+        "high250": 20750,
+        "low250": 6140,
+        "ratio52wHigh": 81.6,
+        "fipId60": 0.0,
+        "posDays60": 30,
+        "negDays60": 30,
+        "posRatio60": 50.0,
+        "vol60dPct": 6.58,
+        "atr20": 1676,
+        "atr20Pct": 9.9,
+        "volRatio": 1.18,
+        "valRatio": 1.34,
+        "valTodayEok": 224.8,
+        "valMa20Eok": 168.3,
+        "stage2": true,
+        "aboveSma50": true,
+        "aboveSma20": true,
+        "recent3Surge": true,
+        "recent3MaxVolRatio": 2.26,
+        "recent3AnchorDate": "20261111",
+        "anchor15d": true,
+        "anchor15dDate": "20261111",
+        "anchor15dVolRatio": 2.26,
+        "anchor15dMid": 14445,
+        "eodStop7pct": 15745,
+        "atrStop2x": 13579,
+        "recommendedStop": 15745,
+        "stopDistPct": 7.0,
+        "recWeightPct": 12.5,
+        "track": "TRACK_2_VOL_BREAKOUT",
+        "trackName": "Track 2: 거래대금 폭발 기준봉 돌파 (E1_S8_EOD)",
+        "quantScore": 50.6,
+        "enrichment": {
+          "per": "0.00",
+          "cnsPer": "26.33배",
+          "pbr": "0.00",
+          "foreignRate": "6.66%",
+          "marketCap": "10,195억원",
+          "targetPrice": 23000,
+          "recommMean": "4.00",
+          "foreign5dNet": -881714,
+          "inst5dNet": 1246594,
+          "indiv5dNet": -394515,
+          "foreign5dTrPbmn": -12921,
+          "inst5dTrPbmn": 19242,
+          "reports": [
+            {
+              "broker": "대신증권",
+              "title": "내년에도 계속되는 성장",
+              "date": "20261102"
+            }
+          ],
+          "news": [
+            {
+              "title": "삼성 기술주 저가 매수 나선 고수들…인버스 ETF로 변동성 대비 [주식...",
+              "press": "세계일보",
+              "date": "2026-10-26",
+              "url": "https://n.news.naver.com/mnews/article/022/0004169832"
+            },
+            {
+              "title": "이달 21조 던진 외국인…삼전·닉스 팔았지만 반도체 공급망은 샀다",
+              "press": "뉴시스",
+              "date": "2026-10-16",
+              "url": "https://n.news.naver.com/mnews/article/003/0014257669"
+            },
+            {
+              "title": "'우리 코스닥 액티브 ETF가 달라졌어요'…수익률 개선된 이유는",
+              "press": "매일신문",
+              "date": "2026-10-14",
+              "url": "https://n.news.naver.com/mnews/article/088/0001034210"
+            }
+          ]
+        },
+        "reasons": {
+          "formulas": [
+            {
+              "source": "Mark Minervini (초수익 성장주 투자, SEPA Stage 2)",
+              "metric": "현재가(16,930원) > 20일선(15,143원) > 50일선(16,008원) > 150일선(13,998원)",
+              "desc": "단기·중기·장기 이동평균선이 완전 정배열된 제2단계(기관 매집 추세 국면) 조건을 충족합니다."
+            },
+            {
+              "source": "George & Hwang (2004, Journal of Finance 52주 신고가 모멘텀)",
+              "metric": "52주 최고가(20,750원) 대비 81.6% 근접",
+              "desc": "52주 최고가 대비 85~100% 구간에 위치하여 상단 악성 매물대(Overhead Supply) 저항이 최소화된 신고가 탄력 구간입니다."
+            },
+            {
+              "source": "Da, Gurun & Warachka (2014, RFS Frog-in-the-Pan 연속정보 가설)",
+              "metric": "60일 FIP ID = +0.000 (양봉 30일 / 음봉 30일, 승률 50.0%)",
+              "desc": "단발성 작전 급등이 아니라 60거래일 동안 양봉 빈도가 음봉을 압도하며 기관성 자금이 점진적으로 유입된 고품질 추세입니다."
+            },
+            {
+              "source": "Nicolas Darvas & 한국 실전 기준봉 돌파 (거래대금 폭발 공식)",
+              "metric": "최근 기준봉(20261111) 거래량 20일 평균 대비 2.26배 폭발 (일평균 대금 168억)",
+              "desc": "박스권 상단에서 평소 대비 2배 이상의 대량 거래대금이 유입되며 새로운 가격 발견(Price Discovery)이 시작된 기준봉 타점입니다."
+            }
+          ],
+          "catalysts": [
+            "[기관 수급] 최근 5거래일 기관 +1,246,594주 순매수 유입 (기관 추세 형성)",
+            "[컨센서스 & 밸류] 증권사 평균 목표주가 23,000원 (괴리율 +35.9%), PER 0.00 / 추정PER 26.33배, PBR 0.00",
+            "[증권사 리포트 (20261102)] 대신증권: 내년에도 계속되는 성장",
+            "[주요 뉴스 (2026-10-26)] 삼성 기술주 저가 매수 나선 고수들…인버스 ETF로 변동성 대비 [주식... (세계일보)",
+            "[주요 뉴스 (2026-10-16)] 이달 21조 던진 외국인…삼전·닉스 팔았지만 반도체 공급망은 샀다 (뉴시스)"
+          ]
+        }
+      }
+    ],
+    "track3": [
+      {
+        "code": "068270",
+        "name": "셀트리온",
+        "market": "KOSPI",
+        "lastDate": "20261113",
+        "close": 213500,
+        "ret1d": 1.43,
+        "ret5d": 2.4,
+        "ret10d": 12.25,
+        "ret20d": 10.11,
+        "ret60d": 6.22,
+        "sma5": 209200,
+        "sma10": 205490,
+        "sma20": 198960,
+        "sma50": 188622,
+        "sma150": 185237,
+        "sma200": 190080,
+        "high250": 239244,
+        "low250": 158500,
+        "ratio52wHigh": 89.2,
+        "fipId60": 0.133,
+        "posDays60": 25,
+        "negDays60": 33,
+        "posRatio60": 41.7,
+        "vol60dPct": 1.92,
+        "atr20": 8260,
+        "atr20Pct": 3.87,
+        "volRatio": 0.63,
+        "valRatio": 0.67,
+        "valTodayEok": 932.5,
+        "valMa20Eok": 1392.8,
+        "stage2": true,
+        "aboveSma50": true,
+        "aboveSma20": true,
+        "recent3Surge": false,
+        "recent3MaxVolRatio": 0.63,
+        "recent3AnchorDate": "20261113",
+        "anchor15d": true,
+        "anchor15dDate": "20261105",
+        "anchor15dVolRatio": 3.67,
+        "anchor15dMid": 211250,
+        "eodStop7pct": 198555,
+        "atrStop2x": 196980,
+        "recommendedStop": 198555,
+        "stopDistPct": 7.0,
+        "recWeightPct": 12.5,
+        "track": "TRACK_3_PULLBACK_WATCH",
+        "trackName": "Track 3: 기준봉 후 거래절벽 20일선 눌림목 (Type B 대기)",
+        "quantScore": 72.6,
+        "enrichment": {
+          "per": "50.38",
+          "cnsPer": "34.77배",
+          "pbr": "2.85",
+          "foreignRate": "25.68%",
+          "marketCap": "495,476억원",
+          "targetPrice": 291579,
+          "recommMean": "4.00",
+          "foreign5dNet": 157766,
+          "inst5dNet": 192836,
+          "indiv5dNet": -459263,
+          "foreign5dTrPbmn": 32574,
+          "inst5dTrPbmn": 41933,
+          "reports": [
+            {
+              "broker": "미래에셋증권",
+              "title": "Golden Decade, 셀트리온의 시간",
+              "date": "20261111"
+            },
+            {
+              "broker": "유안타증권",
+              "title": "신규 시밀러 견인 성장 확인",
+              "date": "20261103"
+            },
+            {
+              "broker": "현대차증권",
+              "title": "3Q26 Review: 예상보다 더 잘되고 있다",
+              "date": "20261028"
+            }
+          ],
+          "news": [
+            {
+              "title": "삼전닉스서 '115조' 날아간 사이…국민연금 더 담은 종목보니",
+              "press": "한국경제TV",
+              "date": "2026-11-14",
+              "url": "https://n.news.naver.com/mnews/article/215/0001272732"
+            },
+            {
+              "title": "‘반짝’ 돌아왔던 외국인, 나흘 만에 ‘팔자’ 전환… 5500 넘보던 코...",
+              "press": "주간동아",
+              "date": "2026-11-13",
+              "url": "https://n.news.naver.com/mnews/article/037/0000039148"
+            },
+            {
+              "title": "“주가 하락 죄송합니다”⋯바이오기업 경영진 속앓이",
+              "press": "코메디닷컴",
+              "date": "2026-11-13",
+              "url": "https://n.news.naver.com/mnews/article/296/0000107292"
+            }
+          ]
+        },
+        "reasons": {
+          "formulas": [
+            {
+              "source": "Mark Minervini (초수익 성장주 투자, SEPA Stage 2)",
+              "metric": "현재가(213,500원) > 20일선(198,960원) > 50일선(188,622원) > 150일선(185,237원)",
+              "desc": "단기·중기·장기 이동평균선이 완전 정배열된 제2단계(기관 매집 추세 국면) 조건을 충족합니다."
+            },
+            {
+              "source": "George & Hwang (2004, Journal of Finance 52주 신고가 모멘텀)",
+              "metric": "52주 최고가(239,244원) 대비 89.2% 근접",
+              "desc": "52주 최고가 대비 85~100% 구간에 위치하여 상단 악성 매물대(Overhead Supply) 저항이 최소화된 신고가 탄력 구간입니다."
+            },
+            {
+              "source": "Da, Gurun & Warachka (2014, RFS Frog-in-the-Pan 연속정보 가설)",
+              "metric": "60일 FIP ID = +0.133 (양봉 25일 / 음봉 33일, 승률 41.7%)",
+              "desc": "단발성 작전 급등이 아니라 60거래일 동안 양봉 빈도가 음봉을 압도하며 기관성 자금이 점진적으로 유입된 고품질 추세입니다."
+            },
+            {
+              "source": "성필규·한봉호 눌림목 & 실전 Type B (기준봉 후 거래절벽 20일선 지지)",
+              "metric": "기준봉(20261105, 거래량 3.7배) 후 당일 거래량 0.63배로 감소, 기준봉 중심값(211,250원) 지지",
+              "desc": "강력한 기준봉 출현 이후 매도 거래량이 마르는 거래절벽(Volume Dry-Up)이 나타나며 20일 이동평균선 부근에서 재돌파를 준비 중입니다."
+            }
+          ],
+          "catalysts": [
+            "[양매수 수급] 최근 5거래일 외국인 +157,766주, 기관 +192,836주 동반 순매수 유입 (추종모멘텀 논문 부합)",
+            "[컨센서스 & 밸류] 증권사 평균 목표주가 291,579원 (괴리율 +36.6%), PER 50.38 / 추정PER 34.77배, PBR 2.85",
+            "[증권사 리포트 (20261111)] 미래에셋증권: Golden Decade, 셀트리온의 시간",
+            "[증권사 리포트 (20261103)] 유안타증권: 신규 시밀러 견인 성장 확인",
+            "[주요 뉴스 (2026-11-14)] 삼전닉스서 '115조' 날아간 사이…국민연금 더 담은 종목보니 (한국경제TV)",
+            "[주요 뉴스 (2026-11-13)] ‘반짝’ 돌아왔던 외국인, 나흘 만에 ‘팔자’ 전환… 5500 넘보던 코... (주간동아)"
+          ]
+        }
+      },
+      {
+        "code": "086280",
+        "name": "현대글로비스",
+        "market": "KOSPI",
+        "lastDate": "20261113",
+        "close": 203000,
+        "ret1d": -1.22,
+        "ret5d": 2.89,
+        "ret10d": 10.45,
+        "ret20d": 8.5,
+        "ret60d": -3.79,
+        "sma5": 199460,
+        "sma10": 200360,
+        "sma20": 191550,
+        "sma50": 195452,
+        "sma150": 206264,
+        "sma200": 215400,
+        "high250": 296000,
+        "low250": 156100,
+        "ratio52wHigh": 68.6,
+        "fipId60": -0.117,
+        "posDays60": 26,
+        "negDays60": 33,
+        "posRatio60": 43.3,
+        "vol60dPct": 3.01,
+        "atr20": 9000,
+        "atr20Pct": 4.43,
+        "volRatio": 0.7,
+        "valRatio": 0.75,
+        "valTodayEok": 198.6,
+        "valMa20Eok": 264.9,
+        "stage2": false,
+        "aboveSma50": true,
+        "aboveSma20": true,
+        "recent3Surge": false,
+        "recent3MaxVolRatio": 0.7,
+        "recent3AnchorDate": "20261113",
+        "anchor15d": true,
+        "anchor15dDate": "20261102",
+        "anchor15dVolRatio": 2.68,
+        "anchor15dMid": 193750,
+        "eodStop7pct": 188790,
+        "atrStop2x": 185000,
+        "recommendedStop": 188790,
+        "stopDistPct": 7.0,
+        "recWeightPct": 12.5,
+        "track": "TRACK_3_PULLBACK_WATCH",
+        "trackName": "Track 3: 기준봉 후 거래절벽 20일선 눌림목 (Type B 대기)",
+        "quantScore": 38.9,
+        "enrichment": {
+          "per": "8.78",
+          "cnsPer": "8.88배",
+          "pbr": "1.47",
+          "foreignRate": "46.75%",
+          "marketCap": "152,250억원",
+          "targetPrice": 306056,
+          "recommMean": "4.00",
+          "foreign5dNet": 20683,
+          "inst5dNet": 68471,
+          "indiv5dNet": -87548,
+          "foreign5dTrPbmn": 4664,
+          "inst5dTrPbmn": 13364,
+          "reports": [
+            {
+              "broker": "삼성증권",
+              "title": "3Q review- 언제 봐도 놀라운 실적",
+              "date": "20261112"
+            },
+            {
+              "broker": "신한투자증권",
+              "title": "NDR 후기: 물 들어올 때 노 젓자",
+              "date": "20261106"
+            },
+            {
+              "broker": "대신증권",
+              "title": "3분기 PCC 운임 강세 check",
+              "date": "20261104"
+            }
+          ],
+          "news": [
+            {
+              "title": "효성티앤씨·현대글로비스·케이엠더블유[하나證 주간추천주]",
+              "press": "이데일리",
+              "date": "2026-11-14",
+              "url": "https://n.news.naver.com/mnews/article/018/0006409790"
+            },
+            {
+              "title": "진화하는 대기업–글로벌 PEF 동맹…'재무해결사'서 '성장 파트너'로",
+              "press": "한국경제",
+              "date": "2026-11-13",
+              "url": "https://n.news.naver.com/mnews/article/015/0005353518"
+            },
+            {
+              "title": "中 자동차 수출 1000만대 시대…현대글로비스, ‘연 매출 30조’ 돌파...",
+              "press": "헤럴드경제",
+              "date": "2026-11-13",
+              "url": "https://n.news.naver.com/mnews/article/016/0002722875"
+            }
+          ]
+        },
+        "reasons": {
+          "formulas": [
+            {
+              "source": "이동평균 수급선 지지 (50일선 추세 필터)",
+              "metric": "현재가(203,000원) > 50일선(195,452원)",
+              "desc": "중기 수급선 위에서 상승 추세 구조를 유지하고 있습니다."
+            },
+            {
+              "source": "George & Hwang (2004, Journal of Finance 52주 신고가 모멘텀)",
+              "metric": "52주 최고가(296,000원) 대비 68.6% 근접",
+              "desc": "52주 최고가 대비 85~100% 구간에 위치하여 상단 악성 매물대(Overhead Supply) 저항이 최소화된 신고가 탄력 구간입니다."
+            },
+            {
+              "source": "Da, Gurun & Warachka (2014, RFS Frog-in-the-Pan 연속정보 가설)",
+              "metric": "60일 FIP ID = -0.117 (양봉 26일 / 음봉 33일, 승률 43.3%)",
+              "desc": "단발성 작전 급등이 아니라 60거래일 동안 양봉 빈도가 음봉을 압도하며 기관성 자금이 점진적으로 유입된 고품질 추세입니다."
+            },
+            {
+              "source": "성필규·한봉호 눌림목 & 실전 Type B (기준봉 후 거래절벽 20일선 지지)",
+              "metric": "기준봉(20261102, 거래량 2.7배) 후 당일 거래량 0.70배로 감소, 기준봉 중심값(193,750원) 지지",
+              "desc": "강력한 기준봉 출현 이후 매도 거래량이 마르는 거래절벽(Volume Dry-Up)이 나타나며 20일 이동평균선 부근에서 재돌파를 준비 중입니다."
+            }
+          ],
+          "catalysts": [
+            "[양매수 수급] 최근 5거래일 외국인 +20,683주, 기관 +68,471주 동반 순매수 유입 (추종모멘텀 논문 부합)",
+            "[컨센서스 & 밸류] 증권사 평균 목표주가 306,056원 (괴리율 +50.8%), PER 8.78 / 추정PER 8.88배, PBR 1.47",
+            "[증권사 리포트 (20261112)] 삼성증권: 3Q review- 언제 봐도 놀라운 실적",
+            "[증권사 리포트 (20261106)] 신한투자증권: NDR 후기: 물 들어올 때 노 젓자",
+            "[주요 뉴스 (2026-11-14)] 효성티앤씨·현대글로비스·케이엠더블유[하나證 주간추천주] (이데일리)",
+            "[주요 뉴스 (2026-11-13)] 진화하는 대기업–글로벌 PEF 동맹…'재무해결사'서 '성장 파트너'로 (한국경제)"
+          ]
+        }
+      }
+    ]
+  },
+  "portfolioEvaluated": [],
+  "portfolioUpdatedAt": "2026-11-14 19:33:15"
+}
