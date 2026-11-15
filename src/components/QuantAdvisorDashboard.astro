@@ -365,6 +365,8 @@
   let sma20Series: any = null;
   let sma50Series: any = null;
   let priceLines: any[] = [];
+  let chartResizeObserver: ResizeObserver | null = null;
+  let chartRequestSeq = 0;
 
   function showToast(msg: string, duration = 4000) {
     const el = document.getElementById("advisor-toast");
@@ -379,12 +381,30 @@
   function initAdvisorChart() {
     const container = document.getElementById("advisor-lw-chart");
     if (!container) return;
+
+    if (chartResizeObserver) {
+      chartResizeObserver.disconnect();
+      chartResizeObserver = null;
+    }
+    if (lwChart) {
+      try {
+        lwChart.remove();
+      } catch {
+        // ignore
+      }
+      lwChart = null;
+      candleSeries = null;
+      sma20Series = null;
+      sma50Series = null;
+      priceLines = [];
+    }
     container.innerHTML = "";
 
     lwChart = createChart(container, {
       layout: {
         background: { type: ColorType.Solid, color: "#0b0e14" },
         textColor: "#94a3b8",
+        attributionLogo: false,
       },
       grid: {
         vertLines: { color: "rgba(148, 163, 184, 0.08)" },
@@ -418,11 +438,14 @@
       title: "50일선(수급선)",
     });
 
-    window.addEventListener("resize", () => {
-      if (lwChart && container) {
-        lwChart.applyOptions({ width: container.clientWidth });
-      }
-    });
+    if (typeof ResizeObserver !== "undefined") {
+      chartResizeObserver = new ResizeObserver(() => {
+        if (lwChart && container && container.clientWidth > 0) {
+          lwChart.applyOptions({ width: container.clientWidth });
+        }
+      });
+      chartResizeObserver.observe(container);
+    }
   }
 
   function clearPriceLines() {
@@ -437,6 +460,35 @@
     priceLines = [];
   }
 
+  function normalizeBarDate(raw: unknown): string | null {
+    if (typeof raw !== "string") return null;
+    const trimmed = raw.trim();
+    if (/^\d{4}-\d{2}-\d{2}$/.test(trimmed)) return trimmed;
+    if (/^\d{8}$/.test(trimmed)) {
+      return `${trimmed.slice(0, 4)}-${trimmed.slice(4, 6)}-${trimmed.slice(6, 8)}`;
+    }
+    return null;
+  }
+
+  function normalizeChartBar(raw: any) {
+    if (!raw || typeof raw !== "object") return null;
+    const time = normalizeBarDate(raw.time ?? raw.date);
+    const open = Number(raw.open);
+    const high = Number(raw.high);
+    const low = Number(raw.low);
+    const close = Number(raw.close);
+    if (
+      !time ||
+      !Number.isFinite(open) ||
+      !Number.isFinite(high) ||
+      !Number.isFinite(low) ||
+      !Number.isFinite(close)
+    ) {
+      return null;
+    }
+    return { time, open, high, low, close };
+  }
+
   async function loadChartWithDefenseLines(
     code: string,
     name: string,
@@ -444,6 +496,7 @@
     stopPrice: number,
     sma20Price: number
   ) {
+    const requestSeq = ++chartRequestSeq;
     const titleEl = document.getElementById("chart-panel-title");
     const subEl = document.getElementById("chart-panel-subtitle");
     if (titleEl) {
@@ -451,49 +504,70 @@
     }
 
     try {
-      let bars: any[] = [];
-      // 1. Try live quote API first for up-to-today bars
-      const liveResp = await fetch(`/api/quant-quote?code=${code}`);
-      if (liveResp.ok) {
-        const liveData = await liveResp.json();
-        if (Array.isArray(liveData.recentBars) && liveData.recentBars.length > 0) {
-          bars = liveData.recentBars.map((b: any) => ({
-            time: `${b.date.slice(0, 4)}-${b.date.slice(4, 6)}-${b.date.slice(6, 8)}`,
-            open: b.open,
-            high: b.high,
-            low: b.low,
-            close: b.close,
-          }));
+      const [r2Settled, liveSettled] = await Promise.allSettled([
+        fetch(`https://pub-88fccd299b1d47fe97d43f35f238d0ce.r2.dev/data/daily/${code}.json?t=${Date.now()}`),
+        fetch(`/api/quant-quote?code=${code}`),
+      ]);
+
+      if (requestSeq !== chartRequestSeq) return;
+
+      const barMap = new Map<
+        string,
+        { time: string; open: number; high: number; low: number; close: number }
+      >();
+
+      if (r2Settled.status === "fulfilled" && r2Settled.value.ok) {
+        try {
+          const r2Data = await r2Settled.value.json();
+          if (requestSeq !== chartRequestSeq) return;
+          if (Array.isArray(r2Data)) {
+            for (const item of r2Data) {
+              const bar = normalizeChartBar(item);
+              if (bar) barMap.set(bar.time, bar);
+            }
+          }
+        } catch {
+          // ignore malformed R2 JSON
         }
       }
 
-      // 2. Fallback to R2 15-year daily JSON if needed
-      if (bars.length === 0) {
-        const r2Resp = await fetch(
-          `https://pub-88fccd299b1d47fe97d43f35f238d0ce.r2.dev/data/daily/${code}.json`
-        );
-        if (r2Resp.ok) {
-          const r2Data = await r2Resp.json();
-          bars = r2Data.slice(-120);
+      if (liveSettled.status === "fulfilled" && liveSettled.value.ok) {
+        try {
+          const liveData = await liveSettled.value.json();
+          if (requestSeq !== chartRequestSeq) return;
+          if (Array.isArray(liveData?.recentBars)) {
+            for (const item of liveData.recentBars) {
+              const bar = normalizeChartBar(item);
+              if (bar) barMap.set(bar.time, bar);
+            }
+          }
+        } catch {
+          // ignore non-JSON or malformed live quote response
         }
       }
 
-      if (!bars || bars.length === 0 || !candleSeries) return;
+      if (requestSeq !== chartRequestSeq) return;
+
+      const bars = Array.from(barMap.values()).sort((a, b) => a.time.localeCompare(b.time));
+      if (bars.length === 0 || !candleSeries || !sma20Series || !sma50Series || !lwChart) return;
 
       candleSeries.setData(bars);
 
-      // Compute SMA20 and SMA50 series
-      const sma20Data: any[] = [];
-      const sma50Data: any[] = [];
+      // Compute SMA20 and SMA50 across full merged history
+      const sma20Data: { time: string; value: number }[] = [];
+      const sma50Data: { time: string; value: number }[] = [];
+      let sum20 = 0;
+      let sum50 = 0;
       for (let i = 0; i < bars.length; i++) {
+        sum20 += bars[i].close;
+        if (i >= 20) sum20 -= bars[i - 20].close;
         if (i >= 19) {
-          let sum20 = 0;
-          for (let j = i - 19; j <= i; j++) sum20 += bars[j].close;
           sma20Data.push({ time: bars[i].time, value: Math.round(sum20 / 20) });
         }
+
+        sum50 += bars[i].close;
+        if (i >= 50) sum50 -= bars[i - 50].close;
         if (i >= 49) {
-          let sum50 = 0;
-          for (let j = i - 49; j <= i; j++) sum50 += bars[j].close;
           sma50Data.push({ time: bars[i].time, value: Math.round(sum50 / 50) });
         }
       }
@@ -528,7 +602,15 @@
         );
       }
 
-      lwChart.timeScale().fitContent();
+      if (bars.length > 110) {
+        lwChart.timeScale().setVisibleLogicalRange({
+          from: Math.max(0, bars.length - 110),
+          to: bars.length + 4,
+        });
+      } else {
+        lwChart.timeScale().fitContent();
+      }
+
       if (subEl) {
         const lastBar = bars[bars.length - 1];
         subEl.textContent = `최근 기준일(${lastBar.time}) 종가: ${lastBar.close.toLocaleString()}원 | 매수/기준가: ${entryPrice.toLocaleString()}원 | EOD 손절선: ${stopPrice.toLocaleString()}원 | 20일 생명선: ${sma20Price.toLocaleString()}원`;
